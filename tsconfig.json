@@ -16,8 +16,10 @@
     },
     "lib": ["esnext", "dom"],
     "types": ["@dcloudio/types", "pinia-plugin-persist-uni", "@types/html5plus"],
-    "typeRoots": ["./node_modules/@types", "./src/@types"]
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    "allowJs": true,
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "**/*.js"],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

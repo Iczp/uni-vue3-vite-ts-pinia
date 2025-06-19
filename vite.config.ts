@@ -2,7 +2,6 @@ import { resolve } from "node:path";
 import uni from "@dcloudio/vite-plugin-uni";
 import AutoImportTypes from "auto-import-types";
 import PiniaAutoRefs from "pinia-auto-refs";
-import { defineConfig } from "vite";
 import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const Unocss = require("unocss/vite").default;
