@@ -11,6 +11,7 @@ import env from './src/config/env';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
@@ -42,6 +43,7 @@ export default defineConfig({
     Unocss()
   ],
   server: {
+    port: 4000, // 设置开发服务器端口
     open: true, // 自动打开
     base: './ ', // 生产环境路径
     proxy: {
