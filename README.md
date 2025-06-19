@@ -100,3 +100,10 @@
 ├── unocss.config.ts unocss配置
 └── vite.config.ts vite配置
 ```
+
+## 升级Uni-App
+
+```
+npx @dcloudio/uvm@latest
+```
+

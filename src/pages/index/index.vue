@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useTitle } from '@/hooks/useTitle';
-import { forward } from '@/utils/router';
+import { useTitle } from "@/hooks/useTitle";
+import { forward } from "@/utils/router";
 
 const { title, changeTitle } = useTitle();
 function goTest() {
-  forward('test', {
-    a: 1
+  forward("test", {
+    a: 1,
   });
 }
 </script>
@@ -18,6 +18,12 @@ function goTest() {
     </view>
     <view @click="changeTitle">changeTitle</view>
     <view @click="goTest">测试页</view>
+
+    <view
+      class="flex flex-1 bg-red-300 text-sky-4 px-12 m-10 t-16 leading-10 rounded-10 shadow-2"
+    >
+      我是用UnoCss</view
+    >
   </view>
 </template>
 
