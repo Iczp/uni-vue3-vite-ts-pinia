@@ -101,9 +101,17 @@
 └── vite.config.ts vite配置
 ```
 
-## 升级Uni-App
+## 升级
+
+###  Uni-App
 
 ```
 npx @dcloudio/uvm@latest
+```
+
+### vant
+
+```
+pnpm add @vant/auto-import-resolver unplugin-vue-components unplugin-auto-import -D
 ```
 

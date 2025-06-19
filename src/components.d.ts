@@ -9,6 +9,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AppFooter: typeof import('./components/AppFooter.vue')['default']
+    AppNavBar: typeof import('./components/AppNavBar.vue')['default']
+    AppPage: typeof import('./components/AppPage.vue')['default']
+    AppStatusBar: typeof import('./components/AppStatusBar.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

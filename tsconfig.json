@@ -15,7 +15,8 @@
       "@/*": ["src/*"]
     },
     "lib": ["esnext", "dom"],
-    "types": ["@dcloudio/types", "pinia-plugin-persist-uni"]
+    "types": ["@dcloudio/types", "pinia-plugin-persist-uni", "@types/html5plus"],
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
