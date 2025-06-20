@@ -21,8 +21,7 @@ export function looseEqual(a: any, b: any): boolean {
   if (aValidType || bValidType) return a === b;
   aValidType = isArray(a);
   bValidType = isArray(b);
-  if (aValidType || bValidType)
-    return aValidType && bValidType ? looseCompareArrays(a, b) : false;
+  if (aValidType || bValidType) return aValidType && bValidType ? looseCompareArrays(a, b) : false;
 
   aValidType = isObject(a);
   bValidType = isObject(b);
@@ -35,11 +34,7 @@ export function looseEqual(a: any, b: any): boolean {
     for (const key in a) {
       const aHasKey = Object.prototype.hasOwnProperty.call(a, key);
       const bHasKey = Object.prototype.hasOwnProperty.call(b, key);
-      if (
-        (aHasKey && !bHasKey) ||
-        (!aHasKey && bHasKey) ||
-        !looseEqual(a[key], b[key])
-      ) {
+      if ((aHasKey && !bHasKey) || (!aHasKey && bHasKey) || !looseEqual(a[key], b[key])) {
         return false;
       }
     }
@@ -48,5 +43,5 @@ export function looseEqual(a: any, b: any): boolean {
 }
 
 export function looseIndexOf(arr: any[], val: any): number {
-  return arr.findIndex((item) => looseEqual(item, val));
+  return arr.findIndex(item => looseEqual(item, val));
 }

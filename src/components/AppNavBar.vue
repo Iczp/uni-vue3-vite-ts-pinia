@@ -1,46 +1,7 @@
-<template>
-  <div class="app-nav-bar-wrapper">
-    <AppStatusBar
-      v-if="isStatusBar"
-      :backgroundColor="statusBarBackgroundColor"
-    ></AppStatusBar>
-    <div
-      class="app-nav-bar flex-row items-center gap-4 px-12"
-      :class="{ border: border }"
-      :style="style"
-    >
-      <slot name="left">
-        <div class="back-icon" @click="onBack">
-          <!-- <uni-icons
-            type="back"
-            :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
-            :size="24"
-          ></uni-icons> -->
-        </div>
-      </slot>
-      <div
-        class="flex-1 text-ellipsis flex-center"
-        :style="{ color: titleColor }"
-      >
-        <slot></slot>
-      </div>
-      <slot name="right">
-        <!-- <uni-icons
-          type="more-filled"
-          :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
-          :size="20"
-          style="transform: rotate(90deg);"
-        ></uni-icons> -->
-      </slot>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref } from "vue";
-import { showToast } from "vant";
-import { navigateBack } from "@/utils/bridge";
-import AppStatusBar from "./AppStatusBar.vue";
+import { ref } from 'vue';
+import AppStatusBar from './AppStatusBar.vue';
+import { navigateBack } from '@/utils/bridge';
 
 const props = defineProps({
   isStatusBar: {
@@ -70,6 +31,34 @@ const style = ref({
   color: props.titleColor,
 });
 </script>
+
+<template>
+  <div class="app-nav-bar-wrapper">
+    <AppStatusBar v-if="isStatusBar" :background-color="statusBarBackgroundColor"></AppStatusBar>
+    <div class="app-nav-bar flex-row items-center gap-4 px-12" :class="{ border }" :style="style">
+      <slot name="left">
+        <div class="back-icon" @click="onBack">
+          <!-- <uni-icons
+            type="back"
+            :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
+            :size="24"
+          ></uni-icons> -->
+        </div>
+      </slot>
+      <div class="flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
+        <slot></slot>
+      </div>
+      <slot name="right">
+        <!-- <uni-icons
+          type="more-filled"
+          :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
+          :size="20"
+          style="transform: rotate(90deg);"
+        ></uni-icons> -->
+      </slot>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 .app-nav-bar-wrapper {

@@ -103,7 +103,7 @@
 
 ## 升级
 
-###  Uni-App
+### Uni-App
 
 ```
 npx @dcloudio/uvm@latest
@@ -114,4 +114,3 @@ npx @dcloudio/uvm@latest
 ```
 pnpm add @vant/auto-import-resolver unplugin-vue-components unplugin-auto-import -D
 ```
-

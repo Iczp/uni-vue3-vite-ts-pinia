@@ -1,13 +1,6 @@
-<template>
-  <div class="app-footer flex-col space-between" :class="{ border: border }">
-    <slot></slot>
-    <div class="app-safe-area-insets-bottom"></div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { ref } from "vue";
-import { showToast } from "vant";
+import { ref } from 'vue';
+import { showToast } from 'vant';
 defineProps({
   border: {
     default: true,
@@ -17,12 +10,19 @@ const count = ref(0);
 const isLoading = ref(false);
 const onRefresh = () => {
   setTimeout(() => {
-    showToast("刷新成功");
+    showToast('刷新成功');
     isLoading.value = false;
     count.value++;
   }, 1000);
 };
 </script>
+
+<template>
+  <div class="app-footer flex-col space-between" :class="{ border }">
+    <slot></slot>
+    <div class="app-safe-area-insets-bottom"></div>
+  </div>
+</template>
 
 <style lang="scss">
 .app-footer {

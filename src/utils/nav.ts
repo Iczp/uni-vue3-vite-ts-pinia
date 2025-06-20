@@ -1,24 +1,22 @@
-import { AnimationType } from "@/@types/uni";
+import type { AnimationType } from '@/@types/uni';
 
 export const isEmpty = (v: any) => !v && v != 0;
 
 export const toQueryString = (obj: Object) => {
-  var str: string[] = [];
+  const str: string[] = [];
   // console.log('p', p,obj[p],obj.hasOwnProperty(p))
-  for (var p in obj)
+  for (const p in obj)
     if (obj.hasOwnProperty(p)) {
       let value = obj[p];
-      console.log("value", value, isEmpty(value));
-      if (typeof value == "object") {
+      console.log('value', value, isEmpty(value));
+      if (typeof value == 'object') {
         value = JSON.stringify(value);
       }
       str.push(
-        encodeURIComponent(p) +
-          "=" +
-          (!isEmpty(value) ? encodeURIComponent(value as string) : "")
+        `${encodeURIComponent(p)}=${!isEmpty(value) ? encodeURIComponent(value as string) : ''}`,
       );
     }
-  return str.join("&");
+  return str.join('&');
 };
 
 export const toUrl = (uri: string, obj: any) => {
@@ -26,18 +24,16 @@ export const toUrl = (uri: string, obj: any) => {
   if (!obj) {
     return uri;
   }
-  const and = uri.indexOf("?") !== -1 ? "&" : "?";
+  const and = uri.includes('?') ? '&' : '?';
   const url = uri + and + toQueryString(obj);
   // console.log('toUrl', url)
   return url;
 };
 
-
-
 export const navTo = (
   uri: string,
   obj: any,
-  opts: { animationType?: AnimationType } = { animationType: "pop-in" }
+  opts: { animationType?: AnimationType } = { animationType: 'pop-in' },
 ) =>
   uni.navigateTo({
     url: toUrl(uri, obj),

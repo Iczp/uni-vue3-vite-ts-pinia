@@ -1,6 +1,6 @@
 // src/hooks/useKeyboard.ts
 
-import { ref, computed, onMounted, onUnmounted, readonly } from 'vue';
+import { computed, onMounted, onUnmounted, readonly, ref } from 'vue';
 
 /**
  * 侦测移动端键盘高度、可见性以及屏幕方向的 Vue Composition API Hook。

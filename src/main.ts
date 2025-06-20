@@ -5,6 +5,6 @@ import store from '@/store';
 export function createApp() {
   const app = createSSRApp(App).use(store);
   return {
-    app
+    app,
   };
 }

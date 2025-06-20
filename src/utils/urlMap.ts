@@ -1,21 +1,21 @@
 import pagesJson from '../pages.json';
 
 // tabBar页面
-const tabBarPagesMap = pagesJson.pages.map((i) => {
+const tabBarPagesMap = pagesJson.pages.map(i => {
   return {
     type: 'tabBarPage',
     name: i.name,
-    path: `/${i.path}`
+    path: `/${i.path}`,
   };
 });
 
 // 二级页面
-const subPagesMap = pagesJson.subPackages.flatMap((i) => {
-  return i.pages.map((x) => {
+const subPagesMap = pagesJson.subPackages.flatMap(i => {
+  return i.pages.map(x => {
     return {
       type: 'subPage',
       name: x.name,
-      path: `/${i.root}/${x.path}`
+      path: `/${i.root}/${x.path}`,
     };
   });
 });
@@ -31,7 +31,7 @@ export const needAuthPath = ['member-center', 'service'];
 const types = {
   h5Hsq: /(m(\.dev|\.beta)?\.haoshiqi\.net\/v2)/i,
   topicType: /(topic(\.dev|\.beta)?\.doweidu\.com)/i,
-  h5: /^(https|http):\/\//i
+  h5: /^(https|http):\/\//i,
 };
 
 export function getUrlType(url: string) {

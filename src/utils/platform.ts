@@ -25,7 +25,7 @@ enum EPlatform {
   /** 快应用联盟 */
   QuickappWebviewUnion = 'quickapp-webview-union',
   /** 快应用华为 */
-  QuickappWebviewHuawei = 'quickapp-webview-huawei'
+  QuickappWebviewHuawei = 'quickapp-webview-huawei',
 }
 
 /** 使用条件编译获取平台信息 */
@@ -95,11 +95,9 @@ export const isMp = platform === EPlatform.Mp;
 /** 快应用通用(包含联盟、华为) */
 export const isQuickappWebview = platform === EPlatform.QuickappWebview;
 /** 快应用联盟 */
-export const isQuickappWebviewUnion =
-  platform === EPlatform.QuickappWebviewUnion;
+export const isQuickappWebviewUnion = platform === EPlatform.QuickappWebviewUnion;
 /** 快应用华为 */
-export const isQuickappWebviewHuawei =
-  platform === EPlatform.QuickappWebviewHuawei;
+export const isQuickappWebviewHuawei = platform === EPlatform.QuickappWebviewHuawei;
 /** 是否开发环境 */
 export const isDevelopment = import.meta.env.MODE === 'development';
 /** 是否线上环境 */

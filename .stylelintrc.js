@@ -316,4 +316,4 @@ module.exports = {
     ],
     'rule-empty-line-before': 'never',
   },
-}
+};

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { onHide, onLaunch, onShow } from "@dcloudio/uni-app";
-import { useBridge } from "./hooks/bridge";
+import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
+import { useBridge } from './hooks/bridge';
 onLaunch(() => {
-  console.log("App Launch");
+  console.log('App Launch');
 
   useBridge();
 });
 onShow(() => {
-  console.log("App Show");
+  console.log('App Show');
 });
 onHide(() => {
-  console.log("App Hide");
+  console.log('App Hide');
 });
 </script>
 

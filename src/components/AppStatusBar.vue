@@ -1,12 +1,5 @@
-<template>
-  <div class="app-status-bar flex-row" :style="style">
-    <slot></slot>
-  </div>
-</template>
-
 <script setup>
-import { ref } from "vue";
-import { showToast } from "vant";
+import { ref } from 'vue';
 
 const props = defineProps({
   backgroundColor: {
@@ -14,9 +7,15 @@ const props = defineProps({
   },
 });
 const style = ref({
-  backgroundColor: props.backgroundColor, //|| 'white',
+  backgroundColor: props.backgroundColor, // || 'white',
 });
 </script>
+
+<template>
+  <div class="app-status-bar flex-row" :style="style">
+    <slot></slot>
+  </div>
+</template>
 
 <style lang="scss">
 .app-status-bar {

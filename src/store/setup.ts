@@ -15,12 +15,12 @@ export default defineStore(
       name,
       token,
       fullName,
-      updateName
+      updateName,
     };
   },
   {
     persist: {
-      enabled: true
-    }
-  }
+      enabled: true,
+    },
+  },
 );

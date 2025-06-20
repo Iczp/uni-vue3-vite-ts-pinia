@@ -1,4 +1,4 @@
-export interface InvokeInput  {
+export interface InvokeInput {
   event?: string;
   action?: string;
   args?: any[];
@@ -6,9 +6,9 @@ export interface InvokeInput  {
   compute?: (err: any) => void;
   success?: (res: any) => void;
   [key: string]: any;
-};
+}
 
-export interface InvokeResult  {
+export interface InvokeResult {
   success?: boolean;
   message?: string;
   action?: string;

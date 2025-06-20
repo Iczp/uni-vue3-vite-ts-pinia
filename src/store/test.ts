@@ -7,24 +7,24 @@ export default defineStore({
     strategies: [
       {
         key: 'test',
-        storage: window?.sessionStorage
-      }
-    ]
+        storage: window?.sessionStorage,
+      },
+    ],
   },
   state: () => {
     return {
       name: '张三',
-      token: 'token...'
+      token: 'token...',
     };
   },
   getters: {
-    fullName: (state) => {
+    fullName: state => {
       return `${state.name}丰`;
-    }
+    },
   },
   actions: {
     updateName(name: any) {
       this.name = name;
-    }
-  }
+    },
+  },
 });

@@ -4,27 +4,27 @@ export default defineStore({
     return {
       userInfo: {
         token: 'token',
-        user_id: 111
-      }
+        user_id: 111,
+      },
     } as {
       userInfo: User.UserInfo;
     };
   },
   getters: {
-    logged: (state) => {
+    logged: state => {
       const { token, user_id } = state.userInfo;
       return !!(token && user_id);
     },
-    token: (state) => {
+    token: state => {
       return state.userInfo.token;
     },
-    userId: (state) => {
+    userId: state => {
       return state.userInfo.user_id;
-    }
+    },
   },
   actions: {
     setUserInfo(userInfo: User.UserInfo) {
       Object.assign(this.userInfo, userInfo);
-    }
-  }
+    },
+  },
 });

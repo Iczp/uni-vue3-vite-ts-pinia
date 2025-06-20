@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { useBridge } from "@/hooks/bridge";
-import { useTitle } from "@/hooks/useTitle";
-import { forward } from "@/utils/router";
+import { useBridge } from '@/hooks/bridge';
+import { useTitle } from '@/hooks/useTitle';
+import { forward } from '@/utils/router';
 
 const { title, changeTitle } = useTitle();
 
 useBridge();
 function goTest() {
-  forward("test", {
+  forward('test', {
     a: 1,
   });
 }
-
 </script>
 
 <template>
@@ -23,11 +22,9 @@ function goTest() {
     <view @click="changeTitle">changeTitle</view>
     <view @click="goTest">测试页</view>
 
-    <view
-      class="flex flex-1 bg-red-300 text-sky-4 px-12 m-10 t-16 leading-10 rounded-10 shadow-2"
-    >
-      我是用UnoCss</view
-    >
+    <view class="flex flex-1 bg-red-300 text-sky-4 px-12 m-10 t-16 leading-10 rounded-10 shadow-2">
+      我是用UnoCss
+    </view>
   </view>
 </template>
 

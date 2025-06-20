@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <script>
-      var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') ||
-        CSS.supports('top: constant(a)'))
-      console.log('coverSupport', coverSupport, CSS)
-      console.log('navigator', navigator, navigator.userAgent)
+      var coverSupport =
+        'CSS' in window &&
+        typeof CSS.supports === 'function' &&
+        (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'));
+      console.log('coverSupport', coverSupport, CSS);
+      console.log('navigator', navigator, navigator.userAgent);
       document.write(
         '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' +
-        (coverSupport ? ', viewport-fit=cover' : '') + '" />')
+          (coverSupport ? ', viewport-fit=cover' : '') +
+          '" />',
+      );
     </script>
 
     <title></title>
@@ -72,7 +76,12 @@
       </style>
       <div class="loading-wrap">
         <div class="status"></div>
-        <div class="dot"><i></i><i></i><i></i><i></i></div>
+        <div class="dot">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

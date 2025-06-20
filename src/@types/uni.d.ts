@@ -8,13 +8,13 @@ declare namespace UniApp {
 }
 
 export type AnimationType =
-  | "pop-in"
-  | "auto"
-  | "none"
-  | "slide-in-right"
-  | "slide-in-left"
-  | "slide-in-top"
-  | "slide-in-bottom"
-  | "fade-in"
-  | "zoom-out"
-  | "zoom-fade-out";
+  | 'pop-in'
+  | 'auto'
+  | 'none'
+  | 'slide-in-right'
+  | 'slide-in-left'
+  | 'slide-in-top'
+  | 'slide-in-bottom'
+  | 'fade-in'
+  | 'zoom-out'
+  | 'zoom-fade-out';

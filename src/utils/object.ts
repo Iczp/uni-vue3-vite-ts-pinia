@@ -1,7 +1,7 @@
 export const base64ToBlob = (base64Data: string) => {
   // 1. 分离 MIME 类型和纯 Base64 数据
-  const parts = base64Data.split(";base64,");
-  const mimeType = parts[0].split(":")[1]; // 提取如 "image/jpeg"
+  const parts = base64Data.split(';base64,');
+  const mimeType = parts[0].split(':')[1]; // 提取如 "image/jpeg"
   const rawBase64 = parts[1]; // 纯 Base64 数据
 
   // 2. 解码 Base64 为二进制

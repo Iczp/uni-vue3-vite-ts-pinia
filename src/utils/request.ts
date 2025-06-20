@@ -14,7 +14,7 @@ function reject(err: { errno: number; errmsg: string }) {
 
     default:
       uni.showToast({
-        title: errmsg
+        title: errmsg,
       });
       break;
   }
@@ -24,20 +24,11 @@ function reject(err: { errno: number; errmsg: string }) {
 const apiBaseUrl = isH5 && isDevelopment ? '/api' : env.apiBaseUrl;
 
 function baseRequest(
-  method:
-    | 'OPTIONS'
-    | 'GET'
-    | 'HEAD'
-    | 'POST'
-    | 'PUT'
-    | 'DELETE'
-    | 'TRACE'
-    | 'CONNECT'
-    | undefined,
+  method: 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT' | undefined,
   url: string,
-  data: { isLoading: any }
+  data: { isLoading: any },
 ) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     showLoading(data.isLoading);
     delete data.isLoading;
     let responseData: unknown;
@@ -49,7 +40,7 @@ function baseRequest(
         'content-type':
           method === 'GET'
             ? 'application/json; charset=utf-8'
-            : 'application/x-www-form-urlencoded'
+            : 'application/x-www-form-urlencoded',
       },
       data,
       success: (res: any) => {
@@ -62,21 +53,21 @@ function baseRequest(
         } else {
           reject({
             errno: -1,
-            errmsg: '抢购火爆，稍候片刻！'
+            errmsg: '抢购火爆，稍候片刻！',
           });
         }
       },
       fail: () => {
         reject({
           errno: -1,
-          errmsg: '网络不给力，请检查你的网络设置~'
+          errmsg: '网络不给力，请检查你的网络设置~',
         });
       },
-      complete: (data) => {
+      complete: data => {
         console.log(data, 'data');
         resolve(responseData);
         hideLoading();
-      }
+      },
     });
   });
 }
@@ -85,13 +76,13 @@ const http = {
   get: <T>(api: string, params: any) =>
     baseRequest('GET', api, {
       ...getCommonParams(),
-      ...params
+      ...params,
     }) as Http.Response<T>,
   post: <T>(api: string, params: any) =>
     baseRequest('POST', api, {
       ...getCommonParams(),
-      ...params
-    }) as Http.Response<T>
+      ...params,
+    }) as Http.Response<T>,
 };
 
 export default http;
