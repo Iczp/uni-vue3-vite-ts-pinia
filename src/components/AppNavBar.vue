@@ -11,11 +11,11 @@
     >
       <slot name="left">
         <div class="back-icon" @click="onBack">
-          <uni-icons
+          <!-- <uni-icons
             type="back"
             :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
             :size="24"
-          ></uni-icons>
+          ></uni-icons> -->
         </div>
       </slot>
       <div
@@ -25,12 +25,12 @@
         <slot></slot>
       </div>
       <slot name="right">
-        <uni-icons
+        <!-- <uni-icons
           type="more-filled"
           :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
           :size="20"
           style="transform: rotate(90deg);"
-        ></uni-icons>
+        ></uni-icons> -->
       </slot>
     </div>
   </div>
@@ -39,7 +39,7 @@
 <script setup>
 import { ref } from "vue";
 import { showToast } from "vant";
-import { navigateBack } from "../commons/bridge";
+import { navigateBack } from "@/utils/bridge";
 import AppStatusBar from "./AppStatusBar.vue";
 
 const props = defineProps({

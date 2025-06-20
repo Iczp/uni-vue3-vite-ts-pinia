@@ -1,4 +1,4 @@
-export const base64ToBlob = (base64Data) => {
+export const base64ToBlob = (base64Data: string) => {
   // 1. 分离 MIME 类型和纯 Base64 数据
   const parts = base64Data.split(";base64,");
   const mimeType = parts[0].split(":")[1]; // 提取如 "image/jpeg"
@@ -15,4 +15,12 @@ export const base64ToBlob = (base64Data) => {
   const byteArray = new Uint8Array(byteNumbers);
   // 4. 生成 Blob
   return new Blob([byteArray], { type: mimeType });
+};
+
+export const jsonParse = (json: any): Object | null => {
+  try {
+    return JSON.parse(json);
+  } catch (err) {
+    return null;
+  }
 };

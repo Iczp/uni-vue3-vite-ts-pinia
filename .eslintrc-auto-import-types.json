@@ -3,6 +3,8 @@
     "Http": true,
     "GetTest": true,
     "PostTest": true,
-    "User": true
+    "Html5Plus": true,
+    "User": true,
+    "UniApp": true
   }
 }

@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { useBridge } from "@/hooks/bridge";
 import { useTitle } from "@/hooks/useTitle";
 import { forward } from "@/utils/router";
 
 const { title, changeTitle } = useTitle();
+
+useBridge();
 function goTest() {
   forward("test", {
     a: 1,
   });
 }
+
 </script>
 
 <template>

@@ -1,3 +1,5 @@
+import { AnimationType } from "@/@types/uni";
+
 export const isEmpty = (v: any) => !v && v != 0;
 
 export const toQueryString = (obj: Object) => {
@@ -30,17 +32,7 @@ export const toUrl = (uri: string, obj: any) => {
   return url;
 };
 
-type AnimationType =
-  | "pop-in"
-  | "auto"
-  | "none"
-  | "slide-in-right"
-  | "slide-in-left"
-  | "slide-in-top"
-  | "slide-in-bottom"
-  | "fade-in"
-  | "zoom-out"
-  | "zoom-fade-out";
+
 
 export const navTo = (
   uri: string,
