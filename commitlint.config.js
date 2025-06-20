@@ -7,6 +7,7 @@ module.exports = {
       'always',
       [
         's', // 简短的提交
+        'd', // 描述性的提交
         'feat', // 一个新的特性
         'fix', // 修复一个Bug
         'docs', // 变更的只有文档
