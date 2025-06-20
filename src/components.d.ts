@@ -5,22 +5,22 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export {};
+export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./components/AppFooter.vue')['default'];
-    AppNavBar: typeof import('./components/AppNavBar.vue')['default'];
-    AppPage: typeof import('./components/AppPage.vue')['default'];
-    AppStatusBar: typeof import('./components/AppStatusBar.vue')['default'];
-    PullList: typeof import('./components/pullList.vue')['default'];
-    RouterLink: typeof import('vue-router')['RouterLink'];
-    RouterView: typeof import('vue-router')['RouterView'];
-    VanButton: typeof import('vant/es')['Button'];
-    VanCell: typeof import('vant/es')['Cell'];
-    VanCellGroup: typeof import('vant/es')['CellGroup'];
-    VanLoading: typeof import('vant/es')['Loading'];
-    VanPopup: typeof import('vant/es')['Popup'];
-    VanPullRefresh: typeof import('vant/es')['PullRefresh'];
+    AppFooter: typeof import('./components/AppFooter.vue')['default']
+    AppNavBar: typeof import('./components/AppNavBar.vue')['default']
+    AppPage: typeof import('./components/AppPage.vue')['default']
+    AppStatusBar: typeof import('./components/AppStatusBar.vue')['default']
+    PullList: typeof import('./components/pullList.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
+    VanButton: typeof import('vant/es')['Button']
+    VanCell: typeof import('vant/es')['Cell']
+    VanCellGroup: typeof import('vant/es')['CellGroup']
+    VanLoading: typeof import('vant/es')['Loading']
+    VanPopup: typeof import('vant/es')['Popup']
+    VanPullRefresh: typeof import('vant/es')['PullRefresh']
   }
 }

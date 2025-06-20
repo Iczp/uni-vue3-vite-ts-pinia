@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import AppStatusBar from './AppStatusBar.vue';
-import { navigateBack } from '@/utils/bridge';
+import { navigateBack } from '@/commons/bridge';
 
 const props = defineProps({
   isStatusBar: {

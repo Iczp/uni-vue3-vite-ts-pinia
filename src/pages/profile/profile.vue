@@ -1,13 +1,13 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { onLoad, onReachBottom } from '@dcloudio/uni-app';
-import { scanCode, setNavigationBarColor } from '@/utils/bridge';
+import { scanCode, setNavigationBarColor } from '@/commons/bridge';
 import AppPage from '@/components/AppPage.vue';
 
 // import { resolve } from "../../commons/selector";
 // import { setStatusBarStyle } from "../../commons/h5plus";
 
-import { useKeyboard } from '@/hooks/keyboard';
+import { useKeyboard } from '@/hooks/useKeyboard';
 
 const props = defineProps({
   title: {},

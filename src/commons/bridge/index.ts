@@ -3,7 +3,7 @@ import { jsonParse } from '@/utils/object';
 export const invoke = (input: InvokeInput) =>
   new Promise<InvokeResult>((resolve, reject) => {
     console.log('bridge');
-    const webView = uni.webView;
+    const webView = uni?.['webView'];
     try {
       if (!webView) {
         reject({ message: `非App环境`, input });
@@ -40,43 +40,43 @@ export const invoke = (input: InvokeInput) =>
     }
   });
 
-export const getSystemInfo = (...args) =>
+export const getSystemInfo = (...args: any[]) =>
   invoke({
     action: 'uni.getSystemInfo',
     args,
   });
 
-export const setNavigationBarColor = (...args) =>
+export const setNavigationBarColor = (...args: any[]) =>
   invoke({
     action: 'uni.setNavigationBarColor',
     args,
   });
 
-export const setNavigationBarTitle = (...args) =>
+export const setNavigationBarTitle = (...args: any[]) =>
   invoke({
     action: 'uni.setNavigationBarTitle',
     args,
   });
 
-export const scanCode = (...args) =>
+export const scanCode = (...args: any[]) =>
   invoke({
     action: 'uni.scanCode',
     args,
   });
 
-export const navigateBack = (...args) =>
+export const navigateBack = (...args: any[]) =>
   invoke({
     action: 'uni.navigateBack',
     args,
   });
 
-export const getAuth = (...args) =>
+export const getAuth = (...args: any[]) =>
   invoke({
     action: 'auth',
     args,
   });
 
-export const chooseImage = (...args) =>
+export const chooseImage = (...args: any[]) =>
   invoke({
     action: 'uni.chooseImage',
     args: [
@@ -110,23 +110,23 @@ export const chooseImage = (...args) =>
 // 		}).catch(reject)
 // })
 
-export const navToWebview = (...args) =>
+export const navToWebview = (...args: any[]) =>
   invoke({
     action: 'navToWebview',
     args,
   });
 
-export const $emit = (...args) =>
+export const $emit = (...args: any[]) =>
   invoke({
     action: 'uni.$emit',
     args,
   });
-export const $on = (...args) =>
+export const $on = (...args: any[]) =>
   invoke({
     action: 'uni.$on',
     args,
   });
-export const $once = (...args) =>
+export const $once = (...args: any[]) =>
   invoke({
     action: 'uni.$once',
     args,
