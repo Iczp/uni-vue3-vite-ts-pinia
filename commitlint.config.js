@@ -6,6 +6,7 @@ module.exports = {
       2, // 代表必须输入
       'always',
       [
+        's', // 简短的提交
         'feat', // 一个新的特性
         'fix', // 修复一个Bug
         'docs', // 变更的只有文档

@@ -6,7 +6,12 @@
       "error",
       {
         "singleQuote": true,
-        "trailingComma": "none"
+        "trailingComma": "all",
+        "endOfLine": "lf",
+        "printWidth": 100,
+        "proseWrap": "never",
+        "arrowParens": "avoid",
+        "htmlWhitespaceSensitivity": "ignore"
       }
     ],
     "antfu/if-newline": "off",

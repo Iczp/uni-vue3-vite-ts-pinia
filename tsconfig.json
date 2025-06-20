@@ -12,7 +12,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@utils/*": ["src/commons/utils/*"],
+      "@bridge/*": ["src/commons/bridge/*"]
     },
     "lib": ["esnext", "dom"],
     "types": ["@dcloudio/types", "pinia-plugin-persist-uni", "@types/html5plus"],
