@@ -13,6 +13,13 @@ module.exports = {
   ],
   rules: {
     indentation: 2,
+    // 允许 Vue 的伪类
+    'selector-pseudo-class-no-unknown': [
+      true,
+      {
+        ignorePseudoClasses: ['deep', 'global', 'slotted'],
+      },
+    ],
     'block-closing-brace-newline-after': [
       'always',
       {

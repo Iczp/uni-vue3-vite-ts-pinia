@@ -1,12 +1,9 @@
 @import './base.scss';
 :root,
 page {
-  --app-status-bar-height: 20px;
-  --app-nav-bar-height: 44px;
-  --app-footer-height: 50px;
-  --app-header-height: 60px;
   //
   --icon-default-size: 24px;
+  --red: #c8161d;
 }
 :where(iconify-icon, svg[data-iconify]) {
   width: var(--icon-default-size);

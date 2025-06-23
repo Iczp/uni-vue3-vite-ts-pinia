@@ -102,6 +102,9 @@ importers:
       '@dcloudio/vite-plugin-uni':
         specifier: 3.0.0-4060620250520001
         version: 3.0.0-4060620250520001(postcss@8.5.6)(rollup@4.44.0)(ts-node@10.9.2(@types/node@20.5.1)(typescript@4.9.5))(vite@5.2.8(@types/node@20.5.1)(sass@1.59.2)(terser@5.43.0))(vue@3.5.17(typescript@4.9.5))
+      '@iconify/json':
+        specifier: ^2.2.351
+        version: 2.2.351
       '@iconify/vue':
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.17(typescript@4.9.5))
@@ -1205,6 +1208,9 @@ packages:
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
+
+  '@iconify/json@2.2.351':
+    resolution: {integrity: sha512-xZnNLPmnkRFpsQG+v9f0b7pQewIKz/ueJL7vAMLSBuw76UdL2SJ86pTCPUe0dgcZ8CdZ6pylUU+mTut0iB9DGQ==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -4567,6 +4573,9 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  pathe@1.1.2:
+    resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
+
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
 
@@ -7623,6 +7632,11 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/object-schema@2.0.3': {}
+
+  '@iconify/json@2.2.351':
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 1.1.2
 
   '@iconify/types@2.0.0': {}
 
@@ -11766,6 +11780,8 @@ snapshots:
   path-to-regexp@0.1.12: {}
 
   path-type@4.0.0: {}
+
+  pathe@1.1.2: {}
 
   pathe@2.0.3: {}
 

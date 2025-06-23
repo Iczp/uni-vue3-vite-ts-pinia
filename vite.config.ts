@@ -12,9 +12,6 @@ import { VantResolver } from '@vant/auto-import-resolver';
 import env from './src/config/env';
 import { ComponentResolver } from 'unplugin-vue-components/types';
 
-// import IconsResolver from 'unplugin-icons/resolver';
-// import Icons from 'unplugin-icons/vite';
-
 // 自动引入 @iconify/vue 的 Icon 组件
 const IconsResolver =
   (options?: {}): ComponentResolver =>
@@ -63,7 +60,7 @@ export default defineConfig({
         VantResolver(),
 
         // 自动引入 @iconify/vue 的 Icon 组件
-        IconsResolver(),
+        // IconsResolver(),
       ],
     }),
     // Icons({
@@ -81,6 +78,11 @@ export default defineConfig({
             {
               tag: 'script',
               attrs: { src: '/static/js/uni.webview.1.5.6.js' },
+              injectTo: 'head-prepend',
+            },
+            {
+              tag: 'style',
+              attrs: { src: '/static/css/index.scss' },
               injectTo: 'head-prepend',
             },
           ],

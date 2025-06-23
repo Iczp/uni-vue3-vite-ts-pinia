@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { ref, useSlots } from 'vue';
-import { showToast } from 'vant';
-import AppNavBar from './AppNavBar.vue';
-import AppFooter from './AppFooter.vue';
+import { ref, useSlots } from "vue";
+import { showToast } from "vant";
+import AppNavBar from "./AppNavBar.vue";
+import AppFooter from "./AppFooter.vue";
 
 defineProps({
   title: {},
@@ -19,7 +19,7 @@ const count = ref(0);
 const isLoading = ref(false);
 const onRefresh = () => {
   setTimeout(() => {
-    showToast('刷新成功');
+    showToast("刷新成功");
     isLoading.value = false;
     count.value++;
   }, 1000);
@@ -29,14 +29,16 @@ const onRefresh = () => {
 <template>
   <div class="app-page flex-col">
     <slot name="nav-bar">
-      <AppNavBar
-        :is-status-bar="true"
-        :status-bar-background-color="statusBarBackgroundColor"
-        :title-background-color="titleBackgroundColor"
-        :title-color="titleColor"
-      >
-        {{ title }}
-      </AppNavBar>
+      <div class="app-page-header">
+        <AppNavBar
+          :is-status-bar="true"
+          :status-bar-background-color="statusBarBackgroundColor"
+          :title-background-color="titleBackgroundColor"
+          :title-color="titleColor"
+        >
+          {{ title }}
+        </AppNavBar>
+      </div>
     </slot>
 
     <AppFooter v-if="slots.footer">

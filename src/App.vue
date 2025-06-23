@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
-import { useBridge } from './hooks/bridge';
+import { onHide, onLaunch, onShow } from "@dcloudio/uni-app";
+import { useBridge } from "./hooks/bridge";
 onLaunch(() => {
-  console.log('App Launch');
+  console.log("App Launch");
 
   useBridge();
 });
 onShow(() => {
-  console.log('App Show');
+  console.log("App Show");
 });
 onHide(() => {
-  console.log('App Hide');
+  console.log("App Hide");
 });
 </script>
 
 <style lang="scss">
-// @import '@/commons/css/index.scss';
+@import '@/static/css/index.scss';
 :root,
 page {
   /* --app-color: red; */
   /* 其他全局变量 */
   /* --app-status-bar-height: '0px'; */
   --app-nav-font-size: 34rpx;
-  --app-nav-bar-height: 44px;
+  --app-nav-bar-height: 48px;
   --app-footer-height: 120rpx;
-  --app-status-bar-background-color: 'rgba(217, 217, 217, 1)';
+  --status-bar-background-color: 'rgba(217, 217, 217, 1)';
 }
 /* 全局样式 */
 page {

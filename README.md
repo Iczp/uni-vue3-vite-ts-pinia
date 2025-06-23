@@ -114,3 +114,13 @@ npx @dcloudio/uvm@latest
 ```
 pnpm add @vant/auto-import-resolver unplugin-vue-components unplugin-auto-import -D
 ```
+
+
+
+
+
+## Icon
+
+https://icon-sets.iconify.design/
+
+https://icones.js.org/collection
