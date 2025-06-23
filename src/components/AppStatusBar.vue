@@ -24,7 +24,7 @@ const style = ref({
   right: 0;
   top: 0;
   z-index: 990;
-  height: var(--app-status-bar-height);
+  height: var(--status-bar-height);
   background-color: var(--app-status-bar-background-color);
 }
 </style>

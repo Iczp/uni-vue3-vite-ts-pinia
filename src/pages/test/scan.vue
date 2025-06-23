@@ -1,11 +1,11 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { onLoad, onReachBottom } from '@dcloudio/uni-app';
-import { setStatusBarStyle } from '../../commons/h5plus';
+// import { setStatusBarStyle } from '@/commons/html5plus';
 import { scanCode, setNavigationBarColor } from '@/commons/bridge';
 import AppPage from '@/components/AppPage.vue';
 
-import { useKeyboard } from '@/hooks/keyboard';
+import { useKeyboard } from '@/hooks/useKeyboard';
 
 const props = defineProps({
   title: {},
@@ -13,7 +13,7 @@ const props = defineProps({
 
 const { keyboardHeight, isKeyboardVisible, isLandscape } = useKeyboard();
 
-setStatusBarStyle('light');
+// setStatusBarStyle('light');
 
 const isLoading = ref(false);
 
@@ -39,11 +39,11 @@ const onRefresh = e => {
 };
 const event = ref(null);
 const query = reactive({});
-// const title = ref('')
+const title = ref('')
 onLoad(req => {
   // title.value = `title:${req.title}`
   console.log('req', req);
-  event.value = req.title;
+  title.value = req.title;
 });
 
 const sysInfo = ref();

@@ -39,6 +39,7 @@ export const setCssVar = (sysInfo: { [key: string]: any }) => {
 export const getSystemInfoStore = () => {};
 
 export const appInit = () => {
+  console.log('app-init');
   const storeValue = uni.getStorageSync('app-info');
   sysInfo = jsonParse(storeValue);
   if (sysInfo) {

@@ -15,6 +15,14 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "个人"
       }
+    },
+    {
+      "name": "profile",
+      "path": "pages/test/scan",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "Scan"
+      }
     }
   ],
   "subPackages": [

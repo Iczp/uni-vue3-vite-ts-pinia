@@ -39,9 +39,9 @@ export default defineConfig({
         // ...
       },
       collections: {
-        carbon: () => import('@iconify-json/carbon/icons.json').then(i => i.default),
-        mdi: () => import('@iconify-json/mdi/icons.json').then(i => i.default),
-        ic: () => import('@iconify-json/ic/icons.json').then(i => i.default),
+        // carbon: () => import('@iconify-json/carbon/icons.json').then(i => i.default),
+        // mdi: () => import('@iconify-json/mdi/icons.json').then(i => i.default),
+        // ic: () => import('@iconify-json/ic/icons.json').then(i => i.default),
         // logos: () => import('@iconify-json/logos/icons.json').then(i => i.default),
       },
     }),

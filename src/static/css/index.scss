@@ -5,4 +5,10 @@ page {
   --app-nav-bar-height: 44px;
   --app-footer-height: 50px;
   --app-header-height: 60px;
+  //
+  --icon-default-size: 24px;
+}
+:where(iconify-icon, svg[data-iconify]) {
+  width: var(--icon-default-size);
+  height: var(--icon-default-size);
 }
