@@ -1,1 +1,8 @@
 @import './base.scss';
+:root,
+page {
+  --app-status-bar-height: 20px;
+  --app-nav-bar-height: 44px;
+  --app-footer-height: 50px;
+  --app-header-height: 60px;
+}

@@ -35,26 +35,25 @@ const style = ref({
 <template>
   <div class="app-nav-bar-wrapper">
     <AppStatusBar v-if="isStatusBar" :background-color="statusBarBackgroundColor"></AppStatusBar>
-    <div class="app-nav-bar flex-row items-center gap-4 px-12" :class="{ border }" :style="style">
+    <div
+      class="app-nav-bar flex flex-row items-center gap-4 px-8"
+      :class="{ border }"
+      :style="style"
+    >
       <slot name="left">
-        <div class="back-icon" @click="onBack">
-          <!-- <uni-icons
-            type="back"
-            :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
-            :size="24"
-          ></uni-icons> -->
+        <div class="back-icon fs-18" @click="onBack">
+          <!-- <Icon :color="titleColor" name="ic:sharp-arrow-back-ios-new" /> -->
+          <i class="i-ic:baseline-arrow-back-ios"></i>
         </div>
       </slot>
-      <div class="flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
+      <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
         <slot></slot>
       </div>
       <slot name="right">
-        <!-- <uni-icons
-          type="more-filled"
-          :color="titleColor || 'rgba(87, 87, 87, 1.0)'"
-          :size="20"
-          style="transform: rotate(90deg);"
-        ></uni-icons> -->
+        <div class="fs-18">
+          <!-- <Icon :color="titleColor" name="material-symbols:more-vert" /> -->
+          <i class="ic:baseline-more-vert"></i>
+        </div>
       </slot>
     </div>
   </div>

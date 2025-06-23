@@ -4,6 +4,7 @@
       "name": "index",
       "path": "pages/index/index",
       "style": {
+        "navigationStyle": "custom",
         "navigationBarTitleText": "首页"
       }
     },
@@ -11,6 +12,7 @@
       "name": "profile",
       "path": "pages/profile/profile",
       "style": {
+        "navigationStyle": "custom",
         "navigationBarTitleText": "个人"
       }
     }

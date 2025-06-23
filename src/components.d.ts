@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     AppNavBar: typeof import('./components/AppNavBar.vue')['default']
     AppPage: typeof import('./components/AppPage.vue')['default']
     AppStatusBar: typeof import('./components/AppStatusBar.vue')['default']
+    Icon: typeof import('./components/Icon.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
