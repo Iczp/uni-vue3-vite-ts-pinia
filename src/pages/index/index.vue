@@ -37,12 +37,12 @@ const color = ref('#82f7e4');
         <view @click="changeTitle">changeTitle</view>
         <view @click="goTest">测试页</view>
         <div class="i-material-symbols:arrow-back-ios-new"></div>
-        <i class="i-ic:baseline-arrow-back-ios"></i>
-        <div class="material-symbols:arrow-back">55</div>
-        <div class="i-mdi-alarm"></div>
-        <div class="i-mdi:arrange-send-backward"></div>
-        <div class="i-logos-vue text-3xl"></div>
-        <div class="i-carbon-sun dark:i-carbon-moon"></div>
+        <Icon icon="ic:baseline-arrow-back-ios"></Icon>
+        <Icon icon="material-symbols:arrow-back">55</Icon>
+        <Icon icon="mdi-alarm"></Icon>
+        <Icon icon="mdi:arrange-send-backward"></Icon>
+        <Icon icon="logos-vue text-3xl"></Icon>
+        <Icon icon="i-carbon-sun dark:i-carbon-moon"></Icon>
 
         <view @click="goScan">Scan</view>
 

@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import AppStatusBar from './AppStatusBar.vue';
 import { navigateBack } from '@/commons/bridge';
-
+// import { Icon } from '@iconify/vue';
 const props = defineProps({
   isStatusBar: {
     default: true,
@@ -42,8 +42,7 @@ const style = ref({
     >
       <slot name="left">
         <div class="back-icon fs-18" @click="onBack">
-          <!-- <Icon :color="titleColor" name="ic:sharp-arrow-back-ios-new" /> -->
-          <i class="i-ic:baseline-arrow-back-ios"></i>
+          <Icon icon="ic:round-arrow-back-ios" />
         </div>
       </slot>
       <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
@@ -51,8 +50,7 @@ const style = ref({
       </div>
       <slot name="right">
         <div class="fs-18">
-          <!-- <Icon :color="titleColor" name="material-symbols:more-vert" /> -->
-          <i class="ic:baseline-more-vert"></i>
+          <Icon icon="ic:baseline-more-vert" />
         </div>
       </slot>
     </div>

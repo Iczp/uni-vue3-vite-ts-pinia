@@ -9,8 +9,24 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { defineConfig } from 'vite';
 import { VantResolver } from '@vant/auto-import-resolver';
-
 import env from './src/config/env';
+import { ComponentResolver } from 'unplugin-vue-components/types';
+
+// import IconsResolver from 'unplugin-icons/resolver';
+// import Icons from 'unplugin-icons/vite';
+
+// 自动引入 @iconify/vue 的 Icon 组件
+const IconsResolver =
+  (options?: {}): ComponentResolver =>
+  (name: any) => {
+    if (name === 'Icon') {
+      console.log('Auto-importing Icon component from @iconify/vue', name);
+      return {
+        name: 'Icon',
+        from: '@iconify/vue',
+      };
+    }
+  };
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -43,8 +59,17 @@ export default defineConfig({
     Components({
       extensions: ['vue'],
       dts: 'src/components.d.ts',
-      resolvers: [VantResolver()],
+      resolvers: [
+        VantResolver(),
+
+        // 自动引入 @iconify/vue 的 Icon 组件
+        IconsResolver(),
+      ],
     }),
+    // Icons({
+    //   compiler: 'vue3',
+    //   autoInstall: true,
+    // }),
     uni(),
     Unocss(),
     {
