@@ -32,7 +32,7 @@ export const toUrl = (uri: string, obj: any) => {
 
 export const navTo = (
   uri: string,
-  obj: any,
+  obj?: any,
   opts: { animationType?: AnimationType } = { animationType: 'pop-in' },
 ) =>
   uni.navigateTo({

@@ -1,13 +1,14 @@
-import type { InvokeInput, InvokeResult } from '@/@types/bridge';
-import { jsonParse } from '@/utils/object';
+import type { InvokeInput, InvokeResult } from "@/@types/bridge";
+import { jsonParse } from "@/utils/object";
 export const invoke = (input: InvokeInput) =>
   new Promise<InvokeResult>((resolve, reject) => {
-    console.log('bridge');
-    const webView = uni?.['webView'];
+    console.log("bridge");
+    const webView = uni?.["webView"];
     try {
       if (!webView) {
         reject({ message: `非App环境`, input });
-        return;
+        console.log("invoke", `非App环境`, input);
+        return ;
       }
 
       // uni.webView?.getEnv(res => {
@@ -16,9 +17,9 @@ export const invoke = (input: InvokeInput) =>
 
       const event = `native-${new Date().getTime()}`;
       uni.$once(event, (...args) => {
-        console.log('invoke back:', args);
+        console.log("invoke back:", args);
         const obj = jsonParse(args) as InvokeResult;
-        if (obj?.success || obj[0]?.success || obj?.action == 'uni.$emit') {
+        if (obj?.success || obj[0]?.success || obj?.action == "uni.$emit") {
           resolve(obj);
           return;
         }
@@ -35,55 +36,55 @@ export const invoke = (input: InvokeInput) =>
         },
       });
     } catch (error) {
-      console.warn('invoke', error);
+      console.warn("invoke", error);
       reject(error);
     }
   });
 
 export const getSystemInfo = (...args: any[]) =>
   invoke({
-    action: 'uni.getSystemInfo',
+    action: "uni.getSystemInfo",
     args,
   });
 
 export const setNavigationBarColor = (...args: any[]) =>
   invoke({
-    action: 'uni.setNavigationBarColor',
+    action: "uni.setNavigationBarColor",
     args,
   });
 
 export const setNavigationBarTitle = (...args: any[]) =>
   invoke({
-    action: 'uni.setNavigationBarTitle',
+    action: "uni.setNavigationBarTitle",
     args,
   });
 
 export const scanCode = (...args: any[]) =>
   invoke({
-    action: 'uni.scanCode',
+    action: "uni.scanCode",
     args,
   });
 
 export const navigateBack = (...args: any[]) =>
   invoke({
-    action: 'uni.navigateBack',
+    action: "uni.navigateBack",
     args,
   });
 
 export const getAuth = (...args: any[]) =>
   invoke({
-    action: 'auth',
+    action: "auth",
     args,
   });
 
 export const chooseImage = (...args: any[]) =>
   invoke({
-    action: 'uni.chooseImage',
+    action: "uni.chooseImage",
     args: [
       {
         count: 6, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album'], // 从相册选择
+        sizeType: ["original", "compressed"], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ["album"], // 从相册选择
         success(res) {
           console.log(JSON.stringify(res.tempFilePaths));
         },
@@ -112,22 +113,22 @@ export const chooseImage = (...args: any[]) =>
 
 export const navToWebview = (...args: any[]) =>
   invoke({
-    action: 'navToWebview',
+    action: "navToWebview",
     args,
   });
 
 export const $emit = (...args: any[]) =>
   invoke({
-    action: 'uni.$emit',
+    action: "uni.$emit",
     args,
   });
 export const $on = (...args: any[]) =>
   invoke({
-    action: 'uni.$on',
+    action: "uni.$on",
     args,
   });
 export const $once = (...args: any[]) =>
   invoke({
-    action: 'uni.$once',
+    action: "uni.$once",
     args,
   });

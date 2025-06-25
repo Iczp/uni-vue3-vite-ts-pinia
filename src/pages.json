@@ -23,6 +23,22 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "Scan"
       }
+    },
+    {
+      "name": "z-paging",
+      "path": "pages/test/z-paging",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "Z-Paging"
+      }
+    }
+    ,
+    {
+      "path": "pages/selector/selector",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "selector"
+      }
     }
   ],
   "subPackages": [

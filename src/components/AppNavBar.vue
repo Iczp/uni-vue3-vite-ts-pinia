@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue';
-import AppStatusBar from './AppStatusBar.vue';
-import { navigateBack } from '@/commons/bridge';
+import { ref } from "vue";
+import AppStatusBar from "./AppStatusBar.vue";
+import { navigateBack } from "@/commons/bridge";
 // import { Icon } from '@iconify/vue';
 const props = defineProps({
   isStatusBar: {
@@ -24,6 +24,7 @@ const props = defineProps({
 });
 const onBack = () => {
   navigateBack();
+
 };
 
 const style = ref({
@@ -34,7 +35,10 @@ const style = ref({
 
 <template>
   <div class="app-nav-bar-wrapper">
-    <AppStatusBar v-if="isStatusBar" :background-color="statusBarBackgroundColor"></AppStatusBar>
+    <AppStatusBar
+      v-if="isStatusBar"
+      :background-color="statusBarBackgroundColor"
+    ></AppStatusBar>
     <div
       class="app-nav-bar flex flex-row items-center gap-4 px-12 text-18"
       :class="{ border }"
@@ -51,7 +55,10 @@ const style = ref({
           <!-- <div class="i-mdi:arrow-back"></div> -->
         </div>
       </slot>
-      <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
+      <div
+        class="flex flex-1 text-ellipsis flex-center"
+        :style="{ color: titleColor }"
+      >
         <slot></slot>
       </div>
       <slot name="right">

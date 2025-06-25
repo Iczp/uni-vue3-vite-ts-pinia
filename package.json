@@ -43,7 +43,8 @@
     "postinstall": "husky install",
     "add": "node ./auto/addPage.ts",
     "cz": "git add . && cz",
-    "tag": "npm version patch && git push && git push origin --tags"
+    "tag": "npm version patch && git push && git push origin --tags",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-4060620250520001",
@@ -98,7 +99,7 @@
     "eslint": "8.36.0",
     "eslint-config-prettier": "8.7.0",
     "eslint-plugin-prettier": "4.2.1",
-    "husky": "8.0.3",
+    "husky": "^8.0.0",
     "postcss-html": "1.5.0",
     "postcss-scss": "4.0.6",
     "prettier": "2.8.4",

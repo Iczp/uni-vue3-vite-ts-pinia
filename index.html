@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <script>
       var coverSupport =
-        'CSS' in window &&
-        typeof CSS.supports === 'function' &&
-        (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'));
-      console.log('coverSupport', coverSupport, CSS);
-      console.log('navigator', navigator, navigator.userAgent);
+        "CSS" in window &&
+        typeof CSS.supports === "function" &&
+        (CSS.supports("top: env(a)") || CSS.supports("top: constant(a)"));
+      console.log("coverSupport", coverSupport, CSS);
+      console.log("navigator", navigator, navigator.userAgent);
       document.write(
         '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' +
-          (coverSupport ? ', viewport-fit=cover' : '') +
-          '" />',
+          (coverSupport ? ", viewport-fit=cover" : "") +
+          '" />'
       );
     </script>
 
@@ -44,17 +44,20 @@
           border-radius: 50%;
           width: 14px;
           height: 14px;
-          background-color: #1890ff;
+          background-color: rgb(63, 168, 238);
           opacity: 0.3;
           animation: ant-spin-move 1s infinite linear alternate;
         }
         .dot i:nth-child(2) {
+          background-color: rgb(42, 235, 24);
           animation-delay: 0.4s;
         }
         .dot i:nth-child(3) {
+          background-color: rgb(240, 200, 37);
           animation-delay: 0.8s;
         }
         .dot i:nth-child(4) {
+          background-color: rgb(240, 88, 37);
           animation-delay: 1.2s;
         }
         @keyframes ant-rotate {
@@ -75,7 +78,7 @@
         }
       </style>
       <div class="loading-wrap">
-        <div class="status"></div>
+        <!-- <div class="status"></div> -->
         <div class="dot">
           <i></i>
           <i></i>

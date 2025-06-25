@@ -3,7 +3,12 @@ import { useBridge } from "@/hooks/bridge";
 import { useTitle } from "@/hooks/useTitle";
 import { navTo } from "@/utils/nav";
 import { forward } from "@/utils/router";
-
+import {
+  getAuth,
+  getSystemInfo,
+  setNavigationBarColor,
+} from "@/commons/bridge";
+import { selector } from "@/utils/selector";
 const { title, changeTitle } = useTitle();
 
 useBridge();
@@ -20,13 +25,84 @@ function goScan() {
 }
 const bg = ref("#02dd64");
 const color = ref("#82f7e4");
+
+const setTitle = () => {
+  uni.setNavigationBarTitle({
+    title: `H5标题-${new Date()}`,
+  });
+  setNavigationBarColor({
+    frontColor: "#ffffff",
+    backgroundColor: "#ff0000",
+    animation: {
+      duration: 400,
+      timingFunc: "easeIn",
+    },
+  });
+};
+
+const onSelector = () => {
+  selector({
+    title: "选择器",
+    items: [
+      { text: "选项1", value: 1 },
+      { text: "选项2", value: 2 },
+      { text: "选项3", value: 3 },
+      { text: "选项4", value: 4 },
+    ],
+    multiple: true,
+    cancelText: "取消",
+    confirmText: "确定",
+  }).then((res) => {
+    console.log("选择结果:", res);
+  });
+};
+
+const authInfo = ref();
+const sysInfo = ref();
+const getSysInfo = () => {
+  getSystemInfo().then((res) => {
+    sysInfo.value = res;
+    // uni.navigateBack()
+  });
+};
+
+const onAuth = () => {
+  getAuth().then((res) => {
+    authInfo.value = res;
+    console.log("getAuth" + JSON.stringify(res));
+  });
+};
+onMounted(() => {
+  setNavigationBarColor({
+    frontColor: "#ffffff",
+    backgroundColor: "#02dd64",
+  });
+});
+const onScan = () => {
+  uni.scanCode({
+    success: (res) => {
+      console.log(`条码类型：${res.scanType}`);
+      console.log(`条码内容：${res.result}`);
+    },
+    fail: (err) => {
+      console.error("scanCode error:", err);
+    },
+  });
+};
 </script>
 
 <template>
   <!-- :statusBarBackgroundColor="bg" :titleBackgroundColor="bg" :titleColor="color" -->
   <AppPage :title="'首页'">
     <van-cell-group title="分组1">
-      <van-cell title="扫一扫" size="large" is-link />
+      <van-cell title="选择器" size="large" is-link @click="onSelector" />
+
+      <van-cell
+        title="Z-Paging"
+        size="large"
+        is-link
+        @click="navTo('/pages/test/z-paging', { title: 'Z-Paging' })"
+      />
     </van-cell-group>
 
     <view class="content">
@@ -58,6 +134,39 @@ const color = ref("#82f7e4");
         </view>
       </view>
     </view>
+
+    <van-cell-group title="分组1">
+      <van-cell
+        title="扫码签到"
+        value="onScan"
+        label="扫码签到"
+        @click="onScan"
+        isLink
+      />
+
+      <van-cell title="更改标题" value="setTitle" @click="setTitle" isLink />
+
+      <van-cell
+        title="获取信息信息"
+        value="getSysInfo"
+        @click="getSysInfo"
+        isLink
+      />
+
+      <view class="bg-gray-1 p-12">
+        <scroll-view :scroll-y="true" :scroll-x="true">
+          <pre>{{ sysInfo }}</pre>
+        </scroll-view>
+      </view>
+
+      <van-cell title="获取登录信息" value="auth" @click="onAuth" isLink />
+
+      <view class="bg-gray-1 p-12">
+        <scroll-view :scroll-y="true" :scroll-x="true">
+          <pre>{{ authInfo }}</pre>
+        </scroll-view>
+      </view>
+    </van-cell-group>
 
     <van-cell-group title="分组1">
       <van-cell

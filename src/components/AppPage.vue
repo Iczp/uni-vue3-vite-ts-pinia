@@ -8,6 +8,7 @@ defineProps({
   title: {},
   statusBarBackgroundColor: [String],
   titleBackgroundColor: [String],
+  headerBackgroundColor: [String],
   titleColor: [String],
   isStatusBar: {
     default: true,
@@ -15,29 +16,25 @@ defineProps({
 });
 
 const slots = useSlots();
-const count = ref(0);
-const isLoading = ref(false);
-const onRefresh = () => {
-  setTimeout(() => {
-    showToast("刷新成功");
-    isLoading.value = false;
-    count.value++;
-  }, 1000);
-};
 </script>
 
 <template>
   <div class="app-page flex-col">
-    <slot name="nav-bar">
-      <div class="app-page-header">
-        <AppNavBar
-          :is-status-bar="true"
-          :status-bar-background-color="statusBarBackgroundColor"
-          :title-background-color="titleBackgroundColor"
-          :title-color="titleColor"
-        >
-          {{ title }}
-        </AppNavBar>
+    <slot name="header">
+      <div
+        class="app-page-header"
+        :style="{ backgroundColor: headerBackgroundColor }"
+      >
+        <slot name="nav-bar">
+          <AppNavBar
+            :is-status-bar="true"
+            :status-bar-background-color="statusBarBackgroundColor"
+            :title-background-color="titleBackgroundColor"
+            :title-color="titleColor"
+          >
+            {{ title }}
+          </AppNavBar>
+        </slot>
       </div>
     </slot>
 
@@ -54,6 +51,18 @@ const onRefresh = () => {
 <style lang="scss">
 .app-page {
   min-height: 100%;
+}
+.app-page-header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: var(--app-heder-background-color, #fff0);
+  // width: 100%;
+}
+.app-content {
+  overflow: auto;
+  flex: 1;
+  height: 100%;
 }
 .app-footer + .app-content {
   padding-bottom: var(--app-footer-height);
