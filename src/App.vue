@@ -16,6 +16,7 @@ onHide(() => {
 
 <style lang="scss">
 @import '@/static/css/index.scss';
+@import './uni_modules/vk-uview-ui/index.scss';
 :root,
 page {
   /* --app-color: red; */

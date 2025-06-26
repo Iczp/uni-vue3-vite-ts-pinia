@@ -9,7 +9,7 @@ import {
 import { toUrl } from "./nav";
 
 export type SelectorPayload = {
-  url?:string;
+  url?: string;
   [key: string]: any;
 };
 import AnimationType from "@/@types/uni";
@@ -66,6 +66,8 @@ export const resolve = (event, payload) => {
     return Promise.reject({ message });
   }
   var task = $emit(event, payload);
-  navigateBack();
+  navigateBack().finally(() => {
+    uni.navigateBack();
+  });
   return task;
 };

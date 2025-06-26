@@ -117,6 +117,12 @@ pnpm add @vant/auto-import-resolver unplugin-vue-components unplugin-auto-import
 
 
 
+### vk Uview
+
+主页： https://vkuviewdoc.fsq.pub/components/install.html
+
+插件市场 https://ext.dcloud.net.cn/plugin?name=vk-uview-ui
+
 
 
 ## Icon
