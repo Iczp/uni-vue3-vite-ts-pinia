@@ -31,13 +31,19 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "Z-Paging"
       }
-    }
-    ,
+    },
     {
       "path": "pages/selector/selector",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "selector"
+      }
+    },
+    {
+      "path": "pages/viewer/pdf",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "pdf"
       }
     }
   ],

@@ -44,17 +44,17 @@
     <template #footer>
       <div class="flex justify-between p-12 flex-center bg-white">
         <view class="flex flex-1 flex-center">手动刷新</view>
-        <view class="flex flex-1 flex-row">
+        <view class="">
           <u-button
-            class="flex m-0"
-            :hair-line="false"
+            class=""
+
             @click="onRefresh"
             :plain="true"
+            shape="circle"
             ripple-bg-color="#ff0000"
-            >手动刷新</u-button
+            >确定</u-button
           >
-          <u-button @click="isPending = !isPending">ddd</u-button></view
-        >
+        </view>
       </div>
     </template>
   </AppPage>
