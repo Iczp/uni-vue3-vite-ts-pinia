@@ -17,14 +17,25 @@ const props = defineProps({
   titleColor: {
     required: false,
   },
+  title: {
+    type: String,
+    default: "",
+  },
   border: {
-    default: true,
+    default: false,
   },
   background: {},
 });
 const onBack = () => {
-  navigateBack();
-
+  const pages = getCurrentPages();
+  const page = pages[pages.length - 1];
+  console.log("onBack", page.$page, pages);
+  if (pages.length <= 1) {
+    // 如果只有一个页面，则返回使用 bridge
+    navigateBack();
+    return;
+  }
+  uni.navigateBack();
 };
 
 const style = ref({
@@ -59,14 +70,14 @@ const style = ref({
         class="flex flex-1 text-ellipsis flex-center"
         :style="{ color: titleColor }"
       >
-        <slot></slot>
+        <slot>{{ title }}</slot>
       </div>
       <slot name="right">
         <div class="flex gap-12">
           <!-- <div class="i-ic:baseline-settings"></div>
           <div class="i-ic:outline-ios-share"></div>
           <div class="i-ic:sharp-share"></div> -->
-          <div class="i-ic:baseline-more-vert"></div>
+          <!-- <div class="i-ic:baseline-more-vert"></div> -->
         </div>
       </slot>
     </div>
@@ -80,7 +91,7 @@ const style = ref({
   right: 0;
   top: 0;
   z-index: 990;
-  background-color: rgba(255, 255, 255, 0.6);
+  // background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
 }
 .app-nav-bar {

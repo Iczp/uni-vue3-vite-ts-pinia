@@ -9,5 +9,8 @@
   "files.associations": {
     "*.json": "jsonc"
   },
-  "vue-i18n.i18nPaths": ""
+  "vue-i18n.i18nPaths": "src\\uni_modules\\z-paging\\components\\z-paging\\i18n",
+  "i18n-ally.localesPaths": [
+    "src/uni_modules/z-paging/components/z-paging/i18n"
+  ]
 }

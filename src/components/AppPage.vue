@@ -10,6 +10,10 @@ defineProps({
   titleBackgroundColor: [String],
   headerBackgroundColor: [String],
   titleColor: [String],
+  navBarBorder: {
+    type: Boolean,
+    default: true,
+  },
   isStatusBar: {
     default: true,
   },
@@ -28,6 +32,7 @@ const slots = useSlots();
         <slot name="nav-bar">
           <AppNavBar
             :is-status-bar="true"
+            :border="navBarBorder"
             :status-bar-background-color="statusBarBackgroundColor"
             :title-background-color="titleBackgroundColor"
             :title-color="titleColor"
@@ -57,6 +62,7 @@ const slots = useSlots();
   top: 0;
   z-index: 999;
   background-color: var(--app-heder-background-color, #fff0);
+  transition: background-color 0.3s ease;
   // width: 100%;
 }
 .app-content {

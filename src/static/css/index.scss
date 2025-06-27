@@ -9,3 +9,6 @@ page {
   width: var(--icon-default-size);
   height: var(--icon-default-size);
 }
+.z-paging {
+  padding-top: calc(var(--status-bar-height) + var(--app-nav-bar-height));
+}
