@@ -1,92 +1,111 @@
 <script setup lang="ts">
-import { useBridge } from "@/hooks/bridge";
-import { useTitle } from "@/hooks/useTitle";
-import { navTo } from "@/utils/nav";
-import { forward } from "@/utils/router";
-import {
-  getAuth,
-  getSystemInfo,
-  setNavigationBarColor,
-} from "@/commons/bridge";
-import { selector } from "@/utils/selector";
+import { useBridge } from '@/hooks/bridge';
+import { useTitle } from '@/hooks/useTitle';
+import { navTo } from '@/utils/nav';
+import { forward } from '@/utils/router';
+import { $emit, $on, $once, getAuth, getSystemInfo, setNavigationBarColor } from '@/commons/bridge';
+import { selector } from '@/utils/selector';
 const { title, changeTitle } = useTitle();
 
 useBridge();
 function goTest() {
-  forward("test", {
+  forward('test', {
     a: 1,
   });
 }
 
 function goScan() {
-  navTo("/pages/test/scan", {
-    title: "扫码",
+  navTo('/pages/test/scan', {
+    title: '扫码',
   });
 }
-const bg = ref("#02dd64");
-const color = ref("#82f7e4");
+const bg = ref('#02dd64');
+const color = ref('#82f7e4');
 
 const setTitle = () => {
   uni.setNavigationBarTitle({
     title: `H5标题-${new Date()}`,
   });
   setNavigationBarColor({
-    frontColor: "#ffffff",
-    backgroundColor: "#ff0000",
+    frontColor: '#ffffff',
+    backgroundColor: '#ff0000',
     animation: {
       duration: 400,
-      timingFunc: "easeIn",
+      timingFunc: 'easeIn',
     },
   });
 };
 
+const selectorInfo = ref();
 const onSelector = () => {
   selector({
-    title: "选择器",
-    items: [
-      { text: "选项1", value: 1 },
-      { text: "选项2", value: 2 },
-      { text: "选项3", value: 3 },
-      { text: "选项4", value: 4 },
-    ],
+    title: '选择器',
     multiple: true,
-    cancelText: "取消",
-    confirmText: "确定",
-  }).then((res) => {
-    console.log("选择结果:", res);
+    cancelText: '取消',
+    confirmText: '确定',
+  }).then(res => {
+    console.log('选择结果:', res);
+
+    selectorInfo.value = res;
   });
 };
 
 const authInfo = ref();
 const sysInfo = ref();
 const getSysInfo = () => {
-  getSystemInfo().then((res) => {
+  getSystemInfo().then(res => {
     sysInfo.value = res;
     // uni.navigateBack()
   });
 };
 
 const onAuth = () => {
-  getAuth().then((res) => {
+  getAuth().then(res => {
     authInfo.value = res;
-    console.log("getAuth" + JSON.stringify(res));
+    console.log('getAuth' + JSON.stringify(res));
   });
 };
 onMounted(() => {
   setNavigationBarColor({
-    frontColor: "#ffffff",
-    backgroundColor: "#02dd64",
+    frontColor: '#ffffff',
+    backgroundColor: '#02dd64',
   });
 });
 const onScan = () => {
   uni.scanCode({
-    success: (res) => {
+    success: res => {
       console.log(`条码类型：${res.scanType}`);
       console.log(`条码内容：${res.result}`);
     },
-    fail: (err) => {
-      console.error("scanCode error:", err);
+    fail: err => {
+      console.error('scanCode error:', err);
     },
+  });
+};
+const params = ref<any[]>(['init']);
+onLoad(() => {
+  console.log('onLoad');
+
+  uni.$on('onSelector', e => {
+    console.log(`H5#event:onSelector`, e);
+    params.value.push(e);
+  });
+
+  $on('onSelector', res => {
+    console.log('onSelector', res);
+    // selectorInfo.value = res;
+    // params.value.push(res);
+  });
+});
+
+onUnload(() => {
+  console.log('onUnload');
+});
+
+const pushEvents = () => {
+  $emit('onSelector', {
+    id: '123',
+    name: '测试事件',
   });
 };
 </script>
@@ -96,6 +115,12 @@ const onScan = () => {
   <AppPage :title="'首页'">
     <van-cell-group title="分组1">
       <van-cell title="选择器" size="large" is-link @click="onSelector" />
+
+      selectorInfo:{{ selectorInfo }}
+
+      <h3>params:</h3>
+      <u-button @click="pushEvents">===</u-button>
+      <view v-for="(item, index) in params" :key="index">{{ item }}</view>
 
       <van-cell
         title="Z-Paging"
@@ -136,22 +161,11 @@ const onScan = () => {
     </view>
 
     <van-cell-group title="分组1">
-      <van-cell
-        title="扫码签到"
-        value="onScan"
-        label="扫码签到"
-        @click="onScan"
-        isLink
-      />
+      <van-cell title="扫码签到" value="onScan" label="扫码签到" @click="onScan" isLink />
 
       <van-cell title="更改标题" value="setTitle" @click="setTitle" isLink />
 
-      <van-cell
-        title="获取信息信息"
-        value="getSysInfo"
-        @click="getSysInfo"
-        isLink
-      />
+      <van-cell title="获取信息信息" value="getSysInfo" @click="getSysInfo" isLink />
 
       <view class="bg-gray-1 p-12">
         <scroll-view :scroll-y="true" :scroll-x="true">

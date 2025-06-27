@@ -4,10 +4,7 @@
       <view class="page-header" :style="style">
         <AppNavBar :title="title">{{ title }}</AppNavBar>
         <view class="flex p-12 position-sticky z-10 search-bar">
-          <u-search
-            placeholder="日照香炉生紫烟"
-            v-model="query.keyword"
-          ></u-search>
+          <u-search placeholder="日照香炉生紫烟" v-model="query.keyword"></u-search>
         </view>
       </view>
     </template>
@@ -20,40 +17,56 @@
       @scroll="onScroll"
       :default-page-size="query.maxResultCount"
     >
+      {{ event }}
+      <!-- {{ $page }} -->
       <u-cell-group>
         <u-cell-item icon="setting-fill" title="个人设置"></u-cell-item>
-        <u-cell-item
-          icon="integral-fill"
-          title="会员等级"
-          value="新版本"
-        ></u-cell-item>
+        <u-cell-item icon="integral-fill" title="会员等级" value="新版本"></u-cell-item>
       </u-cell-group>
 
-      <u-cell-group title="个人中心" :bordered="false">
-        <u-cell-item
-          v-for="(item, index) in dataList"
-          :key="index"
-          :title="item.title"
-          :value="item.id"
-          :icon="index % 2 === 0 ? 'user-fill' : 'phone-fill'"
-          :is-link="true"
-          @click="() => console.log('点击了', item.title)"
-        ></u-cell-item>
-      </u-cell-group>
+      <!-- <div class="position-fixed">
+
+      </div> -->
+
+      <main class="flex flex-row">
+        <aside class="flex flex-col w-200rpx left-0 bg-sky-100">
+          <header>ddd</header>
+          <scroll-view :scroll-y="true">
+            <ul>
+              <li v-for="(item, index) in 10" :key="index" class="p-10">{{ item }}</li>
+            </ul>
+          </scroll-view>
+        </aside>
+
+        <section class="flex flex-1 ml-200rpx">
+          <u-cell-group title="个人中心" :bordered="false">
+            <u-cell-item
+              v-for="(item, index) in dataList"
+              :key="index"
+              :title="item.title"
+              :value="item.id"
+              :icon="index % 2 === 0 ? 'user-fill' : 'phone-fill'"
+              :is-link="true"
+              @click="() => console.log('点击了', item.title)"
+            ></u-cell-item>
+          </u-cell-group>
+        </section>
+      </main>
     </z-paging>
     <template #footer>
       <div class="flex justify-between p-12 flex-center bg-white">
-        <view class="flex flex-1 flex-center">手动刷新</view>
+        <view class="flex flex-1 flex-center" @click="pushEvents">触发事件</view>
         <view class="">
           <u-button
             class=""
-
+            :hair-line="false"
             @click="onRefresh"
             :plain="true"
             shape="circle"
             ripple-bg-color="#ff0000"
-            >确定</u-button
           >
+            确定
+          </u-button>
         </view>
       </div>
     </template>
@@ -62,28 +75,33 @@
 
 <script lang="ts" setup>
 // import AppPage from "@/components/AppPage.vue";
-import { usePaging } from "@/hooks/usePaging";
+import { $emit, navigateBack } from '@/commons/bridge';
+import { usePaging } from '@/hooks/usePaging';
+import { resolve } from '@/utils/selector';
 
-defineProps({
+const props = defineProps({
+  event: {
+    type: String,
+  },
   title: {
     type: String,
-    default: "选择器",
+    default: '选择器',
   },
 });
 
+// const pages = getCurrentPages();
+// const page = pages[pages.length - 1];
+
 const { pagingRef, dataList, queryList, isPending, query } = usePaging({
   pageSize: 20,
-  service: (queryInput) => {
+  service: queryInput => {
     // 模拟分页请求
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
-        const items = Array.from(
-          { length: Number(queryInput.maxResultCount || 20) },
-          (_, i) => ({
-            id: (queryInput.skipCount || 0) + i + 1,
-            title: `Item ${(queryInput.skipCount || 0) + i + 1}`,
-          })
-        );
+        const items = Array.from({ length: Number(queryInput.maxResultCount || 20) }, (_, i) => ({
+          id: (queryInput.skipCount || 0) + i + 1,
+          title: `Item ${(queryInput.skipCount || 0) + i + 1}`,
+        }));
         resolve({
           items,
           totalCount: 100, // 假设总条数为100
@@ -95,24 +113,35 @@ const { pagingRef, dataList, queryList, isPending, query } = usePaging({
 const opacity = ref(0);
 
 const style = computed(() => ({
-  "--app-heder-background-color": `rgba(0, 255, 255, ${opacity.value})`,
+  '--app-heder-background-color': `rgba(0, 255, 255, ${opacity.value})`,
 }));
 const backgroundColor = `rgba(1, 0, 255, ${opacity.value})`;
 
-const onScroll = (e) => {
+const onScroll = e => {
   // console.log("滚动事件", e);
   opacity.value = Math.min(e.detail.scrollTop / 400, 1);
   // console.log("滚动透明度", opacity.value);
 };
 
-const onRefresh = (e) => {
-  console.log("开始刷新", e);
+const onRefresh = e => {
+  console.log('开始刷新', e);
   isPending.value = false;
   // isPending.value = true;
   // setTimeout(() => {
   //   isPending.value = false;
   //   console.log("刷新成功");
   // }, 1000);
+  resolve(props.event, {
+    id: '123',
+  });
+};
+
+const pushEvents = () => {
+  $emit('onSelector', {
+    id: 'selector',
+    name: '我是 selector 事件触发者!',
+  });
+  navigateBack();
 };
 </script>
 
@@ -130,8 +159,7 @@ page {
 }
 .z-paging {
   padding-top: calc(
-    var(--status-bar-height) + var(--app-nav-bar-height) +
-    var(--search-bar-height)
+    var(--status-bar-height) + var(--app-nav-bar-height) + var(--search-bar-height)
   );
   padding-bottom: calc(var(--app-footer-height));
 }
