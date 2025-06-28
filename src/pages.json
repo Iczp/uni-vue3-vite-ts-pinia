@@ -45,6 +45,14 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "pdf"
       }
+    },
+
+    {
+      "path": "pages/chat/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "chat"
+      }
     }
   ],
   "subPackages": [

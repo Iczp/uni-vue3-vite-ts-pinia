@@ -1,9 +1,104 @@
+<template>
+  <!-- :statusBarBackgroundColor="bg" :titleBackgroundColor="bg" :titleColor="color" -->
+  <AppPage :title="'首页'">
+    <van-cell-group title="分组1">
+      <van-cell title="选择器" size="large" is-link @click="onSelector" />
+
+      <van-cell title="聊天" size="large" is-link @click="onChat" />
+
+      selectorInfo:{{ selectorInfo }}
+
+      <h3>params:</h3>
+      <u-button @click="pushEvents">===</u-button>
+      <view v-for="(item, index) in params" :key="index">{{ item }}</view>
+
+      <van-cell
+        title="Z-Paging"
+        size="large"
+        is-link
+        @click="navTo('/pages/test/z-paging', { title: 'Z-Paging' })"
+      />
+    </van-cell-group>
+
+    <view class="content">
+      <image class="logo" src="/static/logo.png" />
+      <view class="text-area">
+        <text class="title">{{ title }}</text>
+      </view>
+
+      <i class="i-ic:baseline-more-vert" />
+      <i class="i-material-symbols:arrow-back-ios-new" />
+
+      <view class="flex flex-col gap-12">
+        <view @click="changeTitle">changeTitle</view>
+        <view @click="goTest">测试页</view>
+        <div class="i-material-symbols:arrow-back-ios-new"></div>
+        <!-- <Icon icon="ic:baseline-arrow-back-ios"></Icon>
+        <Icon icon="material-symbols:arrow-back">55</Icon>
+        <Icon icon="mdi-alarm"></Icon>
+        <Icon icon="mdi:arrange-send-backward"></Icon>
+        <Icon icon="logos-vue text-3xl"></Icon>
+        <Icon icon="i-carbon-sun dark:i-carbon-moon"></Icon> -->
+
+        <view @click="goScan">Scan</view>
+
+        <view
+          class="flex flex-1 bg-red-300 text-sky-4 px-12 m-10 t-16 leading-10 rounded-10 shadow-2"
+        >
+          我是用UnoCss
+        </view>
+      </view>
+    </view>
+
+    <van-cell-group title="分组1">
+      <van-cell title="扫码签到" value="onScan" label="扫码签到" @click="onScan" isLink />
+
+      <van-cell title="更改标题" value="setTitle" @click="setTitle" isLink />
+
+      <van-cell title="获取信息信息" value="getSysInfo" @click="getSysInfo" isLink />
+
+      <view class="bg-gray-1 p-12">
+        <scroll-view :scroll-y="true" :scroll-x="true">
+          <pre>{{ sysInfo }}</pre>
+        </scroll-view>
+      </view>
+
+      <van-cell title="获取登录信息" value="auth" @click="onAuth" isLink />
+
+      <view class="bg-gray-1 p-12">
+        <scroll-view :scroll-y="true" :scroll-x="true">
+          <pre>{{ authInfo }}</pre>
+        </scroll-view>
+      </view>
+    </van-cell-group>
+
+    <van-cell-group title="分组1">
+      <van-cell
+        v-for="(item, index) in 100"
+        :key="index"
+        title="扫一扫"
+        :value="`${index}`"
+        size="large"
+        is-link
+      />
+    </van-cell-group>
+  </AppPage>
+</template>
+
 <script setup lang="ts">
 import { useBridge } from '@/hooks/bridge';
 import { useTitle } from '@/hooks/useTitle';
 import { navTo } from '@/utils/nav';
 import { forward } from '@/utils/router';
-import { $emit, $on, $once, getAuth, getSystemInfo, setNavigationBarColor } from '@/commons/bridge';
+import {
+  $emit,
+  $on,
+  $once,
+  getAuth,
+  getSystemInfo,
+  navToWebview,
+  setNavigationBarColor,
+} from '@/commons/bridge';
 import { selector } from '@/utils/selector';
 const { title, changeTitle } = useTitle();
 
@@ -14,6 +109,10 @@ function goTest() {
   });
 }
 
+const onChat = () => {
+
+  navToWebview('http://10.0.5.20:4000/#/pages/chat/index');
+};
 function goScan() {
   navTo('/pages/test/scan', {
     title: '扫码',
@@ -109,91 +208,6 @@ const pushEvents = () => {
   });
 };
 </script>
-
-<template>
-  <!-- :statusBarBackgroundColor="bg" :titleBackgroundColor="bg" :titleColor="color" -->
-  <AppPage :title="'首页'">
-    <van-cell-group title="分组1">
-      <van-cell title="选择器" size="large" is-link @click="onSelector" />
-
-      selectorInfo:{{ selectorInfo }}
-
-      <h3>params:</h3>
-      <u-button @click="pushEvents">===</u-button>
-      <view v-for="(item, index) in params" :key="index">{{ item }}</view>
-
-      <van-cell
-        title="Z-Paging"
-        size="large"
-        is-link
-        @click="navTo('/pages/test/z-paging', { title: 'Z-Paging' })"
-      />
-    </van-cell-group>
-
-    <view class="content">
-      <image class="logo" src="/static/logo.png" />
-      <view class="text-area">
-        <text class="title">{{ title }}</text>
-      </view>
-
-      <i class="i-ic:baseline-more-vert" />
-      <i class="i-material-symbols:arrow-back-ios-new" />
-
-      <view class="flex flex-col gap-12">
-        <view @click="changeTitle">changeTitle</view>
-        <view @click="goTest">测试页</view>
-        <div class="i-material-symbols:arrow-back-ios-new"></div>
-        <!-- <Icon icon="ic:baseline-arrow-back-ios"></Icon>
-        <Icon icon="material-symbols:arrow-back">55</Icon>
-        <Icon icon="mdi-alarm"></Icon>
-        <Icon icon="mdi:arrange-send-backward"></Icon>
-        <Icon icon="logos-vue text-3xl"></Icon>
-        <Icon icon="i-carbon-sun dark:i-carbon-moon"></Icon> -->
-
-        <view @click="goScan">Scan</view>
-
-        <view
-          class="flex flex-1 bg-red-300 text-sky-4 px-12 m-10 t-16 leading-10 rounded-10 shadow-2"
-        >
-          我是用UnoCss
-        </view>
-      </view>
-    </view>
-
-    <van-cell-group title="分组1">
-      <van-cell title="扫码签到" value="onScan" label="扫码签到" @click="onScan" isLink />
-
-      <van-cell title="更改标题" value="setTitle" @click="setTitle" isLink />
-
-      <van-cell title="获取信息信息" value="getSysInfo" @click="getSysInfo" isLink />
-
-      <view class="bg-gray-1 p-12">
-        <scroll-view :scroll-y="true" :scroll-x="true">
-          <pre>{{ sysInfo }}</pre>
-        </scroll-view>
-      </view>
-
-      <van-cell title="获取登录信息" value="auth" @click="onAuth" isLink />
-
-      <view class="bg-gray-1 p-12">
-        <scroll-view :scroll-y="true" :scroll-x="true">
-          <pre>{{ authInfo }}</pre>
-        </scroll-view>
-      </view>
-    </van-cell-group>
-
-    <van-cell-group title="分组1">
-      <van-cell
-        v-for="(item, index) in 100"
-        :key="index"
-        title="扫一扫"
-        :value="`${index}`"
-        size="large"
-        is-link
-      />
-    </van-cell-group>
-  </AppPage>
-</template>
 
 <style scoped lang="scss">
 :deep(.app-status-bar) {
