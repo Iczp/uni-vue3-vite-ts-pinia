@@ -1,4 +1,4 @@
-export default defineStore({
+export const useUser = defineStore({
   id: 'user',
   state: () => {
     return {

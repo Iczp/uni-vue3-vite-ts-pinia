@@ -24,6 +24,7 @@
     >
       <template #empty>没有数据哦</template>
 
+      userStore.token: {{ userStore.token }}
       <template #cell="{ item, index }">
         <view class="item-title">{{ item.title }}</view>
       </template>
@@ -39,8 +40,9 @@
 import { usePaging } from '@/hooks/usePaging';
 import TabBar from './components/tab-bar.vue';
 // import { useBridge } from '@/hooks/bridge';
-
+import { useUser } from '@/store/user';
 // useBridge();
+const userStore = useUser();
 
 const { pagingRef, dataList, queryList, isPending, query } = usePaging({
   pageSize: 20,

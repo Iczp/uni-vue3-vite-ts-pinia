@@ -42,9 +42,11 @@ export const isPlus = () => {
   return !!plus;
 };
 
+const storageKey = 'app-info-v1';
+
 export const appInit = () => {
   console.log('app-init');
-  const storeValue = uni.getStorageSync('app-info');
+  const storeValue = uni.getStorageSync(storageKey);
   console.log('app-init storeValue', storeValue);
   sysInfo = jsonParse(storeValue);
   console.log('app-init sysInfo', sysInfo);
@@ -59,7 +61,7 @@ export const appInit = () => {
     getSystemInfo().then(res => {
       const sysInfo = res.result;
       setCssVar(sysInfo);
-      uni.setStorageSync('app-info', JSON.stringify(sysInfo));
+      uni.setStorageSync(storageKey, JSON.stringify(sysInfo));
       console.log('getSystemInfo', JSON.stringify(sysInfo));
     });
   };
