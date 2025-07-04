@@ -1,12 +1,23 @@
 <template>
   <view class="page-container">
-    <nav-btn></nav-btn>
+    <u-popup v-model="isPopVisible" mode="bottom" :mask="true" :maskClosable="true">
+      <view class="h-120px flex justify-center items-center bg-white">
+        <scroll-view scroll-x="true" class="popup-scroll-view">
+          <view class="popup-content">
+            <view class="popup-text">出淤泥而不染，濯清涟而不妖</view>
+          </view>
+        </scroll-view>
+      </view>
+    </u-popup>
+
+    <nav-btn @click="isPopVisible = true"></nav-btn>
 
     <swiper class="swiper-container" :current="activeIndex" @change="onSwiperChange">
       <swiper-item v-for="(tab, index) in tabs" :key="index">
         <view class="swiper-item">
           <!-- 动态加载的组件 -->
-          <component :is="tab.component" />
+          <component v-if="tab.isLazy" :is="tab.component" />
+          <view v-else class="loading-placeholder">正在加载...</view>
         </view>
       </swiper-item>
     </swiper>
@@ -38,25 +49,31 @@ const Category = shallowRef(null);
 const Cart = shallowRef(null);
 const Mine = shallowRef(null);
 
+const isPopVisible = ref(false);
 // Tab栏配置
 const tabs = ref([
   {
     text: '消息',
     icon: '/static/tabs/home.png',
     selectedIcon: '/static/tabs/home-active.png',
-
+    path: '/pages/chat/message.vue',
+    isLazy: true,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
   },
   {
     text: '通讯录',
     icon: '/static/tabs/home.png',
     selectedIcon: '/static/tabs/home-active.png',
+    path: '/pages/chat/message.vue',
+    isLazy: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
   },
   {
     text: '我的',
     icon: '/static/tabs/home.png',
     selectedIcon: '/static/tabs/home-active.png',
+    path: '@/pages/chat/message.vue',
+    isLazy: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
   },
 ]);
@@ -69,8 +86,12 @@ const switchTab = index => {
 };
 
 // Swiper切换事件
-const onSwiperChange = e => {
+const onSwiperChange = async e => {
   activeIndex.value = e.detail.current;
+  const tab = tabs.value[activeIndex.value];
+  if (!tab.isLazy) {
+    tab.isLazy = true;
+  }
 };
 </script>
 <!-- <script lang="ts" setup>
@@ -85,6 +106,14 @@ const current = ref(0);
   position: relative;
   flex-direction: column;
   height: 100vh;
+}
+.loading-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 24rpx;
+  color: #999;
 }
 .swiper-container {
   flex: 1;

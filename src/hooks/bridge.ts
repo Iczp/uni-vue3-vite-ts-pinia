@@ -3,9 +3,9 @@ import { onLoad } from '@dcloudio/uni-app';
 
 let isInitialized = false;
 export const useBridge = () => {
-  const app = getApp();
+  console.log('useBridge');
 
-  console.log('app initialized', app, isInitialized);
+  console.log('app initialized', isInitialized);
 
   if (!isInitialized) {
     appInit();
@@ -15,5 +15,4 @@ export const useBridge = () => {
   onLoad(() => {
     console.log('Page loaded');
   });
-  return app;
 };

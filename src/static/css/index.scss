@@ -12,3 +12,27 @@ page {
 .z-paging {
   padding-top: calc(var(--status-bar-height) + var(--app-nav-bar-height));
 }
+:where(.line-after, .line-before) {
+  position: relative;
+  // background-color: #c8161d;
+}
+.line-after::after,
+.line-before::before {
+  position: absolute;
+  // left: 0;
+  // right: 0;
+  height: 1px;
+  background-color: var(--border-color, #e5e5e5);
+  content: '';
+}
+.line-after::after {
+  bottom: 0;
+}
+.line-before::before {
+  top: 0;
+}
+:where(.line-before)::before,
+:where(.line-after)::after {
+  left: 0;
+  right: 0;
+}

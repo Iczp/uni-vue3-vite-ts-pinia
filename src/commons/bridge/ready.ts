@@ -38,25 +38,53 @@ export const setCssVar = (sysInfo: { [key: string]: any }) => {
 
 export const getSystemInfoStore = () => {};
 
+export const isPlus = () => {
+  return !!plus;
+};
+
 export const appInit = () => {
   console.log('app-init');
   const storeValue = uni.getStorageSync('app-info');
+  console.log('app-init storeValue', storeValue);
   sysInfo = jsonParse(storeValue);
+  console.log('app-init sysInfo', sysInfo);
   if (sysInfo) {
     setCssVar(sysInfo);
     console.log('app-init', JSON.stringify(sysInfo));
     return;
   }
 
-  document.addEventListener('UniAppJSBridgeReady', () => {
-    console.log('UniAppJSBridgeReady');
-    alert('UniAppJSBridgeReady');
+  const runGetSystemInfo = (caller?: string) => {
+    console.log('runGetSystemInfo', caller);
     getSystemInfo().then(res => {
       const sysInfo = res.result;
       setCssVar(sysInfo);
       uni.setStorageSync('app-info', JSON.stringify(sysInfo));
       console.log('getSystemInfo', JSON.stringify(sysInfo));
     });
-  });
+  };
+  appReady(runGetSystemInfo);
+};
 
+const appReady = (callback: (caller: string) => void | Promise<any>) => {
+  console.log('appReady');
+  document.addEventListener('UniAppJSBridgeReady', () => callback('UniAppJSBridgeReady'));
+  // 定义一个轮询函数来检查PlusReady状态
+  const checkPlusReady = () => {
+    if (isPlus()) {
+      console.log('PlusReady');
+      // 如果PlusReady状态满足，同样获取系统信息并设置CSS变量
+      callback('checkPlusReady');
+      // 停止轮询
+      clearPollInterval();
+    }
+  };
+  // 设置一个轮询间隔（例如每500毫秒检查一次）
+  const pollInterval = setInterval(checkPlusReady, 50);
+
+  const clearPollInterval = () => {
+    clearInterval(pollInterval);
+  };
+  // 在 UniAppJSBridgeReady 事件触发时也清除轮询间隔，以防重复执行
+  document.addEventListener('UniAppJSBridgeReady', clearPollInterval, { once: true });
 };
