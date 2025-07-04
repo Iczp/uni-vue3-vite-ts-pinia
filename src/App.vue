@@ -16,9 +16,7 @@ onError(err => {
   console.log('App error', err);
 });
 
-document.addEventListener('UniAppJSBridgeReady', () => {
-  console.log('App.vue: UniAppJSBridgeReady');
-});
+
 </script>
 
 <style lang="scss">
