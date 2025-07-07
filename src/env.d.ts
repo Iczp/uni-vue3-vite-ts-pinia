@@ -6,3 +6,18 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      VITE_API_BASE_URL: string;
+      VITE_APP_TITLE: string;
+      VITE_AUTH_TOKEN_URL: string;
+      VITE_AUTH_CLIENT_ID: string;
+      VITE_AUTH_CLIENT_SECRET: string;
+      VITE_AUTH_CLIENT_SCOPE: string;
+      VITE_AUTH_GRANT_TYPE: string;
+    }
+  }
+}

@@ -2,11 +2,13 @@
 // import { jsonParse } from './utils';
 
 import { jsonParse } from '@/utils/object';
-import { getSystemInfo } from '.';
+import { getAuth, getSystemInfo } from '.';
+import { useAuth } from '@/store/auth';
+import { useUser } from '@/store/user';
 
 export const setCss = (property: string, value: string) => {
   document.documentElement.style.setProperty(property, value);
-  console.log(`Set CSS variable: ${property} = ${value}`);
+  // console.log(`Set CSS variable: ${property} = ${value}`);
 };
 
 let sysInfo: Object | null = {};
@@ -19,7 +21,7 @@ export const setCssVar = (sysInfo: { [key: string]: any }) => {
 
   const insets = sysInfo.safeAreaInsets;
 
-  console.log('safeArea', safeArea);
+  // console.log('safeArea', safeArea);
 
   setCss('--status-bar-height', `${safeArea?.top}px`);
 
@@ -39,37 +41,56 @@ export const setCssVar = (sysInfo: { [key: string]: any }) => {
 export const getSystemInfoStore = () => {};
 
 export const isPlus = () => {
-  return !!plus;
+  return !!window['plus'];
 };
 
 const storageKey = 'app-info-v1';
 
+const runGetSystemInfo = (caller?: string) => {
+  console.log('runGetSystemInfo', caller);
+  getSystemInfo().then(res => {
+    const sysInfo = res.result;
+    setCssVar(sysInfo);
+    uni.setStorageSync(storageKey, JSON.stringify(sysInfo));
+    console.log('getSystemInfo', JSON.stringify(sysInfo));
+  });
+};
+
+const runGetAuthInfo = (caller?: string) => {
+  console.log('runGetAuthInfo', caller);
+  getAuth().then(res => {
+    console.log('getAuth', JSON.stringify(res));
+    const { header, user } = res.result;
+    const userStore = useUser();
+    userStore.setUserInfo(user);
+    const authStore = useAuth();
+    if (!authStore.token || authStore.isExpired) {
+      authStore.fetchToken(header);
+      return;
+    }
+  });
+};
 export const appInit = () => {
   console.log('app-init');
   const storeValue = uni.getStorageSync(storageKey);
   console.log('app-init storeValue', storeValue);
   sysInfo = jsonParse(storeValue);
   console.log('app-init sysInfo', sysInfo);
+
+  appReady(caller => {
+    runGetSystemInfo(caller);
+    runGetAuthInfo(caller);
+  });
+
   if (sysInfo) {
     setCssVar(sysInfo);
     console.log('app-init', JSON.stringify(sysInfo));
     return;
   }
-
-  const runGetSystemInfo = (caller?: string) => {
-    console.log('runGetSystemInfo', caller);
-    getSystemInfo().then(res => {
-      const sysInfo = res.result;
-      setCssVar(sysInfo);
-      uni.setStorageSync(storageKey, JSON.stringify(sysInfo));
-      console.log('getSystemInfo', JSON.stringify(sysInfo));
-    });
-  };
-  appReady(runGetSystemInfo);
 };
 
 const appReady = (callback: (caller: string) => void | Promise<any>) => {
-  console.log('appReady');
+  console.log('-------------- appReady --------------');
   document.addEventListener('UniAppJSBridgeReady', () => callback('UniAppJSBridgeReady'));
   // 定义一个轮询函数来检查PlusReady状态
   const checkPlusReady = () => {

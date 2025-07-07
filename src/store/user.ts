@@ -2,29 +2,32 @@ export const useUser = defineStore({
   id: 'user',
   state: () => {
     return {
-      userInfo: {
-        token: 'token',
-        user_id: 111,
-      },
+      erpUserInfo: null,
     } as {
-      userInfo: User.UserInfo;
+      erpUserInfo: User.ErpUserInfo | null;
     };
   },
   getters: {
-    logged: state => {
-      const { token, user_id } = state.userInfo;
-      return !!(token && user_id);
-    },
-    token: state => {
-      return state.userInfo.token;
-    },
     userId: state => {
-      return state.userInfo.user_id;
+      return state.erpUserInfo?.userId;
+    },
+    name: state => {
+      return state.erpUserInfo?.name;
+    },
+    depName: state => {
+      return state.erpUserInfo?.departmentname;
+    },
+    positionName: state => {
+      return state.erpUserInfo?.positionName;
+    },
+    headImage: state => {
+      return state.erpUserInfo?.headImage;
     },
   },
   actions: {
-    setUserInfo(userInfo: User.UserInfo) {
-      Object.assign(this.userInfo, userInfo);
+    setUserInfo(userInfo: User.ErpUserInfo) {
+      this.erpUserInfo = userInfo;
+      // Object.assign(this.erpUserInfo, userInfo);
     },
   },
 });

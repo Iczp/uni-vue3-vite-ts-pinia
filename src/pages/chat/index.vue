@@ -1,15 +1,5 @@
 <template>
   <view class="page-container">
-    <u-popup v-model="isPopVisible" mode="bottom" :mask="true" :maskClosable="true">
-      <view class="h-120px flex justify-center items-center bg-white">
-        <scroll-view scroll-x="true" class="popup-scroll-view">
-          <view class="popup-content">
-            <view class="popup-text">出淤泥而不染，濯清涟而不妖</view>
-          </view>
-        </scroll-view>
-      </view>
-    </u-popup>
-
     <nav-btn @click="isPopVisible = true"></nav-btn>
 
     <swiper class="swiper-container" :current="activeIndex" @change="onSwiperChange">
@@ -35,6 +25,16 @@
         <image v-else :src="tab.icon" class="tab-icon" />
         <text class="tab-text">{{ tab.text }}</text>
       </view>
+      <!-- 弹出层 -->
+      <u-popup v-model="isPopVisible" mode="bottom" :mask="true" :maskClosable="true">
+        <view class="h-120px flex justify-center items-center bg-white">
+          <scroll-view scroll-x="true" class="popup-scroll-view">
+            <view class="popup-content">
+              <view class="popup-text">出淤泥而不染，濯清涟而不妖</view>
+            </view>
+          </scroll-view>
+        </view>
+      </u-popup>
     </view>
   </view>
 </template>
