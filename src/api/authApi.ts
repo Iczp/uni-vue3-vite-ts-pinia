@@ -1,3 +1,5 @@
+import { jsonParse } from '@/utils/object';
+export const authStorageKey = 'auth-v1.0';
 const request = async <T = any>(args: {
   url?: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -8,8 +10,12 @@ const request = async <T = any>(args: {
   [key: string]: any;
 }): Promise<T> => {
   return new Promise((resolve, reject) => {
+    const url = args.url?.toLocaleLowerCase().startsWith('http')
+      ? args.url
+      : import.meta.env.VITE_BASE_URL + args.url;
+    console.log('request url', url);
     const input = {
-      url: args.url || import.meta.env.VITE_AUTH_TOKEN_URL,
+      url,
       method: args.method || 'POST',
       data: args.data,
       header: {
@@ -61,7 +67,6 @@ export const fetchToken = (header: { [key: string]: any }) => {
   });
 };
 
-
 export const refreshToken = (refreshToken: string) => {
   console.log('refreshToken');
   return request<AuthApi.TokenDto>({
@@ -85,13 +90,25 @@ export const isExpired = (token: AuthApi.TokenDto | null | undefined) => {
   if (!token) {
     return true;
   }
-  const { creation_time, expires_in, access_token, token_type } = token;
-  const createTicks =
-    typeof creation_time == 'string'
-      ? new Date(creation_time).getTime()
-      : creation_time?.getTime() || 0;
-  const ms = new Date().getTime() - Number(createTicks || 0);
-  const expired = ms > Number(expires_in || 0) - 300;
-  console.log('isExpired', expired, ms, token);
+  const { creation_time, expires_in } = token;
+  if (!creation_time || !expires_in) {
+    return true; // 如果没有创建时间或有效期，则视为已过期
+  }
+  const createTicks = new Date(creation_time).getTime(); // 创建时间的毫秒表示
+  const now = new Date().getTime(); // 当前时间的毫秒表示
+  const tokenDuration = Number(expires_in) * 1000; // 有效期转换为毫秒
+  const expired = now - createTicks > tokenDuration; // 判断是否过期
+  console.warn('isExpired', expired, now, createTicks, tokenDuration, token);
   return expired;
+};
+
+export const getLocalToken = () => {
+  const storeValue = uni.getStorageSync(authStorageKey);
+  // console.log('getLocalToken', authStorageKey, storeValue);
+  let token = jsonParse(storeValue);
+  if (isExpired(token)) {
+    // uni.removeStorageSync(authStorageKey);
+    return null;
+  }
+  return token;
 };

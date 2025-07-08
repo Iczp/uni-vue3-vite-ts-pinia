@@ -1,17 +1,9 @@
-import { fetchToken, isExpired, refreshToken } from '@/api/authApi';
-import { jsonParse } from '@/utils/object';
-
-const authStorageKey = 'auth-v1.0';
+import { fetchToken, getLocalToken, isExpired, refreshToken, authStorageKey } from '@/api/authApi';
 
 export const useAuth = defineStore({
   id: 'auth',
   state: () => {
-    const storeValue = uni.getStorageSync(authStorageKey);
-    console.log('useAuth storeValue', authStorageKey, storeValue);
-    let token = jsonParse(storeValue);
-    if (isExpired(token)) {
-      token = null;
-    }
+    const token = getLocalToken();
     return {
       token,
     } as {
@@ -24,6 +16,9 @@ export const useAuth = defineStore({
     },
     accessToken: state => {
       return state.token?.access_token;
+    },
+    authorization: state => {
+      return `${state.token?.token_type || 'Bearer'} ${state.token?.access_token}`;
     },
   },
   actions: {

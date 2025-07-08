@@ -10,7 +10,7 @@ interface PagingOptions {
 
 interface QueryInput {
   skipCount?: number; // 当前页码
-  maxResultCount?: number; // 每页条数
+  maxResultCount: number; // 每页条数
   keyword?: string; // 搜索关键字
   sorting?: string; // 排序字段
   [key: string]: any;
@@ -22,20 +22,15 @@ interface PagingResult {
 }
 
 const defaultService = (queryInput: QueryInput): Promise<PagingResult> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
-        items: Array.from(
-          { length: queryInput.maxResultCount || 20 },
-          (_, index) => ({
-            id: (queryInput.skipCount || 0) + index + 1,
-            title: `第${
-              Math.floor(
-                (queryInput.skipCount || 0) / (queryInput.maxResultCount || 20)
-              ) + 1
-            }页数据 - ${index + 1}`,
-          })
-        ),
+        items: Array.from({ length: queryInput.maxResultCount || 20 }, (_, index) => ({
+          id: (queryInput.skipCount || 0) + index + 1,
+          title: `第${
+            Math.floor((queryInput.skipCount || 0) / (queryInput.maxResultCount || 20)) + 1
+          }页数据 - ${index + 1}`,
+        })),
         totalCount: 100, // 模拟总条数
       });
     }, 300);
@@ -45,16 +40,16 @@ const defaultService = (queryInput: QueryInput): Promise<PagingResult> => {
 export function usePaging(
   options: PagingOptions = {
     service: defaultService,
-  }
+  },
 ) {
   const pagingRef = ref();
   const isPending = ref(false);
-
+  const isEof = ref(false);
   const query = ref<QueryInput>({
     maxResultCount: Number(options.pageSize || 20), // 每页条数
     skipCount: 0, // 当前页码，从0开始
-    sorting: "", // 排序字段，默认为id降序
-    keyword: "", // 搜索关键字，默认为空字符串
+    sorting: '', // 排序字段，默认为id降序
+    keyword: '', // 搜索关键字，默认为空字符串
   });
 
   // v-model绑定的这个变量不要在分页请求结束中自己赋值，直接使用即可
@@ -66,24 +61,23 @@ export function usePaging(
 
     query.value.skipCount = (pageNo - 1) * pageSize; // 计算当前页码的偏移量
     query.value.maxResultCount = pageSize; // 设置每页条数
-    console.log("query", query.value);
+    console.log('query', query.value);
 
     options
       .service?.(query.value)
       .then((res: PagingResult) => {
-        console.log("请求结果", res);
+        console.log('请求结果', res);
         const items = res.items || [];
+        isEof.value = items.length < query.value.maxResultCount;
+        // dataList.value = query.value.skipCount == 0 ? items : dataList.value.concat(items);
         if (items.length > 0) {
-          dataList.value = dataList.value.concat(items);
-        }
-        if (res.totalCount <= dataList.value.length) {
-          pagingRef.value.complete([]); // 如果数据超过总条数，表示没有更多数据了
+          pagingRef.value.complete(items);
         } else {
-          pagingRef.value.complete(items); // 完成分页请求
+          pagingRef.value.complete(false); // 完成分页请求
         }
       })
-      .catch((error) => {
-        console.error("请求失败", error);
+      .catch(error => {
+        console.error('请求失败', error);
         pagingRef.value.complete([]); // 请求失败时也需要调用complete
       })
       .finally(() => {

@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <nav-btn @click="isPopVisible = true"></nav-btn>
+    <nav-btn @click="show = true"></nav-btn>
 
     <swiper class="swiper-container" :current="activeIndex" @change="onSwiperChange">
       <swiper-item v-for="(tab, index) in tabs" :key="index">
@@ -35,6 +35,13 @@
           </scroll-view>
         </view>
       </u-popup>
+      <!-- 弹出层 -->
+      <u-popup v-model="show" mode="left" width="40%">
+        <div v-for="item in store.chatObjects" :key="item.id">
+          <u-avatar :src="item.thumbnail" :size="36"></u-avatar>
+          <span class="text-14 font-bold text-ellipsis max-w-88">{{ item.name }}</span>
+        </div>
+      </u-popup>
     </view>
   </view>
 </template>
@@ -42,6 +49,17 @@
 <script setup>
 import { ref, shallowRef } from 'vue';
 import NavBtn from './components/nav-btn.vue';
+import { useChatObjectStore } from '@/store/chatObjectStore';
+const store = useChatObjectStore();
+
+uni.$on('refresh@chat-index', () => {
+  store.getChatObjects();
+  store.getBadges();
+});
+
+uni.$emit('refresh@chat-index');
+
+const show = ref(false);
 
 // 动态导入的组件 - 按需加载
 const Home = shallowRef(null);
