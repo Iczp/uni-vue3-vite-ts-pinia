@@ -14,8 +14,12 @@
     "src/uni_modules/z-paging/components/z-paging/i18n"
   ],
   "cSpell.words": [
+    "dcloudio",
     "departmentname",
+    "iconify",
     "lastdepartmentname",
+    "unocss",
+    "unplugin",
     "uview"
   ]
 }
