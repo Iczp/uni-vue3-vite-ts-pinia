@@ -71,7 +71,7 @@ import TabBar from './components/tab-bar.vue';
 // import { useBridge } from '@/hooks/bridge';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
-import { getConnectionPool } from '@/api/chatApi';
+import { getConnectionPool, getSessionUnitList } from '@/api/chatApi';
 import { userHeader } from '@/api/userHeader';
 import CurrentChatObject from './components/CurrentChatObject.vue';
 // useBridge();
@@ -92,8 +92,10 @@ const refreshToken = () => {
 };
 const { pagingRef, dataList, queryList, isPending, query } = usePaging({
   pageSize: 20,
-  service: getConnectionPool,
+  service: getSessionUnitList,
 });
+
+
 
 const onSearch = () => {
   console.log('搜索关键字:', query.value.keyword);

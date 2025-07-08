@@ -85,3 +85,10 @@ export const getBadgeByCurrentUser = (data?: { isImmersed?: boolean }) =>
     method: 'GET',
     data,
   });
+
+export const getSessionUnitList = (data?: ChatApi.SessionUnitListInput) =>
+  chatRequest<ChatApi.PagedResult<ChatApi.SessionUnitDto>>({
+    url: '/api/chat/session-unit',
+    method: 'GET',
+    data,
+  });
