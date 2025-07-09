@@ -1,7 +1,7 @@
 declare namespace ChatApi {
   interface GetListInput {
     skipCount?: number | null;
-    maxResultCount?: number | null;
+    maxResultCount?: number | null | undefined;
     keyword?: string | null;
     sorting?: string | null;
     [key: string]: any; // 允许任意额外的属性
@@ -87,9 +87,35 @@ declare namespace ChatApi {
     [key: string]: any; // 允许任意额外的属性
   }
 
+  interface MessageDto {
+    creationTime: string;
+    extraProperties: object;
+    id: number;
+    isPrivate: false;
+    isRollbacked: false;
+    messageType: number;
+    reminderType: string | null;
+    rollbackTime: string | null;
+    senderName: string | null;
+    content: any;
+    senderSessionUnit?: SessionUnitDto;
+    [key: string]: any;
+  }
+
   interface SessionUnitDto {
-    destination: ChatObjectDto;
-    setting: SessionUnitSettingDto;
+    destination?: ChatObjectDto;
+    setting?: SessionUnitSettingDto;
+    lastMessage: MessageDto;
+    lastMessageId: number;
+    ownerId: number;
+    ownerObjectType: number;
+    privateBadge: number;
+    publicBadge: number;
+    remindAllCount: number;
+    remindMeCount: number;
+    sessionId: string;
+    sorting: number;
+    ticks: number;
     [key: string]: any; // 允许任意额外的属性
   }
 }

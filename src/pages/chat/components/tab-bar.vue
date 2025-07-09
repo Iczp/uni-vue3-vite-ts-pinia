@@ -8,7 +8,7 @@
 const current = ref(0);
 const list = ref([
   {
-    icon: 'home',
+    icon: '<div class="i-ic:baseline-message"></div>',
     text: '首页',
     pagePath: '/pages/index/index',
   },

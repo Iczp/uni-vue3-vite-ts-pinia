@@ -13,36 +13,36 @@
     </swiper>
 
     <!-- 自定义底部Tab栏 -->
-    <view class="custom-tabbar">
-      <view
+    <div class="custom-tabbar">
+      <div
         v-for="(tab, index) in tabs"
         :key="index"
         class="tab-item"
         :class="{ active: activeIndex === index }"
         @click="switchTab(index)"
       >
-        <image v-if="activeIndex === index" :src="tab.selectedIcon" class="tab-icon" />
-        <image v-else :src="tab.icon" class="tab-icon" />
+        <i class="tab-icon text-28" :class="tab.icon"></i>
         <text class="tab-text">{{ tab.text }}</text>
+      </div>
+    </div>
+
+    <!-- 弹出层 -->
+    <u-popup v-model="isPopVisible" mode="bottom" :mask="true" :maskClosable="true">
+      <view class="h-120px flex justify-center items-center bg-white">
+        <scroll-view scroll-x="true" class="popup-scroll-view">
+          <view class="popup-content">
+            <view class="popup-text">出淤泥而不染，濯清涟而不妖</view>
+          </view>
+        </scroll-view>
       </view>
-      <!-- 弹出层 -->
-      <u-popup v-model="isPopVisible" mode="bottom" :mask="true" :maskClosable="true">
-        <view class="h-120px flex justify-center items-center bg-white">
-          <scroll-view scroll-x="true" class="popup-scroll-view">
-            <view class="popup-content">
-              <view class="popup-text">出淤泥而不染，濯清涟而不妖</view>
-            </view>
-          </scroll-view>
-        </view>
-      </u-popup>
-      <!-- 弹出层 -->
-      <u-popup v-model="show" mode="left" width="40%">
-        <div v-for="item in store.chatObjects" :key="item.id">
-          <u-avatar :src="item.thumbnail" :size="36"></u-avatar>
-          <span class="text-14 font-bold text-ellipsis max-w-88">{{ item.name }}</span>
-        </div>
-      </u-popup>
-    </view>
+    </u-popup>
+    <!-- 弹出层 -->
+    <u-popup v-model="show" mode="left" width="40%">
+      <div v-for="item in store.chatObjects" :key="item.id">
+        <u-avatar :src="item.thumbnail" :size="36"></u-avatar>
+        <span class="text-14 font-bold text-ellipsis max-w-88">{{ item.name }}</span>
+      </div>
+    </u-popup>
   </view>
 </template>
 
@@ -61,18 +61,12 @@ uni.$emit('refresh@chat-index');
 
 const show = ref(false);
 
-// 动态导入的组件 - 按需加载
-const Home = shallowRef(null);
-const Category = shallowRef(null);
-const Cart = shallowRef(null);
-const Mine = shallowRef(null);
-
 const isPopVisible = ref(false);
 // Tab栏配置
 const tabs = ref([
   {
     text: '消息',
-    icon: '/static/tabs/home.png',
+    icon: 'i-ic:round-message',
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/chat/message.vue',
     isLazy: true,
@@ -80,19 +74,19 @@ const tabs = ref([
   },
   {
     text: '通讯录',
-    icon: '/static/tabs/home.png',
+    icon: 'i-ic:baseline-switch-account',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '/pages/chat/message.vue',
+    path: '/pages/chat/contacts.vue',
     isLazy: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/contacts.vue'))),
   },
   {
     text: '我的',
-    icon: '/static/tabs/home.png',
+    icon: 'i-ic:round-person',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '@/pages/chat/message.vue',
+    path: '@/pages/chat/profile.vue',
     isLazy: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/profile.vue'))),
   },
 ]);
 
@@ -112,11 +106,6 @@ const onSwiperChange = async e => {
   }
 };
 </script>
-<!-- <script lang="ts" setup>
-import TabBar from './components/tab-bar.vue';
-
-const current = ref(0);
-</script> -->
 
 <style lang="scss" scoped>
 .page-container {
@@ -134,23 +123,26 @@ const current = ref(0);
   color: #999;
 }
 .swiper-container {
+  display: flex;
   flex: 1;
-  height: calc(100vh - 50px);
+  // height: calc(100vh - 44px - 120rpx - env(safe-area-inset-bottom));
 }
 .swiper-item {
   width: 100%;
   height: 100%;
 }
 .custom-tabbar {
+  --tab-bar-border-height: 112rpx;
   display: flex;
-  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 999;
-  height: 50px;
+  // position: fixed;
+  align-items: center;
+  height: var(--tab-bar-border-height);
   background-color: #fff;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 5rpx rgba(0, 0, 0, 0.1);
 }
 .tab-item {
   display: flex;
@@ -158,6 +150,7 @@ const current = ref(0);
   justify-content: center;
   align-items: center;
   flex: 1;
+  color: #666;
 }
 .tab-icon {
   margin-bottom: 2px;
@@ -165,10 +158,10 @@ const current = ref(0);
   height: 24px;
 }
 .tab-text {
-  font-size: 10px;
-  color: #666;
+  font-weight: 500;
+  font-size: 24rpx;
 }
-.tab-item.active .tab-text {
-  color: #ff5a5f;
+.tab-item.active {
+  color: #c41313;
 }
 </style>

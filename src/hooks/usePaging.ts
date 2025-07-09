@@ -1,18 +1,19 @@
 // import { ref } from "vue";
 
-interface PagingOptions {
+interface PagingOptions<T extends ChatApi.GetListInput> {
   url?: string; // 请求地址
   method?: string; // 请求方法
   pageSize?: number; // 每页条数
+  input?: T;
   service?: (queryInput: QueryInput) => Promise<PagingResult>; // 分页请求服务函数
   [key: string]: any;
 }
 
 interface QueryInput {
-  skipCount?: number; // 当前页码
-  maxResultCount: number; // 每页条数
-  keyword?: string; // 搜索关键字
-  sorting?: string; // 排序字段
+  skipCount?: number | null; // 当前页码
+  maxResultCount: number | null; // 每页条数
+  keyword?: string | null; // 搜索关键字
+  sorting?: string | null; // 排序字段
   [key: string]: any;
 }
 
@@ -37,20 +38,19 @@ const defaultService = (queryInput: QueryInput): Promise<PagingResult> => {
   });
 };
 
-export function usePaging(
-  options: PagingOptions = {
+export function usePaging<T extends ChatApi.GetListInput>(
+  options: PagingOptions<T> = {
+    input: { maxResultCount: 20, skipCount: 0 } as T,
     service: defaultService,
   },
 ) {
   const pagingRef = ref();
   const isPending = ref(false);
   const isEof = ref(false);
-  const query = ref<QueryInput>({
-    maxResultCount: Number(options.pageSize || 20), // 每页条数
-    skipCount: 0, // 当前页码，从0开始
-    sorting: '', // 排序字段，默认为id降序
-    keyword: '', // 搜索关键字，默认为空字符串
-  });
+  const query = ref<T>({
+    maxResultCount: options.input?.maxResultCount || 20, // 每页条数
+    ...options.input,
+  } as T);
 
   // v-model绑定的这个变量不要在分页请求结束中自己赋值，直接使用即可
   const dataList = ref<any[]>([]);
@@ -86,11 +86,17 @@ export function usePaging(
       });
   };
 
+  const reload = () => {
+    pagingRef.value?.reload();
+  };
+
   return {
     pagingRef,
     dataList,
     queryList,
     isPending,
     query,
+    reload,
+    isEof,
   };
 }
