@@ -1,9 +1,11 @@
 <template>
   <div class="session-unit gap-12" @click="onSessionClick">
-    <div class="avatar-container">
-      <i class="text-24 i-ic:baseline-person"></i>
-    </div>
-
+    <Avatar
+      :size="48"
+      :objectType="objectType"
+      :src="item?.destination?.thumbnail"
+      class="text-24"
+    />
     <div class="flex flex-1 flex-col">
       <div class="flex flex-row justify-between w-full gap-8 h-24 items-center text-14">
         <div class="text-15 text-ellipsis max-w-160">
@@ -31,6 +33,8 @@
 </template>
 <script lang="ts" setup>
 import TimeAgo from './TimeAgo.vue';
+import Avatar from './Avatar.vue';
+import { ObjectType } from '@/utils/enums';
 const props = defineProps({
   item: {
     type: Object as () => ChatApi.SessionUnitDto,
@@ -42,6 +46,8 @@ const props = defineProps({
     default: 0,
   },
 });
+
+const objectType = computed(() => props.item?.destination?.objectType as ObjectType);
 
 const isImmersed = computed(() => props.item?.setting?.isImmersed);
 const isFav = computed(() => Number(props.item?.sorting) > 0);
@@ -71,18 +77,6 @@ const onSessionClick = () => {
   background-color: #dbdbdb;
   content: '';
   transform: scaleY(0.3);
-}
-.avatar-container {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border-radius: 50%;
-  width: 96rpx;
-  height: 96rpx;
-  background-color: #e5e5e5;
-  color: #999;
 }
 .badge {
   display: flex;

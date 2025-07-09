@@ -1,4 +1,18 @@
 declare namespace ChatApi {
+  // 定义枚举
+  enum ObjectType {
+    Anonymous = 0,
+    Personal = 1,
+    Room = 2,
+    Official = 3,
+    Subscription = 4,
+    Square = 5,
+    Robot = 6,
+    ShopKeeper = 7,
+    ShopWaiter = 8,
+    Customer = 9,
+  }
+
   interface GetListInput {
     skipCount?: number | null;
     maxResultCount?: number | null | undefined;
