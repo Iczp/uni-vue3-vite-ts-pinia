@@ -49,7 +49,7 @@ const iconClass = computed(() => {
 });
 
 const onImgLoad = e => {
-  console.log('图片加载完成', e);
+  // console.log('图片加载完成', e);
   isImgLoaded.value = true;
   // 图片加载完成后，将不透明度设置为1
   // e.target.classList.add('loaded');

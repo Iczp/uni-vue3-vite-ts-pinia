@@ -1,5 +1,5 @@
 <template>
-  <div class="session-unit gap-12" @click="onSessionClick">
+  <div class="session-unit gap-12">
     <Avatar
       :size="48"
       :objectType="objectType"
@@ -54,10 +54,10 @@ const isFav = computed(() => Number(props.item?.sorting) > 0);
 const messageText = computed(() => {
   return props.item?.lastMessage?.content?.text;
 });
-const onSessionClick = () => {
-  console.log('onSessionClick', props.index, props.item);
-  props.item.badge = Number(props.item.badge || 0) + 1;
-};
+// const onSessionClick = () => {
+//   console.log('onSessionClick', props.index, props.item);
+//   props.item.badge = Number(props.item.badge || 0) + 1;
+// };
 </script>
 <style lang="scss" scoped>
 .session-unit {

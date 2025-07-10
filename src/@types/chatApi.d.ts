@@ -77,20 +77,20 @@ declare namespace ChatApi {
 
   interface SessionUnitListInput extends GetListInput {
     // 所属聊天对象Id
-    ownerId?: number;
+    ownerId?: number | null;
     // 目标聊天对象Id
-    destinationId?: number;
-    destinationObjectType?: number;
-    isCreator?: boolean;
-    isTopping?: boolean;
-    isContacts?: boolean;
-    isImmersed?: boolean;
-    isKilled?: boolean;
-    minMessageId?: number;
-    maxMessageId?: number;
-    isBadge?: boolean;
-    isRemind?: boolean;
-    isFollowing?: boolean;
+    destinationId?: number | null;
+    destinationObjectType?: number | null;
+    isCreator?: boolean | null;
+    isTopping?: boolean | null;
+    isContacts?: boolean | null;
+    isImmersed?: boolean | null;
+    isKilled?: boolean | null;
+    minMessageId?: number | null;
+    maxMessageId?: number | null;
+    isBadge?: boolean | null;
+    isRemind?: boolean | null;
+    isFollowing?: boolean | null;
     [key: string]: any; // 允许任意额外的属性
   }
 
@@ -135,6 +135,7 @@ declare namespace ChatApi {
   }
 
   interface SessionUnitDto {
+    id: number | string;
     destination?: ChatObjectDto;
     setting?: SessionUnitSettingDto;
     lastMessage: MessageDto;
