@@ -3,11 +3,11 @@
     <div class="badge absolute" @click="increment">{{ count }}</div>
     <u-avatar :src="current.thumbnail" :size="40"></u-avatar>
     <span class="text-15 font-bold text-ellipsis max-w-88">{{ current.name }}</span>
-    <i class="i-ic:round-keyboard-arrow-down"></i>
+    <i v-if="isMany" class="i-ic:round-keyboard-arrow-down"></i>
   </div>
 </template>
 <script lang="ts" setup>
-import { useChatObjectStore } from '@/store/chatObjectStore';
+import { useChatStore } from '@/store/chatStore';
 import Badge from '@/pages/chat/components/Badge.vue';
 const props = defineProps({
   theme: {
@@ -15,7 +15,8 @@ const props = defineProps({
     default: 'light',
   },
 });
-const store = useChatObjectStore();
+const store = useChatStore();
+const isMany = computed(() => store.chatObjects.length > 1);
 const current = computed(() => store.current);
 
 const count = ref(8);

@@ -49,8 +49,8 @@
 <script setup>
 import { ref, shallowRef } from 'vue';
 import NavBtn from './components/nav-btn.vue';
-import { useChatObjectStore } from '@/store/chatObjectStore';
-const store = useChatObjectStore();
+import { useChatStore } from '@/store/chatStore';
+const store = useChatStore();
 
 uni.$on('refresh@chat-index', () => {
   store.getChatObjects();
@@ -70,6 +70,8 @@ const tabs = ref([
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/chat/message.vue',
     isLazy: true,
+    badge: store.totalBadges,
+    isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
   },
   {
@@ -78,6 +80,8 @@ const tabs = ref([
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/chat/contacts.vue',
     isLazy: false,
+    badge: 0,
+    isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/contacts.vue'))),
   },
   {
@@ -86,6 +90,8 @@ const tabs = ref([
     selectedIcon: '/static/tabs/home-active.png',
     path: '@/pages/chat/profile.vue',
     isLazy: false,
+    badge: 0,
+    isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/profile.vue'))),
   },
 ]);

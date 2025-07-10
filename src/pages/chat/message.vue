@@ -75,11 +75,11 @@ import { getSessionUnitList } from '@/api/chatApi';
 import CurrentChatObject from './components/CurrentChatObject.vue';
 import SessionUnit from './components/SessionUnit.vue';
 import SessionUnitSkeleton from './components/SessionUnitSkeleton.vue';
-import { useChatObjectStore } from '@/store/chatObjectStore';
+import { useChatStore } from '@/store/chatStore';
 
 const userStore = useUser();
 const authStore = useAuth();
-const chatStore = useChatObjectStore();
+const chatStore = useChatStore();
 
 const onRefresh = () => {
   uni.$emit('refresh@chat-index');
@@ -114,7 +114,7 @@ const {
     maxResultCount: 20,
     keyword: '',
     minMessageId: null,
-    maxMessageId: 7277454,
+    // maxMessageId: 7277454,
   },
   service: getSessionUnitList,
   format: (res, input) => {
@@ -146,7 +146,7 @@ const maxLastMessageId = ref<number | null>();
 
 const updateDatalist = (list: ChatApi.SessionUnitDto[]) => {
   list.forEach((newItem, index) => {
-    newItem.badge = newItem.lastMessageId;
+    // newItem.badge = newItem.lastMessageId;
     const existingItem = dataList.value.find(item => item.id === newItem.id);
     if (existingItem) {
       // 如果 ID 存在，则更新项目
@@ -169,7 +169,7 @@ const updateDatalist = (list: ChatApi.SessionUnitDto[]) => {
 
 const fetchLatest = () => {
   const q = {
-    minMessageId: Number(maxLastMessageId.value), // + 1,
+    minMessageId: Number(maxLastMessageId.value) + 1,
     maxMessageId: null,
     keyword: '',
     ownerId: query.value.ownerId,

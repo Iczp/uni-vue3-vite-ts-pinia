@@ -1,6 +1,6 @@
 import { getBadgeByCurrentUser, getChatObjectByCurrentUser } from '@/api/chatApi';
 
-export const useChatObjectStore = defineStore({
+export const useChatStore = defineStore({
   id: 'chat-object',
   state: () => {
     return {
@@ -16,6 +16,9 @@ export const useChatObjectStore = defineStore({
   getters: {
     current: state => {
       return state.chatObjects[state.currentIndex];
+    },
+    totalBadges: state => {
+      return state.badges.reduce((total, item) => total + (item.badge || 0), 0);
     },
   },
   actions: {
