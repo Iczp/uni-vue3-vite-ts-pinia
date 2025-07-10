@@ -9,13 +9,15 @@
       class="avatar-image"
     ></image>
     <block v-else>
-      <i v-if="objectType == 1" class="i-ic:baseline-group"></i>
-      <i v-else-if="objectType == 2" class="i-ic:baseline-group"></i>
+      <i v-if="objectType == ObjectTypes.Room" class="i-ic:baseline-group"></i>
+      <i v-else-if="objectType == ObjectTypes.Official" class="i-ic:baseline-group"></i>
       <i v-else class="i-ic:baseline-person"></i>
     </block>
   </div>
 </template>
 <script lang="ts" setup>
+import { ObjectTypes } from '@/utils/enums';
+// import { ObjectTypes } from '@/@types/chatApi.d.ts';
 const props = defineProps({
   size: {
     type: [Number],
@@ -26,8 +28,8 @@ const props = defineProps({
     type: [String],
   },
   objectType: {
-    type: [Number],
-    default: 0,
+    type: Number as PropType<ObjectTypes>,
+    default: () => ObjectTypes.Personal,
   },
 });
 const imageSrc = computed(() => {

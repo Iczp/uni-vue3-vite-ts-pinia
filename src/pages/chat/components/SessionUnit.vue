@@ -17,9 +17,8 @@
       </div>
       <div class="flex flex-row justify-between gap-8 h-24 items-center text-12">
         <div class="text-ellipsis max-w-220">
-          <span class="text-gray-600 font-bold">王总:</span>
-
-          <span class="text-red font-bold">[图片]</span>
+          <span class="text-gray-600">王总:</span>
+          <!-- <span class="text-red">[图片]</span> -->
           <span class="text-gray-400">{{ messageText }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
@@ -34,7 +33,7 @@
 <script lang="ts" setup>
 import TimeAgo from './TimeAgo.vue';
 import Avatar from './Avatar.vue';
-import { ObjectType } from '@/utils/enums';
+import { ObjectTypes } from '@/utils/enums';
 const props = defineProps({
   item: {
     type: Object as () => ChatApi.SessionUnitDto,
@@ -47,7 +46,7 @@ const props = defineProps({
   },
 });
 
-const objectType = computed(() => props.item?.destination?.objectType as ObjectType);
+const objectType = computed(() => props.item?.destination?.objectType as ObjectTypes);
 
 const isImmersed = computed(() => props.item?.setting?.isImmersed);
 const isFav = computed(() => Number(props.item?.sorting) > 0);

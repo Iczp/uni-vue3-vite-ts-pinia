@@ -1,17 +1,35 @@
+// import { ObjectTypes } from "@/utils/enums";
+
 declare namespace ChatApi {
   // 定义枚举
-  enum ObjectType {
-    Anonymous = 0,
-    Personal = 1,
-    Room = 2,
-    Official = 3,
-    Subscription = 4,
-    Square = 5,
-    Robot = 6,
-    ShopKeeper = 7,
-    ShopWaiter = 8,
-    Customer = 9,
+  export enum ObjectTypes {
+    Anonymous = 0, // 匿名
+    Personal = 1, // 个人
+    Room = 2, // 群
+    Official = 3, // 服务号
+    Subscription = 4, // 订阅号
+    Square = 5, // 广场
+    Robot = 6, // 机器人
+    ShopKeeper = 7, // 掌柜
+    ShopWaiter = 8, // 店小二
+    Customer = 9, // 客户
   }
+
+  // enum MessageTypes {
+  //   Text = 0, // 文本类型
+  //   Cmd = 1, // 系统命令消息
+  //   Image = 2, // 图片类型
+  //   Sound = 3, // 语音类型
+  //   Video = 4, // 视频类型
+  //   File = 5, // 文件消息
+  //   Link = 6, // 链接类型
+  //   Location = 7, // 地理位置
+  //   Contacts = 8, // 联系人名片
+  //   RedEnvelope = 9, // 红包
+  //   Html = 10, // HTML
+  //   Article = 11, // 文章
+  //   History = 12, // 聊天历史消息
+  // }
 
   interface GetListInput {
     skipCount?: number | null;

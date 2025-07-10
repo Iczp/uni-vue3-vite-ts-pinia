@@ -32,6 +32,7 @@
 
       <template #loading>
         <SessionUnitSkeleton :count="11" />
+        <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
       </template>
 
       <template #loadingMoreLoading>
@@ -42,18 +43,11 @@
         <view style="background-color: red;">没有了</view>
       </template>
 
-      <!-- <div
-        v-if="isPending && dataList.length == 0"
-        class="flex flex-center text-gray-400 w-full h-full absolute text-12"
-      >
-        加载中...
-      </div> -->
+      <!--  -->
 
       <template #cell="{ item, index }">
         <SessionUnit :item="item" :index="index" />
       </template>
-
-
     </z-paging>
   </div>
 </template>
@@ -75,14 +69,14 @@ const onRefresh = () => {
   console.log('刷新');
 };
 
-const { pagingRef, dataList, queryList, isPending, query, reload } =
-  usePaging<ChatApi.SessionUnitListInput>({
-    input: {
-      ownerId: 13,
-      maxResultCount: 40,
-    },
-    service: getSessionUnitList,
-  });
+const { pagingRef, dataList, queryList, isPending, query, reload } = usePaging({
+  input: {
+    ownerId: 13,
+    maxResultCount: 40,
+    keyword: '',
+  },
+  service: getSessionUnitList,
+});
 
 const onSearch = () => {
   console.log('搜索关键字:', query.value.keyword);
