@@ -114,7 +114,7 @@ const {
     maxResultCount: 20,
     keyword: '',
     minMessageId: null,
-    // maxMessageId: 7277454,
+    maxMessageId: 7277454,
   },
   service: getSessionUnitList,
   format: (res, input) => {
@@ -127,8 +127,8 @@ const {
 });
 // 获取 dataList 数组中 lastMessageId 的最大值
 const getMaxLastMessageId = (list: ChatApi.SessionUnitDto[]) => {
-  if (list.length === 0) return null; // 如果数组为空，则返回 null
-  return list.reduce((max, item) => {
+  if (list?.length === 0) return null; // 如果数组为空，则返回 null
+  return list?.reduce((max, item) => {
     return Math.max(max, item.lastMessageId || 0); // 确保 item.lastMessageId 存在，如果不存在则默认为 0
   }, 0);
 };
@@ -164,7 +164,9 @@ const updateDatalist = (list: ChatApi.SessionUnitDto[]) => {
       return b.lastMessageId - a.lastMessageId; // 如果 sorting 相同，则按 lastMessageId 降序排序
     }
   });
-  pagingRef.value?.completeByKey(dataList.value, 'id');
+  dataList.value = [...dataList.value];
+  // pagingRef.value?.refresh();
+  // pagingRef.value?.resetTotalData ();
 };
 
 const fetchLatest = () => {
@@ -178,6 +180,7 @@ const fetchLatest = () => {
   };
   getSessionUnitList(q).then(res => {
     updateDatalist(res.items);
+
     console.log('fetchLatest', q, res);
   });
 };

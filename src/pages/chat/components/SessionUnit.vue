@@ -22,9 +22,10 @@
           <span class="text-gray-400">{{ messageText }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
-          <div v-if="isFav" class="text-gray-500 i-ic:baseline-star"></div>
-          <div v-if="isImmersed" class="text-gray-300 i-ic:baseline-notifications-off"></div>
-          <div v-if="item?.badge" class="badge">{{ item?.badge || 0 }}</div>
+          <div v-if="isFav" class="text-gray-400 i-ic:baseline-star"></div>
+          <div v-if="isImmersed" class="text-gray-400 i-ic:baseline-notifications-off"></div>
+          <!-- <div v-if="item?.badge" class="badge">{{ item?.badge || 0 }}</div> -->
+          <Badge :count="badge" :dot="!isImmersed && badge>0" :max="9" />
         </div>
       </div>
     </div>
@@ -33,6 +34,7 @@
 <script lang="ts" setup>
 import TimeAgo from './TimeAgo.vue';
 import Avatar from './Avatar.vue';
+import Badge from './Badge.vue';
 import { ObjectTypes } from '@/utils/enums';
 const props = defineProps({
   item: {
@@ -46,6 +48,7 @@ const props = defineProps({
   },
 });
 
+const badge = computed(() => props.item?.badge);
 const objectType = computed(() => props.item?.destination?.objectType as ObjectTypes);
 
 const isImmersed = computed(() => props.item?.setting?.isImmersed);

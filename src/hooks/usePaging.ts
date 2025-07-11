@@ -63,7 +63,7 @@ export function usePaging<TDto>(
         isEof.value = items.length < Number(query.value.maxResultCount);
         // dataList.value = query.value.skipCount == 0 ? items : dataList.value.concat(items);
         if (items.length > 0) {
-          pagingRef.value.complete(items);
+          pagingRef.value.completeByKey(items, 'id');
         } else {
           pagingRef.value.complete(false); // 完成分页请求
         }
