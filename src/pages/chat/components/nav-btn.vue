@@ -39,7 +39,7 @@ const items = Object.values(props.btns).map((icon, type) => ({
   display: flex;
   position: fixed;
   right: 24rpx;
-  top: calc(var(--status-bar-height) + 16rpx);
+  top: calc(var(--status-bar-height) + 28rpx);
   z-index: 999;
   justify-content: center;
   align-items: center;

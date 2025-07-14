@@ -6,48 +6,30 @@
           <CurrentChatObject />
         </template> -->
       </AppNavBar>
+      <PullRefresh v-model:loading="isLoading" @refresh="onRefresh" class="h-full">
+        <!-- vue-virtual-scroller 必须是 PullRefresh 的直接子元素，并且可以滚动 -->
+        <!-- <scroll-view :scroll-y="true" class="h-full"> -->
+          <div v-for="(item, index) in list" :key="index" class="p-8">
+            <div class="user">{{ item.name }} {{ item.id }}</div>
+          </div>
+        <!-- </scroll-view> -->
+
+        <!-- <RecycleScroller
+          class="scroller"
+          :items="list"
+          :item-size="50"
+          key-field="id"
+          v-slot="{ item }"
+        >
+          <div class="user">{{ item.name }} {{ item.id }}</div>
+        </RecycleScroller> -->
+      </PullRefresh>
     </view>
-
-    <z-paging
-      ref="pagingRef"
-      class="z-paging"
-      :refresher-only="true"
-      @refresh="onRefresh"
-      :auto="false"
-    >
-      <!-- <div>items:{{ dataList }}</div> -->
-      <div>env:{{ env }}</div>
-      <div>
-        <h3>erpUserInfo:</h3>
-        <scroll-view scroll>
-          <pre>{{ userStore.name }}</pre>
-        </scroll-view>
-      </div>
-
-      <button hover-class="button-hover" @click="login">Login</button>
-      <button hover-class="button-hover" @click="refreshToken">refreshToken</button>
-      <div>
-        <h3>authStore:</h3>
-        <scroll-view scroll>
-          <pre>{{ authStore.token }}</pre>
-        </scroll-view>
-      </div>
-
-      <div>
-        <h3>userStore.token</h3>
-        <scroll-view scroll>
-          <pre>{{ userStore.name }}</pre>
-        </scroll-view>
-      </div>
-
-      <template #loadingMoreNoMore>
-        <view style="background-color: red;">这是完全自定义的没有更多数据view</view>
-      </template>
-    </z-paging>
   </div>
 </template>
 
 <script lang="ts" setup>
+import PullRefresh from './components/PullRefresh.vue';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
@@ -58,11 +40,34 @@ const authStore = useAuth();
 const env = ref(import.meta.env);
 const pagingRef = ref();
 
-const onRefresh = () => {
-  uni.$emit('refresh@chat-index');
-  pagingRef.value?.complete(true);
-  console.log('刷新');
+// 模拟API
+const fetchNewData = (): Promise<any[]> => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const newItems = Array.from({ length: 20 }, (_, i) => ({
+        id: `new-${Date.now()}-${i}`,
+        name: 'New Item',
+      }));
+      resolve(newItems);
+    }, 1500);
+  });
 };
+
+const isLoading = ref(false);
+const list = ref(Array.from({ length: 100 }, (_, i) => ({ id: i, name: 'User' })));
+
+const onRefresh = async () => {
+  console.log('Refresh triggered!');
+  // 此时 isLoading 已经被 PullRefresh 组件内部设为 true
+  const newItems = await fetchNewData();
+  list.value = [...newItems, ...list.value];
+
+  // 关键：数据加载完成后，手动将 isLoading 设置为 false
+  // PullRefresh 组件会监听到这个变化，并自动收起加载提示
+  isLoading.value = false;
+  console.log('Refresh finished!');
+};
+
 const login = () => {
   authStore.fetchToken(userHeader);
 };

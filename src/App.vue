@@ -28,7 +28,7 @@ page {
   /* 其他全局变量 */
   /* --app-status-bar-height: '0px'; */
   --app-nav-font-size: 34rpx;
-  --app-nav-bar-height: 48px;
+  --app-nav-bar-height: 56px;
   --app-footer-height: 120rpx;
   --status-bar-background-color: 'rgba(217, 217, 217, 1)';
 }

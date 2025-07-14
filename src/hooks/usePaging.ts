@@ -43,10 +43,17 @@ export function usePaging<TDto>(
   const dataList = ref<TDto[]>([]);
 
   const queryList = (pageNo: number, pageSize: number) => {
+    console.log('queryList', pageNo, pageSize);
     // 此处请求仅为演示，请替换为自己项目中的请求
     isPending.value = true;
-    query.value.skipCount = (pageNo - 1) * pageSize; // 计算当前页码的偏移量
+
+    // 计算当前页码的偏移量
+    query.value.skipCount = (pageNo - 1) * pageSize;
+    // 使用已经加载的数据长度作为偏移量
+    // query.value.skipCount = dataList.value.length;
+
     query.value.maxResultCount = pageSize; // 设置每页条数
+
     console.log('query', query.value);
     options
       .service?.(query.value)

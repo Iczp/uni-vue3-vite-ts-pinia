@@ -97,7 +97,7 @@ const style = ref({
   top: 0;
   z-index: 990;
   // background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
+  // backdrop-filter: blur(10px);
 }
 .app-nav-bar {
   justify-content: space-around;

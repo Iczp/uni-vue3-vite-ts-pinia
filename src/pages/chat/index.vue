@@ -112,7 +112,14 @@ const onSwiperChange = async e => {
   }
 };
 </script>
-
+<style>
+body,
+html,
+page {
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch; /* 或者尝试 'auto' 或 'none' */
+}
+</style>
 <style lang="scss" scoped>
 .page-container {
   display: flex;

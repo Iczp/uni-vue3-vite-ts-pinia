@@ -44,12 +44,19 @@
         </scroll-view>
       </div>
 
+      <div designMode="on">
+        designMode:on
+
+        <input placeholder="input:" placeholder-class="input-placeholder" @input="" />
+      </div>
+
       <div>
         <h3>userStore.token</h3>
         <scroll-view scroll>
           <pre>{{ userStore.name }}</pre>
         </scroll-view>
       </div>
+
 
       <template #loadingMoreNoMore>
         <view style="background-color: red;">这是完全自定义的没有更多数据view</view>

@@ -1,12 +1,12 @@
 <template>
   <div class="page">
     <view class="flex flex-col line-after z-999">
-      <AppNavBar title="" :isBack="true" :border="false" backgroundColor="#f5f5f5">
+      <AppNavBar title="" :isBack="true" :border="true" >
         <template #left>
           <CurrentChatObject />
         </template>
       </AppNavBar>
-      <view class="h-48 px-12 flex items-center justify-between">
+      <!-- <view class="h-48 px-12 flex items-center justify-between">
         <u-search
           :placeholder="`搜索(${dataList.length}/${totalCount}) max:${maxLastMessageId}, min:${minLastMessageId}`"
           :focus="false"
@@ -15,12 +15,12 @@
           @custom="onSearch"
           v-model="query.keyword"
         ></u-search>
-      </view>
+      </view> -->
     </view>
 
     <z-paging
       ref="pagingRef"
-      class="z-paging mt-48"
+      class="z-paging"
       :use-virtual-list="true"
       v-model="dataList"
       data-key="id"
@@ -36,7 +36,7 @@
       </template>
 
       <template #loading>
-        <SessionUnitSkeleton :count="11" />
+        <SessionUnitSkeleton :count="fullScreenCount" />
         <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
       </template>
 
@@ -76,6 +76,8 @@ import CurrentChatObject from './components/CurrentChatObject.vue';
 import SessionUnit from './components/SessionUnit.vue';
 import SessionUnitSkeleton from './components/SessionUnitSkeleton.vue';
 import { useChatStore } from '@/store/chatStore';
+import { updateSortedList } from '@/utils/list';
+import { navToChat } from '@/utils/nav';
 
 const userStore = useUser();
 const authStore = useAuth();
@@ -98,6 +100,14 @@ const setMinMessageId = (id: number | null, force: boolean = false) => {
     console.log('setMinMessageId', id);
   }
 };
+const sysInfo = uni.getSystemInfoSync();
+const fullScreenCount = computed(() => {
+  const height = sysInfo.windowHeight;
+
+  const count = Math.floor(height / 64);
+  console.log('height', height, count);
+  return count;
+});
 
 const {
   pagingRef,
@@ -111,7 +121,7 @@ const {
 } = usePaging<ChatApi.SessionUnitDto>({
   input: {
     ownerId: 13,
-    maxResultCount: 20,
+    maxResultCount: Math.max(Math.min(Math.floor(fullScreenCount.value * 2), 100), 16),
     keyword: '',
     minMessageId: null,
     maxMessageId: 7277454,
@@ -180,7 +190,6 @@ const fetchLatest = () => {
   };
   getSessionUnitList(q).then(res => {
     updateDatalist(res.items);
-
     console.log('fetchLatest', q, res);
   });
 };
@@ -227,7 +236,10 @@ watch(
 
 const onSessionUnitClick = (item: any, index: number) => {
   dataList.value[index].badge = '123';
-  fetchLatest();
+  uni.$emit('new-message@signalR');
+  navToChat({
+    id: item.id,
+  });
   // pagingRef.value?.reload(true);
 };
 
@@ -237,8 +249,13 @@ const onSearch = () => {
 
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
-  console.log('Message page mounted');
+  uni.$on('new-message@signalR', fetchLatest);
+});
+onUnmounted(() => {
+  // 组件销毁时可以执行一些清理操作
+  uni.$off('new-message@signalR');
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

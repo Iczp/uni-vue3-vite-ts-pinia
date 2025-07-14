@@ -1,4 +1,5 @@
 import type { AnimationType } from '@/@types/uni';
+import { navToWebview } from '@/commons/bridge';
 
 export const isEmpty = (v: any) => !v && v != 0;
 
@@ -57,4 +58,15 @@ export const jsonParse = (json: string) => {
   } catch (err) {
     return null;
   }
+};
+
+export const navToChat = (args: { [key: string]: any }) => {
+  var url = toUrl('http://10.0.5.20:4000/#/pages/chat/session', args);
+  return navToWebview(
+    url,
+    { title: '请选择人员' },
+    {
+      // animationType: "pop-in",
+    },
+  );
 };
