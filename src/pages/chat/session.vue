@@ -7,7 +7,7 @@
     </view> -->
     <div class="nav-bar">顶部导航</div>
 
-    <MessageViewer class="flex-1"></MessageViewer>
+    <MessageViewer :sessionUnitId="id" class="flex-1"></MessageViewer>
     <div>{{ pageStyle }}/{{ windowHeight }}</div>
     <ChatInput />
   </div>
@@ -16,6 +16,14 @@
 <script lang="ts" setup>
 import MessageViewer from './components/MessageViewer.vue';
 import ChatInput from './components/ChatInput.vue';
+const props = defineProps({
+  // sessionUnitId
+  id: {
+    type: [String],
+    default: 'e52bacf4-c231-061a-6628-3a0b0cf571fb',
+    // required: true,
+  },
+});
 
 const windowHeight = uni.getSystemInfoSync().windowHeight;
 const pageStyle = reactive({

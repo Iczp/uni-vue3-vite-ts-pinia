@@ -38,7 +38,7 @@ import Badge from './Badge.vue';
 import { ObjectTypes } from '@/utils/enums';
 const props = defineProps({
   item: {
-    type: Object as () => ChatApi.SessionUnitDto,
+    type: Object as () => Chat.SessionUnitDto,
     default: () => ({}),
     required: true,
   },

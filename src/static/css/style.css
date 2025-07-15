@@ -1,0 +1,233 @@
+:root,
+[color-scheme='light']:root {
+  /* body */
+  --background-color: #f9fbff;
+  --background-color-normal: rgba(248, 248, 248, 0.5);
+  --background-color-hover: rgba(220, 220, 220, 0.5);
+  --color: #383838;
+  --main-title-color: #383838;
+  --sub-title-color: #ccc;
+  --checked-background: linear-gradient(135deg, #ddefff, #e9ffeb) border-box;
+  --page-footer-border-top-color: rgba(179, 179, 179, 0.5);
+  --mute-color: #ccc;
+  --loading-color: rgba(128, 128, 128, 0.5);
+  /* file-icon */
+  --file-name-color: rgb(44, 44, 44);
+  --file-icon-color: rgb(14, 105, 162);
+  --file-icon-suffix-color: white;
+  --file-icon-background-color: rgb(232, 232, 232);
+  /* avatar */
+  --avatar-color: rgba(191, 191, 191, 0.877);
+  --avatar-background-color: rgba(230, 230, 230, 0.554);
+  /* chat-empty */
+  --chat-empty-background-color: #f0f2f5;
+  --chat-empty-color: #e7eaee;
+  /* 边栏线条颜色 */
+  --sider-border-color: #e0e0e0;
+  --sider-background-color: #f1f3f6;
+  /* 分隔线 */
+  --divider-color: rgba(203, 203, 203, 0.41);
+  /* session-item */
+  --session-item-sendtime-color: #bcbcbc;
+  --session-item-active-sendtime-color: #606060;
+  --session-item-hover-sendtime-color: #a6a6a6;
+  --session-item-active-background: linear-gradient(135deg, #ddefff, #e9ffeb) border-box;
+  --session-item-background-color-hover: rgba(203, 203, 203, 0.651);
+  --session-item-sender-color: #999;
+  --session-item-sender-after-color: #333;
+  /* preview-message */
+  --preview-message-type-color: #717171;
+  --preview-message-text-color: #aaa;
+  /* chat-page */
+  --chat-page-color: #f0f2f5;
+  --chat-page-background-color: #f0f2f5;
+  --chat-page-main-title-color: rgb(33, 33, 33);
+  --chat-page-sub-title-color: rgba(126, 126, 126, 0.921);
+  --message-divider-color: #999;
+  --message-divider-others-color: rgba(222, 222, 222, 0.892);
+  --message-sendtime-color: #acacac;
+  /* message-item */
+  --message-body-wraper-selectable-background-color-hover: #efefef;
+  --message-body-wraper-selectable-checked-background-color: #e7e7e7;
+  --message-body-wraper-selectable-hover-box-shadow: 0 0 6px 0 #bbbbbbc9;
+  /* msg-file */
+  --msg-file-background: linear-gradient(135deg, rgb(255, 255, 255), rgb(255, 255, 255)) border-box;
+  --msg-file-background-hover: linear-gradient(
+      135deg,
+      rgba(250, 250, 250, 0.829),
+      rgba(246, 246, 246, 0.921)
+    )
+    border-box;
+  /* msg-cmd */
+  --msg-cmd-color: #a1a1a1;
+  --msg-cmd-background-color: #e3e3e3bf;
+  --msg-cmd-border-color: #d6d6d6bf;
+  --msg-cmd-hover-color: #a1a1a1;
+  --msg-cmd-hover-background-color: #e3e3e3bf;
+  --msg-cmd-hover-border-color: #ccccccbf;
+  --msg-cmd-object-color: #7f7f7f;
+  --msg-cmd-object-hover-color: #333;
+  --msg-rollback-color: #ccc;
+  --msg-rollback-background-color: transparent;
+  /* msg-text */
+  --msg-text-color: #1b1b1b;
+  --msg-text-background-color: none;
+  --msg-text-background: linear-gradient(135deg, rgba(14, 55, 205, 0.3), rgba(1, 156, 148, 0.3))
+    border-box;
+  --msg-text-hover-color: #1b1b1b;
+  --msg-text-hover-background-color: none;
+  --msg-text-hover-background: linear-gradient(
+      135deg,
+      rgba(1, 156, 148, 0.3),
+      rgba(14, 55, 205, 0.3)
+    )
+    border-box;
+  --msg-text-self-color: #fcfcfc;
+  --msg-text-self-background-color: none;
+  --msg-text-self-background: linear-gradient(
+      135deg,
+      rgba(12, 193, 84, 0.689),
+      rgba(11, 167, 42, 0.807)
+    )
+    border-box;
+  --msg-text-self-hover-color: #fcfcfc;
+  --msg-text-self-hover-background-color: none;
+  --msg-text-self-hover-background: linear-gradient(
+      135deg,
+      rgba(11, 167, 42, 0.807),
+      rgba(12, 193, 84, 0.689)
+    )
+    border-box;
+  /* msg-rollback */
+  --msg-rollback-color: #ccc;
+  --msg-rollback-background-color: transparent;
+  /* quote-message */
+  --quote-message-icon-color: #ccc;
+  --quote-message-background-color: rgba(234, 234, 234, 0.5);
+  --quote-message-border-color: rgba(212, 212, 212, 0.658);
+  --quote-message-sender-name-color: #333;
+  --quote-message-closable-hover-color: rgba(130, 130, 130, 0.9);
+  --quote-message-hover-background-color: rgba(234, 234, 234, 1);
+  --quote-message-hover-border-color: rgba(130, 130, 130, 0.9);
+  /* chat-input */
+  --chat-input-counter-color: #ccc;
+  /* tab */
+  --tab-item-active-color: rgb(10, 118, 226);
+  --tab-item-background-color-hover: #d2d2d298;
+  --tab-item-active-background-color: rgba(255, 255, 255, 0.93);
+  --tab-item-active-background-color-hover: rgba(231, 231, 231, 0.458);
+  --tab-item-active-bar-background-color: rgba(3, 127, 244, 0.93);
+}
+[color-scheme='dark']:root {
+  /* body */
+  --background-color: #1b1b1b;
+  --background-color-normal: rgba(41, 41, 41, 0.5);
+  --background-color-hover: rgba(57, 57, 57, 0.5);
+  --color: #c8c8c8e7;
+  --main-title-color: #c8c8c8e7;
+  --sub-title-color: #454545ee;
+  --title-color: rgb(222, 222, 222);
+  --border-color: rgba(55, 55, 55, 0.904);
+  --checked-background: linear-gradient(135deg, #0b0e12, #04172d) border-box;
+  --page-footer-border-top-color: rgb(55, 55, 55);
+  --mute-color: #494949;
+  --loading-color: rgba(128, 128, 128, 0.5);
+  --disabled-color: rgba(70, 70, 70, 0.675);
+  --disabled-background-color: rgba(48, 48, 48, 0.147);
+  /* file-icon */
+  --file-name-color: rgb(184, 184, 184);
+  --file-icon-color: rgb(14, 105, 162);
+  --file-icon-suffix-color: white;
+  --file-icon-background-color: rgb(71 71 71);
+  /* avatar */
+  --avatar-color: rgba(115, 115, 115, 0.877);
+  --avatar-background-color: rgba(57, 57, 57, 0.927);
+  /* chat-empty */
+  --chat-empty-background-color: #1b1b1b;
+  --chat-empty-color: rgba(21, 21, 21, 0.74);
+  /* 边栏线条颜色 */
+  --sider-border-color: rgba(41, 41, 41, 0.919);
+  /* 分隔线 */
+  --divider-color: rgba(41, 41, 41, 0.919);
+  /* session-item */
+
+  --session-item-background-color-hover: rgba(50, 50, 50, 0.921);
+  --session-item-active-background: linear-gradient(135deg, #1a1d1f, #313e32) border-box;
+  --session-item-sendtime-color: #333;
+  --session-item-active-sendtime-color: #626262;
+  --session-item-hover-sendtime-color: #626262;
+  --session-item-sender-color: #3c3c3c;
+  --session-item-sender-after-color: #6b6b6b;
+  /* preview-message */
+  --preview-message-type-color: #717171;
+  --preview-message-text-color: #434343;
+  /* chat-page */
+  --chat-page-color: #e6e6e6;
+  --chat-page-background-color: rgba(34, 34, 34, 0.907);
+  --chat-page-main-title-color: rgba(182, 182, 182, 0.858);
+  --chat-page-sub-title-color: rgba(73, 73, 73, 0.921);
+  --message-divider-color: #454545;
+  --message-divider-others-color: rgb(50, 50, 50);
+  --message-sendtime-color: #3d3d3d;
+  /* message-item */
+  --message-body-wraper-selectable-background-color-hover: #1f1f1f;
+  --message-body-wraper-selectable-checked-background-color: #3a3a3a;
+  --message-body-wraper-selectable-hover-box-shadow: 0 0 6px 0 #606060c9;
+  /* msg-file */
+  --msg-file-background: linear-gradient(135deg, rgb(51 51 51), rgb(59 59 59)) border-box;
+  --msg-file-background-hover: linear-gradient(135deg, rgb(67, 67, 67), rgb(48, 48, 48)) border-box;
+  /* msg-cmd */
+  --msg-cmd-color: #454545;
+  --msg-cmd-background-color: #222222c9;
+  --msg-cmd-border-color: #252525bf;
+  --msg-cmd-hover-color: #454545;
+  --msg-cmd-hover-background-color: #262626bf;
+  --msg-cmd-hover-border-color: #2f2f2fbf;
+  --msg-cmd-object-color: #6c6c6c;
+  --msg-cmd-object-hover-color: #c6c6c6;
+  /* msg-text */
+  --msg-text-color: #afb5b0;
+  --msg-text-background-color: none;
+  --msg-text-background: linear-gradient(135deg, rgba(47, 47, 47, 0.938), rgb(35, 35, 35))
+    border-box;
+  --msg-text-hover-color: #a1b3a5;
+  --msg-text-hover-background-color: none;
+  --msg-text-hover-background: linear-gradient(135deg, rgb(68, 68, 68), rgba(35, 35, 35, 0.881))
+    border-box;
+  --msg-text-self-color: #cecece;
+  --msg-text-self-background-color: none;
+  --msg-text-self-background: linear-gradient(
+      135deg,
+      rgba(12, 193, 84, 0.114),
+      rgba(11, 167, 42, 0.225)
+    )
+    border-box;
+  --msg-text-self-hover-color: #cecece;
+  --msg-text-self-hover-background-color: none;
+  --msg-text-self-hover-background: linear-gradient(
+      135deg,
+      rgba(11, 167, 42, 0.2),
+      rgba(12, 193, 84, 0.2)
+    )
+    border-box;
+  /* msg-rollback */
+  --msg-rollback-color: #454545;
+  --msg-rollback-background-color: transparent;
+  /* quote-message */
+  --quote-message-icon-color: #343434;
+  --quote-message-background-color: rgba(28, 28, 28, 0.5);
+  --quote-message-border-color: rgba(62, 62, 62, 0.658);
+  --quote-message-sender-name-color: #707070;
+  --quote-message-closable-hover-color: rgba(76, 76, 76, 0.9);
+  --quote-message-hover-background-color: rgb(24, 24, 24);
+  --quote-message-hover-border-color: rgba(76, 76, 76, 0.9);
+  /* chat-input */
+  --chat-input-counter-color: #343434;
+  /* tab */
+  --tab-item-active-color: rgb(79, 167, 255);
+  --tab-item-background-color-hover: #35353598;
+  --tab-item-active-background-color-hover: rgba(29, 187, 244, 0.458);
+  --tab-item-active-background-color: rgba(57, 57, 57, 0.93);
+  --tab-item-active-bar-background-color: rgba(6, 182, 226, 0.93);
+  --mask-background-color: rgba(56, 56, 56, 0.5);
+}

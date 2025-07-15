@@ -118,7 +118,7 @@ const {
   query,
   reload,
   totalCount,
-} = usePaging<ChatApi.SessionUnitDto>({
+} = usePaging<Chat.SessionUnitDto>({
   input: {
     ownerId: 13,
     maxResultCount: Math.max(Math.min(Math.floor(fullScreenCount.value * 2), 100), 16),
@@ -136,7 +136,7 @@ const {
   },
 });
 // 获取 dataList 数组中 lastMessageId 的最大值
-const getMaxLastMessageId = (list: ChatApi.SessionUnitDto[]) => {
+const getMaxLastMessageId = (list: Chat.SessionUnitDto[]) => {
   if (list?.length === 0) return null; // 如果数组为空，则返回 null
   return list?.reduce((max, item) => {
     return Math.max(max, item.lastMessageId || 0); // 确保 item.lastMessageId 存在，如果不存在则默认为 0
@@ -144,7 +144,7 @@ const getMaxLastMessageId = (list: ChatApi.SessionUnitDto[]) => {
 };
 
 // 获取 dataList 数组中 lastMessageId 的最小值
-const getMinLastMessageId = (list: ChatApi.SessionUnitDto[]) => {
+const getMinLastMessageId = (list: Chat.SessionUnitDto[]) => {
   if (list.length === 0) return null; // 如果数组为空，则返回 null
   return list.reduce((min, item) => {
     return Math.min(min, item.lastMessageId || Infinity); // 确保 item.lastMessageId 存在，如果不存在则默认为 Infinity
@@ -154,7 +154,7 @@ const getMinLastMessageId = (list: ChatApi.SessionUnitDto[]) => {
 const minLastMessageId = ref<number | null>();
 const maxLastMessageId = ref<number | null>();
 
-const updateDatalist = (list: ChatApi.SessionUnitDto[]) => {
+const updateDatalist = (list: Chat.SessionUnitDto[]) => {
   list.forEach((newItem, index) => {
     // newItem.badge = newItem.lastMessageId;
     const existingItem = dataList.value.find(item => item.id === newItem.id);
@@ -235,6 +235,7 @@ watch(
 );
 
 const onSessionUnitClick = (item: any, index: number) => {
+  console.log('onSessionUnitClick', item, index);
   dataList.value[index].badge = '123';
   uni.$emit('new-message@signalR');
   navToChat({

@@ -1,109 +1,132 @@
 <template>
   <div class="chat-demo">
-    <div class="toolbar">
+    <!-- <div class="toolbar">
       <button v-if="!streaming" @click="startStream()">Start stream</button>
       <button v-else @click="stopStream()">Stop stream</button>
 
       <input v-model="search" placeholder="Filter..." />
-    </div>
-
-    <DynamicScroller ref="scroller" :items="filteredItems" :min-item-size="54" class="scroller">
+    </div> -->
+    <div class="position-absolute bottom-60 right-20 z-10" @click="onPlus">ddd</div>
+    <DynamicScroller
+      ref="scrollerRef"
+      :items="messageList"
+      :min-item-size="54"
+      @scroll="onScroll"
+      @scroll-start="handleScrollToTop"
+      @scroll-end="handleScrollToBottom"
+      @resize="onResize"
+      class="scroller"
+    >
       <template #before>
         <div class="notice">The message heights are unknown.</div>
+
+        <Loading
+          v-if="messageList.length == 0 && isPending"
+          text="正在收取消息..."
+          class="text-12"
+        />
       </template>
+
+      <!-- <template #after=>
+        <div class="notice">footer.</div>
+      </template> -->
 
       <template #default="{ item, index, active }">
         <DynamicScrollerItem
           :item="item"
           :active="active"
-          :size-dependencies="[item.message]"
+          :size-dependencies="[item]"
           :data-index="index"
           :data-active="active"
           :title="`Click to change message ${index}`"
           class="message"
           @click="changeMessage(item)"
         >
-          <div class="avatar">
-            <img :key="item.avatar" :src="item.avatar" alt="avatar" class="image" />
-          </div>
-          <div class="text">
-            {{ item.message }}
-          </div>
-          <div class="index">
-            <span>{{ item.id }} (id)</span>
-            <span>{{ index }} (index)</span>
-          </div>
+          <MessageItem
+            :item="item"
+            :index="index"
+            :active="active"
+            :senderSessionUnitId="sessionUnitId"
+          />
         </DynamicScrollerItem>
       </template>
     </DynamicScroller>
   </div>
 </template>
-
-<script>
-// import { generateMessage } from '../data';
-
-let id = 0;
-
-const messages = [];
-for (let i = 0; i < 10000; i++) {
-  // messages.push();
-}
-
-export default {
-  data() {
-    return {
-      items: [],
-      search: '',
-      streaming: false,
-    };
+<script lang="ts" setup>
+import MessageItem from './MessageItem.vue';
+import Loading from './Loading.vue';
+import { getMessageList } from '@/api/chatApi';
+const props = defineProps({
+  sessionUnitId: {
+    type: [String],
+    // required: true,
   },
+});
+const isPending = ref(false);
+const messageList = ref<Chat.MessageDto[]>([]);
+const scrollerRef = ref();
+const maxMessageId = ref<number | null>();
+const onPlus = () => {
+  const items = Array.from({ length: 3 }).map((_, i) => ({
+    id: maxMessageId.value! + 1 + i,
+  }));
+  messageList.value = messageList.value.concat(items);
+  maxMessageId.value = maxMessageId.value! + items.length;
+  nextTick(() => {
+    scrollToBottom();
+  });
+};
 
-  computed: {
-    filteredItems() {
-      const { search, items } = this;
-      if (!search) return items;
-      const lowerCaseSearch = search.toLowerCase();
-      return items.filter(i => i.message.toLowerCase().includes(lowerCaseSearch));
-    },
-  },
-
-  unmounted() {
-    this.stopStream();
-  },
-
-  methods: {
-    changeMessage(message) {
-      Object.assign(message, generateMessage());
-    },
-
-    addMessage() {
-      for (let i = 0; i < 10; i++) {
-        this.items.push({
-          id: id++,
-          ...messages[id % 10000],
-        });
-      }
-      this.scrollToBottom();
-
-      if (this.streaming) {
-        requestAnimationFrame(this.addMessage);
-      }
-    },
-
-    scrollToBottom() {
-      this.$refs.scroller.scrollToBottom();
-    },
-
-    startStream() {
-      if (this.streaming) return;
-      this.streaming = true;
-      this.addMessage();
-    },
-
-    stopStream() {
-      this.streaming = false;
-    },
-  },
+const scrollToBottom1 = () => {
+  const scrollerEl = scrollerRef.value?.$el; // 获取 scroller 组件的根 DOM 元素
+  if (scrollerEl) {
+    scrollerEl.scrollTo({
+      top: scrollerEl.scrollHeight, // 滚动到总高度的位置，即最底部
+      behavior: 'smooth', // ✨ 核心：开启平滑滚动动画
+    });
+  }
+};
+const fetchLatest = async () => {
+  if (isPending.value) return;
+  isPending.value = true;
+  getMessageList({
+    sessionUnitId: props.sessionUnitId,
+    maxMessageId: null,
+    maxResultCount: 20,
+    skipCount: 0,
+  })
+    .then(res => {
+      maxMessageId.value = res.items[0].id;
+      messageList.value = messageList.value.concat(res.items);
+      // scrollToBottom();
+    })
+    .finally(() => {
+      isPending.value = false;
+    });
+};
+const scrollToBottom = () => {
+  scrollerRef.value?.scrollToBottom();
+};
+const scrollToTop = () => {
+  scrollerRef.value?.scrollToTop();
+};
+fetchLatest();
+const changeMessage = item => {
+  item.message = `Message ${Math.floor(Math.random() * 100)}`;
+};
+const handleScrollToTop = e => {
+  // fetchLatest();
+  console.log('handleScrollToTop', e);
+};
+const handleScrollToBottom = e => {
+  console.log('handleScrollToBottom', e);
+};
+const onResize = e => {
+  console.log('onResize', e);
+};
+const onScroll = e => {
+  // console.log('onScroll', e);
 };
 </script>
 
@@ -111,6 +134,7 @@ export default {
 .chat-demo {
   display: flex;
   overflow: hidden;
+  position: relative;
   flex-direction: column;
   flex: auto 1 1;
 }
@@ -125,8 +149,8 @@ export default {
 .message {
   display: flex;
   box-sizing: border-box;
-  padding: 12px;
-  min-height: 32px;
+  /* padding: 12px; */
+  /* min-height: 44px; */
 }
 .avatar {
   flex: auto 0 0;

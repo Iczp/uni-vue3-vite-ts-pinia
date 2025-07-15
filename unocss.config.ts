@@ -22,7 +22,7 @@ export default defineConfig({
     // presetAttributify(),
     presetWind3({
       /* 可添加配置选项 */
-    }),
+    }) as any,
     presetRemToRpx({
       baseFontSize: 4,
       // screenWidth: 375, // 设计稿宽度

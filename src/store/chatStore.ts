@@ -9,8 +9,8 @@ export const useChatStore = defineStore({
       badges: [],
     } as {
       currentIndex: number;
-      chatObjects: ChatApi.ChatObjectDto[];
-      badges: ChatApi.BadgeDto[];
+      chatObjects: Chat.ChatObjectDto[];
+      badges: Chat.BadgeDto[];
     };
   },
   getters: {

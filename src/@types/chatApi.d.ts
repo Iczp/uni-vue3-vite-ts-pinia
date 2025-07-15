@@ -1,6 +1,6 @@
 // import { ObjectTypes } from "@/utils/enums";
 
-declare namespace ChatApi {
+declare namespace Chat {
   // 定义枚举
   export enum ObjectTypes {
     Anonymous = 0, // 匿名
@@ -86,7 +86,9 @@ declare namespace ChatApi {
     isContacts?: boolean | null;
     isImmersed?: boolean | null;
     isKilled?: boolean | null;
+    // 最小消息Id
     minMessageId?: number | null;
+    // 最大消息Id
     maxMessageId?: number | null;
     isBadge?: boolean | null;
     isRemind?: boolean | null;
@@ -120,21 +122,52 @@ declare namespace ChatApi {
   }
 
   interface MessageDto {
-    creationTime: string;
-    extraProperties: object;
     id: number;
-    isPrivate: false;
-    isRollbacked: false;
-    messageType: number;
-    reminderType: string | null;
-    rollbackTime: string | null;
-    senderName: string | null;
-    content: any;
-    senderSessionUnit?: SessionUnitDto;
+    creationTime?: string;
+    extraProperties?: object;
+
+    messageType?: number;
+    reminderType?: string | null;
+    rollbackTime?: string | null;
+    senderName?: string | null;
+    senderDisplayName?: string | null;
+    openedCount?: number;
+    quoteDepth?: number;
+    quoteMessage?: MessageDto | null;
+    quoteMessageId?: number | null;
+    readedCount?: number;
+
+    content?: any;
+    senderSessionUnit?: SessionUnitDto | null;
+    isFavorited?: boolean;
+    isFollowing?: boolean;
+    isOpened?: boolean;
+    isPrivate?: boolean;
+    isReaded?: boolean;
+    isRemindAll?: boolean;
+    isRemindMe?: boolean;
+    isRollbacked?: boolean;
+
     [key: string]: any;
   }
 
-  interface SessionUnitDto {
+  /**
+   * 文本消息
+   */
+  export interface TextContentDto {
+    /**
+     * id
+     *
+     * @type {(string | null)}
+     */
+    id?: string;
+    /**
+     * 文本内容
+     */
+    text: string;
+  }
+
+  export interface SessionUnitDto {
     id: number | string;
     destination?: ChatObjectDto;
     setting?: SessionUnitSettingDto;
@@ -149,6 +182,23 @@ declare namespace ChatApi {
     sessionId: string;
     sorting: number;
     ticks: number;
+    [key: string]: any; // 允许任意额外的属性
+  }
+
+  interface MessageListInput extends GetListInput {
+    sessionUnitId?: string | null;
+    // 发送人【聊天对象】
+    senderId?: number | null;
+    // 是否有提醒
+    isRemind?: boolean | null;
+    // 是否特别关注
+    isFollowed?: boolean | null;
+    // 转发层级
+    forwardDepth?: number | null;
+    // 最小消息Id
+    minMessageId?: number | null;
+    // 最大消息Id
+    maxMessageId?: number | null;
     [key: string]: any; // 允许任意额外的属性
   }
 }

@@ -47,7 +47,7 @@ const chatRequest = async <T = any>(args: {
       ...input,
       success: res => {
         console.log('request success', res);
-        if (res.statusCode >= 200 || res.statusCode < 400) {
+        if (res.statusCode >= 200 && res.statusCode < 400) {
           // 返回解析后的数据，并指定泛型类型
           resolve(res.data as T);
         } else {
@@ -65,30 +65,37 @@ const chatRequest = async <T = any>(args: {
   });
 };
 
-export const getConnectionPool = (data?: ChatApi.GetListInput) =>
+export const getConnectionPool = (data?: Chat.GetListInput) =>
   chatRequest({
     url: '/api/chat/connection-pool',
     method: 'GET',
     data,
   });
 
-export const getChatObjectByCurrentUser = (data?: ChatApi.GetListInput) =>
-  chatRequest<ChatApi.PagedResult<ChatApi.ChatObjectDto>>({
+export const getChatObjectByCurrentUser = (data?: Chat.GetListInput) =>
+  chatRequest<Chat.PagedResult<Chat.ChatObjectDto>>({
     url: '/api/chat/chat-object/by-current-user',
     method: 'GET',
     data,
   });
 
 export const getBadgeByCurrentUser = (data?: { isImmersed?: boolean }) =>
-  chatRequest<ChatApi.BadgeDto[]>({
+  chatRequest<Chat.BadgeDto[]>({
     url: '/api/chat/session-unit/badge-by-current-user',
     method: 'GET',
     data,
   });
 
-export const getSessionUnitList = (data?: ChatApi.SessionUnitListInput) =>
-  chatRequest<ChatApi.PagedResult<ChatApi.SessionUnitDto>>({
+export const getSessionUnitList = (data?: Chat.SessionUnitListInput) =>
+  chatRequest<Chat.PagedResult<Chat.SessionUnitDto>>({
     url: '/api/chat/session-unit',
+    method: 'GET',
+    data,
+  });
+
+  export const getMessageList = (data?: Chat.MessageListInput) =>
+  chatRequest<Chat.PagedResult<Chat.MessageDto>>({
+    url: '/api/chat/message',
     method: 'GET',
     data,
   });

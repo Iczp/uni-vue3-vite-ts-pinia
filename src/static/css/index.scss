@@ -1,9 +1,13 @@
 @import './base.scss';
+@import './style.css';
 :root,
 page {
   //
   --icon-default-size: 24px;
   --red: #c8161d;
+  --side-width: 64px;
+  --page-title-height: 64px;
+  --message-max-width: 360px;
 }
 :where(iconify-icon, svg[data-iconify]) {
   width: var(--icon-default-size);

@@ -1,5 +1,8 @@
 <template>
-  <div class="avatar-container">
+  <div class="avatar-container" :style="containerCss">
+    <div class="online-status">
+      <div class="status-dot status-1"></div>
+    </div>
     <image
       v-if="src"
       :width="size"
@@ -33,6 +36,19 @@ const props = defineProps({
     type: Number as PropType<ObjectTypes>,
     default: () => ObjectTypes.Personal,
   },
+  item: {
+    type: Object as () => Chat.ChatObjectDto | undefined,
+  },
+});
+
+const containerCss = computed(() => {
+  return {
+    width: `${props.size * 2}rpx`,
+    height: `${props.size * 2}rpx`,
+    '--avatar-size': `${props.size * 2}rpx`,
+    '--side-border-color': 'white',
+    '--bg-color': '#e5e5e5',
+  };
 });
 const imageSrc = computed(() => {
   if (props.src?.startsWith('http://') || props.src?.startsWith('https://')) {
@@ -56,6 +72,51 @@ const onImgLoad = e => {
 };
 </script>
 <style lang="scss" scoped>
+:where(.avatar-container) {
+  --side-border-color: #c5ed26;
+  --avatar-size: 88rpx;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  // width: 96rpx;
+  // height: 96rpx;
+  background-color: #e5e5e5;
+  color: #999;
+}
+.online-status {
+  display: flex;
+  position: absolute;
+  /* 计算135度位置 */
+  right: calc(50% - 0.7071 * var(--avatar-size, 88rpx) / 2); /* cos(135°) * radius */
+  bottom: calc(50% - 0.7071 * var(--avatar-size, 88rpx) / 2); /* sin(135°) * radius */
+  z-index: 1;
+  flex-shrink: 0;
+  border: 1px solid var(--side-border-color);
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: rgba(24, 205, 24, 0.794);
+  transform: translate(50%, 50%);
+  // margin: 2px;
+}
+.status-0 {
+  background-color: rgba(138, 138, 138, 0.494);
+}
+.status-1 {
+  background-color: rgba(24, 205, 24, 0.794);
+}
+.status-2 {
+  background-color: rgba(48, 108, 247, 0.775);
+}
+.status-3 {
+  background-color: rgba(217, 203, 6, 0.775);
+}
+.status-4 {
+  background-color: rgba(134, 134, 134, 0.713);
+}
 .avatar-image {
   border-radius: 50%;
   width: 100%;
@@ -67,17 +128,5 @@ const onImgLoad = e => {
 }
 .loaded {
   opacity: 1; /* 当图片加载完成时，将不透明度设置为 1 */
-}
-:where(.avatar-container) {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border-radius: 50%;
-  width: 96rpx;
-  height: 96rpx;
-  background-color: #e5e5e5;
-  color: #999;
 }
 </style>

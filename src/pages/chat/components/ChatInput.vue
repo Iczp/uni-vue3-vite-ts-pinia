@@ -4,6 +4,10 @@
       <div class="btn-icon" @click="keyboardHideClick">
         <i class="i-ic:baseline-keyboard-hide"></i>
       </div>
+      <div class="btn-icon" @click="keyboardHideClick">
+        <i class="i-ic:baseline-contactless"></i>
+      </div>
+
       <div class="input-wrapper flex flex-1">
         <!-- <u-search :placeholder="`搜索(`" :focus="false" :animation="false"></u-search> -->
         <div contenteditable="true">546465</div>
@@ -19,7 +23,7 @@
       </div>
       <div>{{ kbHeight }}/ {{ keyboardHeight }}</div>
       <div class="btn-icon" @click="faceClick">
-        <i class="i-ic:round-tag-faces"></i>
+        <i class="i-ic:baseline-face"></i>
       </div>
       <div class="btn-icon" @click="sendClick">
         <i class="i-ic:baseline-send"></i>
@@ -88,7 +92,7 @@ if (window.visualViewport) {
 }
 
 const keyboardAreaStyle = reactive({
-  height: `${356}px`,
+  height: `${0}px`,
   display: 'flex',
   transition: 'all 0.5s ease-in-out',
 });
@@ -155,6 +159,7 @@ const sendClick = () => {
   width: 72rpx;
   height: 72rpx;
   background-color: #fff;
+  font-size: 40rpx;
   color: #000;
 }
 </style>

@@ -2,16 +2,16 @@ interface PagingOptions<TDto> {
   url?: string; // 请求地址
   method?: string; // 请求方法
   pageSize?: number; // 每页条数
-  input?: ChatApi.GetListInput;
-  service?: (queryInput: ChatApi.GetListInput) => Promise<ChatApi.PagedResult<TDto>>; // 分页请求服务函数
+  input?: Chat.GetListInput;
+  service?: (queryInput: Chat.GetListInput) => Promise<Chat.PagedResult<TDto>>; // 分页请求服务函数
   format?: (
-    res: ChatApi.PagedResult<TDto>,
-    queryInput?: ChatApi.GetListInput,
-  ) => ChatApi.PagedResult<TDto> | undefined;
+    res: Chat.PagedResult<TDto>,
+    queryInput?: Chat.GetListInput,
+  ) => Chat.PagedResult<TDto> | undefined;
   [key: string]: any;
 }
 
-const defaultService = (queryInput: ChatApi.GetListInput): Promise<ChatApi.PagedResult<any>> => {
+const defaultService = (queryInput: Chat.GetListInput): Promise<Chat.PagedResult<any>> => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve({
@@ -57,7 +57,7 @@ export function usePaging<TDto>(
     console.log('query', query.value);
     options
       .service?.(query.value)
-      .then((res: ChatApi.PagedResult<TDto>) => {
+      .then((res: Chat.PagedResult<TDto>) => {
         console.log('请求结果', res);
         if (options.format) {
           res = options.format(res, query.value) || res;
