@@ -31,11 +31,12 @@ const onWordClick = (item: WordDto, event?: Event) => {
   box-sizing: border-box;
   padding: 24rpx;
   min-width: 80rpx;
-  // max-width: var(--message-max-width);
+  // max-width: calc(100% - 128rpx);
   // max-width: 420rpx;
   min-height: 80rpx;
   background-color: var(--msg-text-background-color);
   background-repeat: no-repeat;
+  line-height: 150%;
   // line-height: 24px;
   // background: var(--msg-text-background);
   font-size: 28rpx;

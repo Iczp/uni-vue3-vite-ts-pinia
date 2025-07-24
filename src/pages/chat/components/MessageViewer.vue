@@ -7,6 +7,7 @@
       <input v-model="search" placeholder="Filter..." />
     </div> -->
     <div class="position-absolute bottom-60 right-20 z-10" @click="onPlus">ddd</div>
+    <!-- <PullRefresh v-model:loading="isPending"> -->
     <DynamicScroller
       ref="scrollerRef"
       :items="messageList"
@@ -51,12 +52,14 @@
         </DynamicScrollerItem>
       </template>
     </DynamicScroller>
+    <!-- </PullRefresh> -->
   </div>
 </template>
 <script lang="ts" setup>
 import MessageItem from './MessageItem.vue';
 import Loading from './Loading.vue';
 import { getMessageList } from '@/api/chatApi';
+import PullRefresh from './PullRefresh.vue';
 const props = defineProps({
   sessionUnitId: {
     type: [String],
@@ -70,6 +73,9 @@ const maxMessageId = ref<number | null>();
 const onPlus = () => {
   const items = Array.from({ length: 3 }).map((_, i) => ({
     id: maxMessageId.value! + 1 + i,
+    content: {
+      text: `${maxMessageId.value! + 1 + i}`,
+    },
   }));
   messageList.value = messageList.value.concat(items);
   maxMessageId.value = maxMessageId.value! + items.length;

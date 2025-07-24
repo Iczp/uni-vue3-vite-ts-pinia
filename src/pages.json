@@ -60,6 +60,13 @@
         "navigationStyle": "custom",
         "navigationBarTitleText": "session"
       }
+    },
+    {
+      "path": "pages/chat/bouncing-scroll-demo",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "bouncing scroll demo"
+      }
     }
   ],
   "subPackages": [
