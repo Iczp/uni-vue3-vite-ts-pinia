@@ -5,7 +5,9 @@
 
       </AppNavBar>
     </view> -->
-    <div class="nav-bar">顶部导航</div>
+    <AppNavBar title="" :isBack="true" :border="true">
+      456446
+    </AppNavBar>
 
     <MessageViewer :sessionUnitId="id" class="flex-1"></MessageViewer>
     <div>{{ pageStyle }}/{{ windowHeight }}</div>
@@ -14,7 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import MessageViewer from './components/MessageViewer.vue';
+// import MessageViewer from './components/MessageViewer.vue';
+import MessageViewer from './components/MessageViewer-zpaging.vue';
 import ChatInput from './components/ChatInput.vue';
 const props = defineProps({
   // sessionUnitId
