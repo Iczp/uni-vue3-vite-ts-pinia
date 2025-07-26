@@ -1,14 +1,6 @@
 <template>
   <div class="session-page" :style="pageStyle">
-    <!-- <view class="flex flex-col line-after z-999">
-      <AppNavBar title="123" :isBack="true" :border="false" backgroundColor="#f5f5f5">
-
-      </AppNavBar>
-    </view> -->
-    <AppNavBar title="" :isBack="true" :border="true">
-      456446
-    </AppNavBar>
-
+    <AppNavBar :title="title" :isBack="true" :isMore="true" :border="true"></AppNavBar>
     <MessageViewer :sessionUnitId="id" class="flex-1"></MessageViewer>
     <div>{{ pageStyle }}/{{ windowHeight }}</div>
     <ChatInput />
@@ -26,7 +18,12 @@ const props = defineProps({
     default: 'e52bacf4-c231-061a-6628-3a0b0cf571fb',
     // required: true,
   },
+  title: {
+    type: String,
+  },
 });
+
+const title = ref(props.title);
 
 const windowHeight = uni.getSystemInfoSync().windowHeight;
 const pageStyle = reactive({

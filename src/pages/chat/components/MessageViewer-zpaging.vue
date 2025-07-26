@@ -20,7 +20,7 @@
       <!-- 顶部提示文字 -->
       <!-- #ifdef H5 || MP-BAIDU || MP-TOUTIAO -->
       <template #top>
-        <NavBtn />
+        <!-- <NavBtn /> -->
       </template>
       <template #bottom>
         <view @click="onSend">onSend</view>

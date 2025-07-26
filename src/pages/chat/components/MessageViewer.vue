@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-demo">
+  <div class="chat-session">
     <!-- <div class="toolbar">
       <button v-if="!streaming" @click="startStream()">Start stream</button>
       <button v-else @click="stopStream()">Stop stream</button>
@@ -146,7 +146,7 @@ const onScroll = e => {
 </script>
 
 <style scoped>
-.chat-demo {
+.chat-session {
   display: flex;
   overflow: hidden;
   position: relative;

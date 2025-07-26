@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <view class="flex flex-col line-after z-999">
-      <AppNavBar title="" :isBack="true" :border="true" >
+      <AppNavBar title="" :isBack="true" :border="true">
         <template #left>
           <CurrentChatObject />
         </template>
@@ -68,6 +68,7 @@
 </template>
 
 <script lang="ts" setup>
+import { onLoad, onUnload } from '@dcloudio/uni-app';
 import { usePaging } from '@/hooks/usePaging';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
@@ -234,12 +235,12 @@ watch(
   { immediate: true },
 );
 
-const onSessionUnitClick = (item: any, index: number) => {
+const onSessionUnitClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onSessionUnitClick', item, index);
   dataList.value[index].badge = '123';
-  uni.$emit('new-message@signalR');
   navToChat({
     id: item.id,
+    title: item?.destination?.displayName || item?.destination?.name,
   });
   // pagingRef.value?.reload(true);
 };
@@ -251,12 +252,23 @@ const onSearch = () => {
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
   uni.$on('new-message@signalR', fetchLatest);
+
+  uni.$on('connected@signalr', e => {
+    console.log('signalR connected', e);
+    fetchLatest();
+  });
 });
 onUnmounted(() => {
   // 组件销毁时可以执行一些清理操作
   uni.$off('new-message@signalR');
 });
+
+onLoad(() => {
+  console.log('h5:onLoad');
+});
+onUnload(() => {
+  console.log('h5:onUnload');
+});
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

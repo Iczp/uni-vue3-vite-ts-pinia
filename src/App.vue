@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
 import { useBridge } from './hooks/bridge';
+
+const events = 'connected,reconnected,reconnecting,close,received'
+  .split(',')
+  .map(x => `${x}@signalr`);
+
 onLaunch(() => {
   console.log('App Launch');
 
+  events.forEach(event => {
+    console.log(`uni.$on: ${event}`);
+    uni.$on(event, (...args) => {
+      console.log(`##############Event: ${event}`, ...args);
+    });
+  });
+
+  // 初始化桥接
   useBridge();
 });
 onShow(() => {
@@ -15,8 +28,6 @@ onHide(() => {
 onError(err => {
   console.log('App error', err);
 });
-
-
 </script>
 
 <style lang="scss">

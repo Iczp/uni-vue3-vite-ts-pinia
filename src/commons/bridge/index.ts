@@ -7,7 +7,7 @@ export const invoke = (input: InvokeInput) =>
     try {
       if (!webView) {
         reject({ message: `非App环境`, input });
-        console.log("invoke", `非App环境`, input);
+        console.warn("invoke", `非App环境`, input);
         return ;
       }
 

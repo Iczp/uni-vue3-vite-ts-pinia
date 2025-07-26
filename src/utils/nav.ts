@@ -64,7 +64,7 @@ export const navToChat = (args: { [key: string]: any }) => {
   var url = toUrl('http://10.0.5.20:4000/#/pages/chat/session', args);
   return navToWebview(
     url,
-    { title: '请选择人员' },
+    { title: args?.title || '' },
     {
       // animationType: "pop-in",
     },

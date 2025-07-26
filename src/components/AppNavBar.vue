@@ -1,9 +1,6 @@
 <template>
   <div class="app-nav-bar-wrapper">
-    <AppStatusBar
-      v-if="isStatusBar"
-      :background-color="statusBarBackgroundColor"
-    ></AppStatusBar>
+    <AppStatusBar v-if="isStatusBar" :background-color="statusBarBackgroundColor"></AppStatusBar>
     <div
       class="app-nav-bar flex flex-row items-center gap-4 px-12 text-18"
       :class="{ border }"
@@ -20,10 +17,7 @@
           <!-- <div class="i-mdi:arrow-back"></div> -->
         </div>
       </slot>
-      <div
-        class="flex flex-1 text-ellipsis flex-center"
-        :style="{ color: titleColor }"
-      >
+      <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
         <slot>{{ title }}</slot>
       </div>
       <slot name="right">
@@ -31,7 +25,7 @@
           <!-- <div class="i-ic:baseline-settings"></div>
           <div class="i-ic:outline-ios-share"></div>
           <div class="i-ic:sharp-share"></div> -->
-          <!-- <div class="i-ic:baseline-more-vert"></div> -->
+          <div v-if="isMore" class="text-20 i-ic:round-more-horiz"></div>
         </div>
       </slot>
     </div>
@@ -39,9 +33,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import AppStatusBar from "./AppStatusBar.vue";
-import { navigateBack } from "@/commons/bridge";
+import { ref } from 'vue';
+import AppStatusBar from './AppStatusBar.vue';
+import { navigateBack } from '@/commons/bridge';
 // import { Icon } from '@iconify/vue';
 const props = defineProps({
   isStatusBar: {
@@ -49,6 +43,9 @@ const props = defineProps({
   },
   isBack: {
     default: true,
+  },
+  isMore: {
+    default: false,
   },
   statusBarBackgroundColor: {
     required: false,
@@ -62,7 +59,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   border: {
     default: false,
@@ -70,9 +67,17 @@ const props = defineProps({
   background: {},
 });
 const onBack = () => {
+  console.log('onBack',getCurrentPages);
+  navigateBack().then(() => {
+    console.log('navigateBack success');
+  }).catch(err => {
+    console.error('navigateBack error', err);
+  });
+
   const pages = getCurrentPages();
+  console.log('onBack', pages);
   const page = pages[pages.length - 1];
-  console.log("onBack", page.$page, pages);
+  console.log('onBack', page.$page, pages);
   if (pages.length <= 1) {
     // 如果只有一个页面，则返回使用 bridge
     navigateBack();
@@ -86,8 +91,6 @@ const style = ref({
   color: props.titleColor,
 });
 </script>
-
-
 
 <style lang="scss">
 .app-nav-bar-wrapper {
