@@ -2,7 +2,7 @@
   <div class="app-nav-bar-wrapper">
     <AppStatusBar v-if="isStatusBar" :background-color="statusBarBackgroundColor"></AppStatusBar>
     <div
-      class="app-nav-bar flex flex-row items-center gap-4 px-12 text-18"
+      class="app-nav-bar flex flex-row justify-between items-center gap-4 px-12 text-18"
       :class="{ border }"
       :style="style"
     >
@@ -17,9 +17,11 @@
           <!-- <div class="i-mdi:arrow-back"></div> -->
         </div>
       </slot>
-      <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
-        <slot>{{ title }}</slot>
-      </div>
+      <slot>
+        <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
+          {{ title }}
+        </div>
+      </slot>
       <slot name="right">
         <div class="flex gap-12">
           <!-- <div class="i-ic:baseline-settings"></div>
@@ -67,12 +69,14 @@ const props = defineProps({
   background: {},
 });
 const onBack = () => {
-  console.log('onBack',getCurrentPages);
-  navigateBack().then(() => {
-    console.log('navigateBack success');
-  }).catch(err => {
-    console.error('navigateBack error', err);
-  });
+  console.log('onBack', getCurrentPages);
+  navigateBack()
+    .then(() => {
+      console.log('navigateBack success');
+    })
+    .catch(err => {
+      console.error('navigateBack error', err);
+    });
 
   const pages = getCurrentPages();
   console.log('onBack', pages);
@@ -103,7 +107,7 @@ const style = ref({
   // backdrop-filter: blur(10px);
 }
 .app-nav-bar {
-  justify-content: space-around;
+  // justify-content: space-around;
   height: var(--app-nav-bar-height);
   font-size: var(--app-nav-font-size);
 }

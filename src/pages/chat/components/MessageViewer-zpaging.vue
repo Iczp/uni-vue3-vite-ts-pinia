@@ -14,6 +14,7 @@
       safe-area-inset-bottom
       bottom-bg-color="#f8f8f8"
       @query="queryList"
+      @onRefresh="onRefresh"
       @keyboardHeightChange="keyboardHeightChange"
       @hidedKeyboard="hidedKeyboard"
     >
@@ -153,7 +154,11 @@ const keyboardHeightChange = res => {
 const hidedKeyboard = () => {
   // inputBar.value.hidedKeyboard();
 };
-
+const onRefresh = () => {
+  // 刷新时，重新获取最新数据
+  console.log('onRefresh');
+  fetchLatest();
+};
 // 发送新消息
 const doSend = msg => {
   uni.showLoading({

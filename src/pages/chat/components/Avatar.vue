@@ -15,8 +15,16 @@
     ></image>
     <block v-else>
       <i v-if="objectType == ObjectTypes.Room" class="i-ic:baseline-group"></i>
-      <i v-else-if="objectType == ObjectTypes.Official" class="i-ic:baseline-group"></i>
+      <i v-else-if="objectType == ObjectTypes.Robot" class="i-ic:round-smart-toy"></i>
+      <i v-else-if="objectType == ObjectTypes.Subscription" class="i-ic:outline-spa"></i>
+      <i v-else-if="objectType == ObjectTypes.Official" class="i-ic:round-spa"></i>
+      <i v-else-if="objectType == ObjectTypes.ShopKeeper" class="i-ic:round-shopify"></i>
+      <i v-else-if="objectType == ObjectTypes.ShopWaiter" class="i-ic:round-shopify"></i>
+      <i v-else-if="objectType == ObjectTypes.Square" class="i-ic:round-chat"></i>
+      <i v-else-if="objectType == ObjectTypes.Anonymous" class="i-ic:round-person-outline"></i>
+      <i v-else-if="objectType == ObjectTypes.Personal" class="i-ic:baseline-person"></i>
       <i v-else class="i-ic:baseline-person"></i>
+      <!-- <i v-else>{{ objectType }}</i> -->
     </block>
   </div>
 </template>

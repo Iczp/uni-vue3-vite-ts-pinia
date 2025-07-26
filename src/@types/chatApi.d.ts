@@ -168,20 +168,28 @@ declare namespace Chat {
   }
 
   export interface SessionUnitDto {
-    id: number | string;
+    id: string;
     destination?: ChatObjectDto;
-    setting?: SessionUnitSettingDto;
-    lastMessage: MessageDto;
-    lastMessageId: number;
-    ownerId: number;
-    ownerObjectType: number;
-    privateBadge: number;
-    publicBadge: number;
-    remindAllCount: number;
-    remindMeCount: number;
-    sessionId: string;
-    sorting: number;
-    ticks: number;
+    setting?: SessionUnitSettingDto | null;
+    lastMessage?: MessageDto | null;
+    lastMessageId?: number | null;
+    ownerId: number | null;
+    ownerObjectType: ObjectTypes | null;
+    privateBadge: number | null;
+    publicBadge: number | null;
+    remindAllCount: number | null;
+    remindMeCount: number | null;
+    sessionId: string | null;
+    sorting: number | null;
+    ticks: number | null;
+    creationTime?: string | null;
+    LastModificationTime?: string | null;
+    sessionUnitCount?: number | null;
+    [key: string]: any; // 允许任意额外的属性
+  }
+
+  export interface SessionUnitDetailDto extends SessionUnitDto {
+    sessionUnitCount?: number | null;
     [key: string]: any; // 允许任意额外的属性
   }
 

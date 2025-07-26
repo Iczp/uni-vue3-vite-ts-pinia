@@ -3,6 +3,7 @@ import { version } from '../../package.json';
 
 export const formatPostData = (data: any) => {
   // 使用 Object.fromEntries 将键值对数组转换为对象
+  if (!data || typeof data !== 'object') return data;
   const filteredData = Object.fromEntries(
     Object.entries(data).filter(
       ([key, value]) => value !== null && value !== '' && value !== undefined,
@@ -93,7 +94,18 @@ export const getSessionUnitList = (data?: Chat.SessionUnitListInput) =>
     data,
   });
 
-  export const getMessageList = (data?: Chat.MessageListInput) =>
+export const getSessionUnitItem = ({ id }: { id: string }) =>
+  chatRequest<Chat.SessionUnitDto>({
+    url: `/api/chat/session-unit/${id}`,
+    method: 'GET',
+  });
+  export const getSessionUnitItemDetail = ({ id }: { id: string }) =>
+  chatRequest<Chat.SessionUnitDto>({
+    url: `/api/chat/session-unit/${id}/detail`,
+    method: 'GET',
+  });
+
+export const getMessageList = (data?: Chat.MessageListInput) =>
   chatRequest<Chat.PagedResult<Chat.MessageDto>>({
     url: '/api/chat/message',
     method: 'GET',

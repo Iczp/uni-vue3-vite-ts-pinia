@@ -8,8 +8,8 @@ import { formatTimeAgo } from '@/utils/formatTimeAgo';
 // 定义接收时间参数的 prop
 const props = defineProps({
   time: {
-    type: [Date, String],
-    required: true,
+    type: [Date, String, null],
+    required: false,
   },
 });
 
