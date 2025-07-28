@@ -1,5 +1,6 @@
 import type { AnimationType } from '@/@types/uni';
 import { navToWebview } from '@/commons/bridge';
+import { isH5, isHtml5Plus } from './platform';
 
 export const isEmpty = (v: any) => !v && v != 0;
 
@@ -61,10 +62,23 @@ export const jsonParse = (json: string) => {
 };
 
 export const navToChat = (args: { [key: string]: any }) => {
-  var url = toUrl('http://10.0.5.20:4000/#/pages/chat/session', args);
+  var url = toUrl('/pages/chat/session', args);
   return navToWebview(
     url,
     { title: args?.title || '' },
+    {
+      // animationType: "pop-in",
+    },
+  );
+};
+
+export const navToSetting = (args: { [key: string]: any }) => {
+  var url = toUrl('/pages/chat/setting', args);
+
+  console.log('isH5', isH5);
+  return navToWebview(
+    url,
+    { title: args?.title || '聊天设置' },
     {
       // animationType: "pop-in",
     },

@@ -1,39 +1,37 @@
 <template>
-  <div class="session-page" :style="pageStyle">
-    <AppNavBar :title="title" :isBack="true" :isMore="true" :border="true">
-      <div class="flex flex-1 items-center flex-col justify-center gap-2">
-        <div class="text-16 flex flex-row items-center gap-4 max-w-[64%]">
-          <span class="text-ellipsis">{{ title }}</span>
-          <i class="text-14 text-gray-400 i-ic:baseline-notifications-off"></i>
-        </div>
-        <div
-          v-if="sessionUnit?.sessionUnitCount && destination?.objectType == ObjectTypes.Room"
-          class="text-10 text-sky-500"
-        >
-          共有 {{ sessionUnit?.sessionUnitCount }} 人
-        </div>
-      </div>
+  <div class="setting-page" :style="pageStyle">
+    <AppNavBar :title="title" :isBack="true" :border="true"></AppNavBar>
+    <div>isHtml5Plus:{{ isHtml5Plus }}</div>
+    <div>{{ userAgent }}</div>
 
-      <template #right>
-        <div class="text-20 flex flex-row gap-8">
-          <div v-if="isShopkeeperOrWaiter" class="text-20 i-ic:round-electrical-services"></div>
-          <div class="text-20 i-ic:round-more-horiz" @click="onMoreClick"></div>
-        </div>
-      </template>
-    </AppNavBar>
-    <MessageViewer :sessionUnitId="id" class="flex-1"></MessageViewer>
-    <div>{{ pageStyle }}/{{ windowHeight }}</div>
-    <ChatInput :enabled="isInputEnabled" />
+    <div class="flex flex-row"></div>
+
+    <CellGroup label="群设置">
+      <Cell label="名称" class="border-after border-before" :value="groupName" arrow></Cell>
+      <Cell label="二维码" class="border-after" valueIcon="i-ic:round-qrcode" arrow></Cell>
+    </CellGroup>
+
+    <CellGroup label="设置">
+      <Cell label="免打扰" class="border-after border-before" arrow></Cell>
+      <Cell
+        label="二维码"
+        class="border-after"
+        valueIcon="i-ic:round-qrcode"
+        :value="'dddd45646'"
+        arrow
+      ></Cell>
+    </CellGroup>
   </div>
 </template>
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
-import MessageViewer from './components/MessageViewer-zpaging.vue';
+import Cell from './components/Cell.vue';
+import CellGroup from './components/CellGroup.vue';
 import ChatInput from './components/ChatInput.vue';
 import { getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
+import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
-import { navToSetting } from '@/utils/nav';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -43,8 +41,11 @@ const props = defineProps({
   },
   title: {
     type: String,
+    default: '聊天设置',
   },
 });
+
+const userAgent = navigator.userAgent;
 
 const title = ref(props.title);
 const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
@@ -56,6 +57,8 @@ const isShopkeeperOrWaiter = computed(() =>
     sessionUnit.value?.ownerObjectType || ObjectTypes.Anonymous,
   ),
 );
+
+const groupName = ref('');
 
 const isImmersed = computed(() => sessionUnit.value?.setting?.isImmersed || false);
 
@@ -72,14 +75,9 @@ getSessionUnitItemDetail({ id: props.id }).then(res => {
   //   title.value += `(${res.sessionUnitCount})`;
   // }
   sessionUnit.value = res;
+
+  groupName.value = res.destination?.name || '';
 });
-const onMoreClick = () => {
-  console.log('onMoreClick');
-  navToSetting({
-    id: props.id,
-    title: '聊天设置',
-  });
-};
 
 onMounted(() => {
   console.log('mounted');
@@ -94,7 +92,7 @@ html {
 }
 </style>
 <style lang="scss" scoped>
-.session-page {
+.settings-page {
   display: flex;
   overflow: hidden;
   position: fixed;

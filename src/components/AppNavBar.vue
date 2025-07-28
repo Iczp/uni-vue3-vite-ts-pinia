@@ -75,19 +75,9 @@ const onBack = () => {
       console.log('navigateBack success');
     })
     .catch(err => {
+      uni.navigateBack();
       console.error('navigateBack error', err);
     });
-
-  const pages = getCurrentPages();
-  console.log('onBack', pages);
-  const page = pages[pages.length - 1];
-  console.log('onBack', page.$page, pages);
-  if (pages.length <= 1) {
-    // 如果只有一个页面，则返回使用 bridge
-    navigateBack();
-    return;
-  }
-  uni.navigateBack();
 };
 
 const style = ref({

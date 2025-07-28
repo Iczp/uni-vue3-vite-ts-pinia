@@ -89,13 +89,13 @@ const onRefresh = () => {
   console.log('刷新');
 };
 
-const setMaxMessageId = (id: number | null, force: boolean = false) => {
+const setMaxMessageId = (id: number | null | undefined, force: boolean = false) => {
   if (force || Number(id) > (maxLastMessageId.value || 0)) {
     maxLastMessageId.value = id;
     console.log('setMaxMessageId', id);
   }
 };
-const setMinMessageId = (id: number | null, force: boolean = false) => {
+const setMinMessageId = (id: number | null | undefined, force: boolean = false) => {
   if (force || Number(id) < (minLastMessageId.value || Infinity)) {
     minLastMessageId.value = id;
     console.log('setMinMessageId', id);
@@ -170,9 +170,9 @@ const updateDatalist = (list: Chat.SessionUnitDto[]) => {
   // 按 sorting 和 lastMessageId 降序排序
   dataList.value.sort((a, b) => {
     if (a.sorting !== b.sorting) {
-      return b.sorting - a.sorting; // 首先按 sorting 降序排序
+      return (b.sorting || 0) - (a.sorting || 0); // 首先按 sorting 降序排序
     } else {
-      return b.lastMessageId - a.lastMessageId; // 如果 sorting 相同，则按 lastMessageId 降序排序
+      return (b.lastMessageId || 0) - (a.lastMessageId || 0); // 如果 sorting 相同，则按 lastMessageId 降序排序
     }
   });
   dataList.value = [...dataList.value];

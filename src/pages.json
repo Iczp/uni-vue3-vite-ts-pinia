@@ -62,6 +62,13 @@
       }
     },
     {
+      "path": "pages/chat/setting",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "聊天设置"
+      }
+    },
+    {
       "path": "pages/chat/bouncing-scroll-demo",
       "style": {
         "navigationStyle": "custom",

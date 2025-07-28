@@ -6,6 +6,8 @@ enum EPlatform {
   AppPlusNvue = 'APP-PLUS-NVUE',
   /** H5 */
   H5 = 'H5',
+  /** H5-plus */
+  H5Plus = 'H5-plus',
   /** 微信小程序 */
   MpWeixin = 'MP-WEIXIN',
   /** 支付宝小程序 */
@@ -78,6 +80,11 @@ export const platform: EPlatform = ifDefPlatform();
 
 /** H5 */
 export const isH5 = platform === EPlatform.H5;
+
+console.log('userAgent', navigator.userAgent);
+
+export const isHtml5Plus = isH5 && navigator.userAgent.indexOf('Html5Plus') > -1;
+
 /** 微信小程序 */
 export const isMpWeixin = platform === EPlatform.MpWeixin;
 /** 支付宝小程序 */

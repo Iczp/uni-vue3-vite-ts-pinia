@@ -111,7 +111,7 @@ function goTest() {
 
 const onChat = () => {
 
-  navToWebview('http://10.0.5.20:4000/#/pages/chat/index');
+  navToWebview('/pages/chat/index');
 };
 function goScan() {
   navTo('/pages/test/scan', {
