@@ -2,7 +2,6 @@
   <z-paging
     ref="pagingRef"
     :refresher-only="true"
-    @scroll="onScroll"
     @refresh="onRefresh"
     :defaultPageSize="999"
     :auto="true"
@@ -65,13 +64,19 @@
       </CellGroup>
 
       <CellGroup label="设置">
-        <Cell label="免打扰" class="border-before" arrow></Cell>
-        <Cell label="置顶聊天" class="border-before" arrow></Cell>
-        <Cell label="提醒" class="border-before" arrow></Cell>
+        <Cell label="免打扰" class="border-before" arrow>
+          <switch :checked="isImmersed" color="#298fff" style="transform: scale(0.84);" />
+        </Cell>
+        <Cell label="置顶聊天" class="border-before" arrow>
+          <switch :checked="isToping" color="#298fff" style="transform: scale(0.84);" />
+        </Cell>
+        <Cell label="提醒" class="border-before" arrow>
+          <switch :checked="isRemind" color="#298fff" style="transform: scale(0.84);" />
+        </Cell>
       </CellGroup>
 
       <CellGroup>
-        <Cell label="设置聊天背景" class="border-after border-before" arrow></Cell>
+        <Cell label="设置聊天背景" class="border-after border-before" :disabled="true" arrow></Cell>
       </CellGroup>
 
       <CellGroup>
@@ -107,11 +112,11 @@ const props = defineProps({
   },
   count: {
     type: [Number, String],
-    default: 10,
+    default: 13,
   },
   objectType: {
-    type: Number as () => ObjectTypes,
-    default: 10,
+    type: [String, Number],
+    default: 0,
   },
 });
 
@@ -131,11 +136,14 @@ const isShopkeeperOrWaiter = computed(() =>
 const pagingRef = ref();
 const dataList = ref<Chat.ChatObjectDto[]>([]);
 
-const skeletonCount = ref(Math.max(10, Number(props.count)));
+const skeletonCount = ref(Math.min(13, Number(props.count)));
 
 const groupName = ref('');
 
-const isImmersed = computed(() => sessionUnit.value?.setting?.isImmersed || false);
+const isImmersed = ref(false);
+const isToping = ref(false);
+const isRemind = ref(false);
+
 const objectType = computed(() => sessionUnit.value?.destination?.objectType || props?.objectType);
 const windowHeight = uni.getSystemInfoSync().windowHeight;
 console.log(windowHeight);

@@ -65,7 +65,7 @@ const pageStyle = reactive({
   // height: `${windowHeight}px`,
 });
 
-getSessionUnitItem({ id: props.id }).then(res => {
+getSessionUnitItemDetail({ id: props.id }).then(res => {
   console.log('getSessionUnitItem', res);
   title.value = res.destination?.displayName || res.destination?.name || '';
   // if (res.destination?.objectType == ObjectTypes.Room) {

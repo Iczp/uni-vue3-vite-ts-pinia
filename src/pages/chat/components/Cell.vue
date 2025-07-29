@@ -1,7 +1,7 @@
 <template>
-  <div class="cell flex flex-row justify-between items-center gap-12 px-12">
+  <div class="cell flex flex-row justify-between items-center gap-12 px-12 text-dark-500" :disabled="disabled">
     <slot name="label">
-      <div class="cell-label flex flex-row gap-8 items-center text-dark-400 max-w-[50%]">
+      <div class="cell-label flex flex-row gap-8 items-center  max-w-[50%]">
         <i v-if="icon" :class="icon"></i>
         <span class="text-ellipsis">{{ label }}</span>
       </div>
@@ -35,6 +35,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  url: {
+    type: [String, Boolean],
+    default: false,
+  },
+  disabled: {
+    type: [Boolean],
+    default: false,
+  },
 });
 </script>
 
@@ -44,7 +52,10 @@ const props = defineProps({
   min-height: 96rpx;
   background-color: #fff;
 }
-.cell:active {
+.cell[disabled='true'] {
+  color: #ccc;
+}
+.cell:not([disabled='true']):active {
   background-color: rgba(0, 0, 0, 0.05);
 }
 .border-before::before,
