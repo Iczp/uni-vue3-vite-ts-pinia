@@ -50,6 +50,7 @@ const title = ref(props.title);
 const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
 const setting = computed(() => sessionUnit.value?.setting);
 const destination = computed(() => sessionUnit.value?.destination);
+const owner = computed(() => sessionUnit.value?.owner);
 const isInputEnabled = computed(() => setting.value?.isInputEnabled || false);
 const isShopkeeperOrWaiter = computed(() =>
   [ObjectTypes.ShopKeeper, ObjectTypes.ShopWaiter].includes(
@@ -78,8 +79,8 @@ const onMoreClick = () => {
   navToSetting({
     id: props.id,
     objectType: sessionUnit.value?.destination?.objectType,
-    title: '聊天设置',
-    count: sessionUnit.value?.sessionUnitCount || 10,
+    // title: '聊天设置',
+    count: sessionUnit.value?.sessionUnitCount,
   });
 };
 

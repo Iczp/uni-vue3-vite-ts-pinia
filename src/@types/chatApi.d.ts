@@ -187,6 +187,7 @@ declare namespace Chat {
   export interface SessionUnitDto {
     id: string;
     destination?: ChatObjectDto;
+    owner?: ChatObjectDto;
     setting?: SessionUnitSettingDto | null;
     lastMessage?: MessageDto | null;
     lastMessageId?: number | null;

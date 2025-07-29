@@ -75,7 +75,7 @@ export const navToChat = (args: { [key: string]: any }) => {
 export const navToSetting = (args: { [key: string]: any }) => {
   var url = toUrl('/pages/chat/setting', args);
 
-  console.log('isH5', isH5);
+  console.log('isHtml5Plus', isHtml5Plus);
   return navToWebview(
     url,
     { title: args?.title || '聊天设置' },

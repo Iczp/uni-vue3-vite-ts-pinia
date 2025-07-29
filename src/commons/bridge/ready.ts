@@ -5,6 +5,7 @@ import { jsonParse } from '@/utils/object';
 import { getAuth, getSystemInfo } from '.';
 import { useAuth } from '@/store/auth';
 import { useUser } from '@/store/user';
+import { isHtml5Plus } from '@/utils/platform';
 
 export const setCss = (property: string, value: string) => {
   document.documentElement.style.setProperty(property, value);
@@ -48,34 +49,44 @@ const storageKey = 'app-info-v1';
 
 const runGetSystemInfo = (caller?: string) => {
   console.log('runGetSystemInfo', caller);
-  getSystemInfo().then(res => {
-    const sysInfo = res.result;
-    setCssVar(sysInfo);
-    uni.setStorageSync(storageKey, JSON.stringify(sysInfo));
-    console.log('getSystemInfo', JSON.stringify(sysInfo));
-  });
+  getSystemInfo()
+    .then(res => {
+      const sysInfo = res.result;
+      setCssVar(sysInfo);
+      uni.setStorageSync(storageKey, JSON.stringify(sysInfo));
+      console.log('getSystemInfo', JSON.stringify(sysInfo));
+    })
+    .catch(err => {
+      console.error('getSystemInfo error', err);
+    });
 };
 
 const runGetAuthInfo = (caller?: string) => {
   console.log('runGetAuthInfo', caller);
-  getAuth().then(res => {
-    console.log('getAuth', JSON.stringify(res));
-    const { header, user } = res.result;
-    const userStore = useUser();
-    userStore.setUserInfo(user);
-    const authStore = useAuth();
-    if (!authStore.token || authStore.isExpired) {
-      authStore.fetchToken(header);
-      return;
-    }
-  });
+  getAuth()
+    .then(res => {
+      console.log('getAuth', JSON.stringify(res));
+      const { header, user } = res.result;
+      const userStore = useUser();
+      userStore.setUserInfo(user);
+      const authStore = useAuth();
+      if (!authStore.token || authStore.isExpired) {
+        authStore.fetchToken(header);
+        return;
+      }
+    })
+    .catch(err => {
+      console.error('getAuth error', err);
+    });
 };
 export const appInit = () => {
-  console.log('app-init');
+  console.log('------------app-init isHtml5Plus-------------', isHtml5Plus);
   const storeValue = uni.getStorageSync(storageKey);
   console.log('app-init storeValue', storeValue);
   sysInfo = jsonParse(storeValue);
   console.log('app-init sysInfo', sysInfo);
+
+  //login ...
 
   appReady(caller => {
     runGetSystemInfo(caller);
@@ -95,7 +106,7 @@ const appReady = (callback: (caller: string) => void | Promise<any>) => {
   // 定义一个轮询函数来检查PlusReady状态
   const checkPlusReady = () => {
     if (isPlus()) {
-      console.log('PlusReady');
+      console.log('===================PlusReady===================');
       // 如果PlusReady状态满足，同样获取系统信息并设置CSS变量
       callback('checkPlusReady');
       // 停止轮询

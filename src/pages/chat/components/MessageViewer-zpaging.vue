@@ -94,7 +94,7 @@ const fetchLatest = async () => {
 const fetchHistory = async () => {
   if (isHistoryPending.value) return;
   isHistoryPending.value = true;
-  getMessageList({
+  return await getMessageList({
     sessionUnitId: props.sessionUnitId,
     maxMessageId: null,
     maxResultCount: 20,

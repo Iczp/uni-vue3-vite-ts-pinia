@@ -1,7 +1,7 @@
 <template>
   <view class="page-container">
     <nav-btn @click="show = true"></nav-btn>
-
+    <!-- {{ erpUserId }} -->
     <swiper class="swiper-container" :current="activeIndex" @change="onSwiperChange">
       <swiper-item v-for="(tab, index) in tabs" :key="index">
         <view class="swiper-item">
@@ -51,6 +51,15 @@ import { ref, shallowRef } from 'vue';
 import NavBtn from './components/nav-btn.vue';
 import { useChatStore } from '@/store/chatStore';
 const store = useChatStore();
+
+const props = defineProps({
+  erpUserId: {
+    type: String,
+    default: 'dd3803b8-4b20-4ed6-b58c-49a3e499380c',
+  },
+});
+
+const erpUserId = props.erpUserId;
 
 uni.$on('refresh@chat-index', () => {
   store.getChatObjects();
