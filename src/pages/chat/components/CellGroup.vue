@@ -1,6 +1,6 @@
 <template>
   <div class="cell-group text-gray-500">
-    <slot name="label">
+    <slot v-if="label" name="label">
       <div class="cell-label flex flex-row gap-8 items-center h-32 items-center px-12 ">
         <i v-if="icon" :class="icon"></i>
         <span>{{ label }}</span>

@@ -1,11 +1,6 @@
 <template>
   <div class="session-unit gap-12">
-    <Avatar
-      :size="48"
-      :objectType="objectType"
-      :src="item?.destination?.thumbnail"
-      class="text-24"
-    />
+    <Avatar :size="48" :objectType="objectType" :item="item?.destination" class="text-24" />
     <div class="flex flex-1 flex-col">
       <div class="flex flex-row justify-between w-full gap-8 h-24 items-center text-14">
         <div class="text-15 text-ellipsis max-w-160">
@@ -25,7 +20,7 @@
           <div v-if="isFav" class="text-gray-400 i-ic:baseline-star"></div>
           <div v-if="isImmersed" class="text-gray-400 i-ic:baseline-notifications-off"></div>
           <!-- <div v-if="item?.badge" class="badge">{{ item?.badge || 0 }}</div> -->
-          <Badge :count="badge" :dot="!isImmersed && badge>0" :max="9" />
+          <Badge :count="badge" :dot="!isImmersed && badge > 0" :max="9" />
         </div>
       </div>
     </div>

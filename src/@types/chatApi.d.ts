@@ -96,6 +96,23 @@ declare namespace Chat {
     [key: string]: any; // 允许任意额外的属性
   }
 
+  interface DestinationListInput extends GetListInput {
+    // sessionUnitId
+    id?: string | null;
+    isMuted?: boolean | null;
+    isKilled?: boolean | null;
+    isPublic?: boolean | null;
+    isStatic?: boolean | null;
+    // 目标聊天对象Id
+    ownerIdList?: Array<string> | null;
+    ownerTypeList?: Array<ObjectTypes> | null;
+    tabId?: string | null;
+    roleId?: string | null;
+    joinWay?: Array<number> | null;
+    inviterId?: string;
+    [key: string]: any; // 允许任意额外的属性
+  }
+
   interface SessionUnitSettingDto {
     readedMessageId: number;
     rename: string | null;

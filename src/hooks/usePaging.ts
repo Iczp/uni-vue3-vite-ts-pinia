@@ -33,6 +33,8 @@ export function usePaging<TDto>(
     service: defaultService,
   },
 ) {
+
+  console.log('usePaging options', options);
   const pagingRef = ref();
   const isPending = ref(false);
   const isEof = ref(false);

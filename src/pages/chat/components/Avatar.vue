@@ -1,14 +1,19 @@
 <template>
-  <div class="avatar-container" :style="containerCss">
-    <div class="online-status">
+  <div class="avatar-container text-20" :style="containerCss">
+    <div v-if="!isSkeleton" class="online-status">
       <div class="status-dot status-1"></div>
     </div>
+    <!-- {{ item }} -->
+
+    <div v-if="isSkeleton" class="w-full h-full skeleton flex flex-center rounded-full">
+      <i class="text-24 text-gray-200 i-ic:baseline-person"></i>
+    </div>
     <image
-      v-if="src"
+      v-else-if="imgSrc"
       :width="size"
       :height="size"
       :art="src"
-      :src="imageSrc"
+      :src="imgSrc"
       class="avatar-image fade-in"
       :class="{ loaded: isImgLoaded }"
       @load="onImgLoad"
@@ -24,7 +29,6 @@
       <i v-else-if="objectType == ObjectTypes.Anonymous" class="i-ic:round-person-outline"></i>
       <i v-else-if="objectType == ObjectTypes.Personal" class="i-ic:baseline-person"></i>
       <i v-else class="i-ic:baseline-person"></i>
-      <!-- <i v-else>{{ objectType }}</i> -->
     </block>
   </div>
 </template>
@@ -42,12 +46,14 @@ const props = defineProps({
   },
   objectType: {
     type: Number as PropType<ObjectTypes>,
-    default: () => ObjectTypes.Personal,
+    default: null,
   },
   item: {
     type: Object as () => Chat.ChatObjectDto | undefined,
   },
 });
+
+const isSkeleton = computed(() => !props.item);
 
 const containerCss = computed(() => {
   return {
@@ -58,13 +64,16 @@ const containerCss = computed(() => {
     '--bg-color': '#e5e5e5',
   };
 });
-const imageSrc = computed(() => {
-  if (props.src?.startsWith('http://') || props.src?.startsWith('https://')) {
-    return props.src;
-  } else if (props.src?.startsWith('/')) {
-    return `${import.meta.env.VITE_CHAT_BASE_URL}${props.src}`;
+const imgSrc = computed(() => {
+  const src = props.src || props.item?.thumbnail;
+  if (!src) return null;
+  const regex = /^(https?:\/\/)/;
+  if (regex.test(src)) {
+    return src;
+  } else if (src?.startsWith('/')) {
+    return `${import.meta.env.VITE_CHAT_BASE_URL}${src}`;
   }
-  return `${props.src}`;
+  return `${src}`;
 });
 
 const isImgLoaded = ref(false);

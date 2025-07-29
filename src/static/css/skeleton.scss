@@ -1,47 +1,48 @@
-@import './base.scss';
-@import './style.css';
-@import './skeleton.scss';
-:root,
-page {
-  //
-  --icon-default-size: 24px;
-  --red: #c8161d;
-  --side-width: 64px;
-  --page-title-height: 64px;
-  --message-max-width: 360px;
-  background-color: #dbdbdb;
-}
-:where(iconify-icon, svg[data-iconify]) {
-  width: var(--icon-default-size);
-  height: var(--icon-default-size);
-}
-.z-paging {
-  padding-top: calc(var(--status-bar-height) + var(--app-nav-bar-height));
-}
-:where(.line-after, .line-before) {
+/* 单个骨架项 */
+.skeleton-item {
+  display: flex;
   position: relative;
-  // background-color: #c8161d;
+  align-items: center;
+  box-sizing: border-box;
+  // height: 128rpx;
 }
-.line-after::after,
-.line-before::before {
+.skeleton-item::after {
   position: absolute;
-  // left: 0;
-  // right: 0;
-  height: 1px;
-  background-color: var(--border-color, #e5e5e5);
-  content: '';
-}
-.line-after::after {
-  bottom: 0;
-}
-.line-before::before {
-  top: 0;
-}
-:where(.line-before)::before,
-:where(.line-after)::after {
-  left: 0;
+  left: 148rpx;
   right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: #dbdbdb;
+  content: '';
+  transform: scaleY(0.3);
 }
+/* 左侧头像骨架 */
+.skeleton-avatar {
+  border-radius: 50%; /* 圆形 */
+  width: 96rpx;
+  height: 96rpx;
+}
+/* 右侧内容容器 */
+.skeleton-content {
+  flex: 1; /* 占据剩余所有空间 */
+}
+/* 内容行骨架 */
+.skeleton-line {
+  margin-bottom: 10px;
+  border-radius: 4px;
+  height: 36rpx;
+}
+.skeleton-line:last-child {
+  margin-bottom: 0;
+}
+/* 短一点的内容行 */
+.skeleton-line.short {
+  width: 30%;
+}
+/*
+ * 核心：闪烁动画效果
+ * 我们给所有需要动画的元素（头像、文本行）添加 .skeleton 类
+*/
 .skeleton {
   overflow: hidden; /* 隐藏伪元素超出部分 */
   position: relative;

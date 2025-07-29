@@ -1,15 +1,15 @@
 <template>
   <div class="cell flex flex-row justify-between items-center gap-12 px-12">
     <slot name="label">
-      <div class="cell-label flex flex-row gap-8 items-center text-dark-400">
+      <div class="cell-label flex flex-row gap-8 items-center text-dark-400 max-w-[50%]">
         <i v-if="icon" :class="icon"></i>
-        <span>{{ label }}</span>
+        <span class="text-ellipsis">{{ label }}</span>
       </div>
     </slot>
     <slot :value="value">
-      <div class="cell-value flex flex-row gap-4 items-center">
+      <div class="cell-value flex flex-row gap-4 items-center max-w-[45%]">
         <i v-if="valueIcon" :class="valueIcon"></i>
-        <span>{{ value }}55</span>
+        <span class="text-ellipsis">{{ value }}</span>
         <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
       </div>
     </slot>
@@ -17,7 +17,6 @@
 </template>
 
 <script setup>
-
 const props = defineProps({
   label: {
     type: [String, null, undefined],
@@ -42,7 +41,8 @@ const props = defineProps({
 <style lang="scss" scoped>
 .cell {
   position: relative;
-  min-height: 80rpx;
+  min-height: 96rpx;
+  background-color: #fff;
 }
 .cell:active {
   background-color: rgba(0, 0, 0, 0.05);

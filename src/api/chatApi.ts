@@ -99,11 +99,21 @@ export const getSessionUnitItem = ({ id }: { id: string }) =>
     url: `/api/chat/session-unit/${id}`,
     method: 'GET',
   });
-  export const getSessionUnitItemDetail = ({ id }: { id: string }) =>
+export const getSessionUnitItemDetail = ({ id }: { id: string }) =>
   chatRequest<Chat.SessionUnitDto>({
     url: `/api/chat/session-unit/${id}/detail`,
     method: 'GET',
   });
+
+export const getDestinationList = (data: Chat.DestinationListInput) => {
+  const id = data.id || '';
+  delete data.id;
+  return chatRequest<Chat.PagedResult<Chat.ChatObjectDto>>({
+    url: `/api/chat/session-unit/${id}/destination`,
+    method: 'GET',
+    data,
+  });
+};
 
 export const getMessageList = (data?: Chat.MessageListInput) =>
   chatRequest<Chat.PagedResult<Chat.MessageDto>>({

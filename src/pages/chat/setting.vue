@@ -1,37 +1,99 @@
 <template>
-  <div class="setting-page" :style="pageStyle">
-    <AppNavBar :title="title" :isBack="true" :border="true"></AppNavBar>
-    <div>isHtml5Plus:{{ isHtml5Plus }}</div>
-    <div>{{ userAgent }}</div>
+  <z-paging
+    ref="pagingRef"
+    :refresher-only="true"
+    @scroll="onScroll"
+    @refresh="onRefresh"
+    :defaultPageSize="999"
+    :auto="true"
+  >
+    <template #top>
+      <AppNavBar :title="title" :isBack="true" :border="true"></AppNavBar>
+    </template>
 
-    <div class="flex flex-row"></div>
+    <div class="setting-page" :style="pageStyle">
+      <!-- <div>isHtml5Plus:{{ isHtml5Plus }}</div>
+      <div>{{ userAgent }}</div> -->
 
-    <CellGroup label="群设置">
-      <Cell label="名称" class="border-after border-before" :value="groupName" arrow></Cell>
-      <Cell label="二维码" class="border-after" valueIcon="i-ic:round-qrcode" arrow></Cell>
-    </CellGroup>
+      <div class="bg-white border-after relative p-12 flex flex-col gap-8">
+        <div class="flex flex-row flex-wrap gap-y-8 box-border">
+          <ChatObject
+            v-if="dataList.length == 0"
+            v-for="item in skeletonCount"
+            :vertical="true"
+            :key="item"
+            class="flex w-[20%] flex-center"
+          />
+          <ChatObject
+            v-for="(item, index) in dataList"
+            :key="item.id"
+            :item="item.owner"
+            :vertical="true"
+            class="flex w-[20%] flex-center"
+          />
 
-    <CellGroup label="设置">
-      <Cell label="免打扰" class="border-after border-before" arrow></Cell>
-      <Cell
-        label="二维码"
-        class="border-after"
-        valueIcon="i-ic:round-qrcode"
-        :value="'dddd45646'"
-        arrow
-      ></Cell>
-    </CellGroup>
-  </div>
+          <div class="flex w-[20%] justify-center">
+            <div
+              class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
+            >
+              <i class="i-ic:round-plus text-24 text-gray-400"></i>
+            </div>
+          </div>
+          <div class="flex w-[20%] justify-center">
+            <div
+              class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
+            >
+              <i class="i-ic:round-minus text-24 text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-center">
+          <span class="text-sky-500 text-12">查看更多({{ totalCount }})</span>
+        </div>
+      </div>
+
+      <CellGroup v-if="objectType == ObjectTypes.Room" label="群设置">
+        <Cell label="群名称" class="border-before" :value="groupName" arrow></Cell>
+        <Cell label="群二维码" class="border-before" valueIcon="i-ic:round-qrcode" arrow></Cell>
+        <Cell label="群管理" class="border-before" arrow></Cell>
+        <Cell label="群公告" class="border-before" arrow></Cell>
+        <Cell label="备注" class="border-after border-before" arrow></Cell>
+      </CellGroup>
+
+      <CellGroup>
+        <Cell label="查找聊天记录" class="border-after border-before" arrow></Cell>
+      </CellGroup>
+
+      <CellGroup label="设置">
+        <Cell label="免打扰" class="border-before" arrow></Cell>
+        <Cell label="置顶聊天" class="border-before" arrow></Cell>
+        <Cell label="提醒" class="border-before" arrow></Cell>
+      </CellGroup>
+
+      <CellGroup>
+        <Cell label="设置聊天背景" class="border-after border-before" arrow></Cell>
+      </CellGroup>
+
+      <CellGroup>
+        <Cell label="清空聊天记录" class="border-after border-before" arrow></Cell>
+      </CellGroup>
+
+      <CellGroup>
+        <Cell label="投诉" class="border-after border-before" arrow></Cell>
+      </CellGroup>
+    </div>
+  </z-paging>
 </template>
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
 import Cell from './components/Cell.vue';
 import CellGroup from './components/CellGroup.vue';
-import ChatInput from './components/ChatInput.vue';
-import { getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
+import ChatObject from './components/ChatObject.vue';
+import { getDestinationList, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
+import { usePaging } from '@/hooks/usePaging';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -43,10 +105,18 @@ const props = defineProps({
     type: String,
     default: '聊天设置',
   },
+  count: {
+    type: [Number, String],
+    default: 10,
+  },
+  objectType: {
+    type: Number as () => ObjectTypes,
+    default: 10,
+  },
 });
 
 const userAgent = navigator.userAgent;
-
+const totalCount = ref(0);
 const title = ref(props.title);
 const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
 const setting = computed(() => sessionUnit.value?.setting);
@@ -58,29 +128,73 @@ const isShopkeeperOrWaiter = computed(() =>
   ),
 );
 
+const pagingRef = ref();
+const dataList = ref<Chat.ChatObjectDto[]>([]);
+
+const skeletonCount = ref(Math.max(10, Number(props.count)));
+
 const groupName = ref('');
 
 const isImmersed = computed(() => sessionUnit.value?.setting?.isImmersed || false);
-
+const objectType = computed(() => sessionUnit.value?.destination?.objectType || props?.objectType);
 const windowHeight = uni.getSystemInfoSync().windowHeight;
 console.log(windowHeight);
 const pageStyle = reactive({
   // height: `${windowHeight}px`,
 });
 
-getSessionUnitItemDetail({ id: props.id }).then(res => {
-  console.log('getSessionUnitItem', res);
-  title.value = res.destination?.displayName || res.destination?.name || '';
-  // if (res.destination?.objectType == ObjectTypes.Room) {
-  //   title.value += `(${res.sessionUnitCount})`;
-  // }
-  sessionUnit.value = res;
+const onScroll = e => {
+  console.log('onScroll', e);
+};
 
-  groupName.value = res.destination?.name || '';
-});
+const onRefresh = () => {
+  console.log('onRefresh');
+
+  Promise.all([
+    getSessionUnitItem({ id: props.id }),
+    getDestinationList({ id: props.id, maxResultCount: 13 }),
+  ])
+    .then(([sessionUnitRes, destinationListRes]) => {
+      console.log('getSessionUnitItem', sessionUnitRes);
+      // title.value =
+      //   sessionUnitRes.destination?.displayName || sessionUnitRes.destination?.name || '';
+      // if (sessionUnitRes.destination?.objectType == ObjectTypes.Room) {
+      //   title.value += `(${sessionUnitRes.sessionUnitCount})`;
+      // }
+      sessionUnit.value = sessionUnitRes;
+      groupName.value = sessionUnitRes.destination?.name || '';
+
+      dataList.value = destinationListRes.items;
+      totalCount.value = destinationListRes.totalCount;
+      pagingRef.value?.complete();
+    })
+    .catch(err => {
+      console.error('Error fetching data:', err);
+      pagingRef.value?.complete(false);
+    });
+
+  // getSessionUnitItem({ id: props.id }).then(res => {
+  //   console.log('getSessionUnitItem', res);
+  //   // title.value = res.destination?.displayName || res.destination?.name || '';
+  //   // if (res.destination?.objectType == ObjectTypes.Room) {
+  //   //   title.value += `(${res.sessionUnitCount})`;
+  //   // }
+  //   sessionUnit.value = res;
+
+  //   groupName.value = res.destination?.name || '';
+  //   pagingRef.value?.complete();
+  // });
+
+  // getDestinationList({ id: props.id, maxResultCount: 13 }).then(res => {
+  //   console.log('getDestinationList', res);
+  //   dataList.value = res.items;
+  //   pagingRef.value?.complete();
+  // });
+};
 
 onMounted(() => {
   console.log('mounted');
+  onRefresh();
   window.visualViewport?.addEventListener('resize', () => {
     // pageStyle.height = `${window?.visualViewport?.height}px`;
   });
