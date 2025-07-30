@@ -17,9 +17,9 @@ export const base64ToBlob = (base64Data: string) => {
   return new Blob([byteArray], { type: mimeType });
 };
 
-export const jsonParse = (json: any): Object | null => {
+export const jsonParse = <T>(json: any): T | null => {
   try {
-    return JSON.parse(json);
+    return JSON.parse(json) as T;
   } catch (err) {
     return null;
   }

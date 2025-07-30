@@ -47,23 +47,57 @@
 </template>
 
 <script setup>
-import { ref, shallowRef } from 'vue';
+import { ref } from 'vue';
 import NavBtn from './components/nav-btn.vue';
 import { useChatStore } from '@/store/chatStore';
 const store = useChatStore();
 
 const props = defineProps({
+  chatObjectId: {
+    type: [String, Number, null],
+    default: null,
+  },
   erpUserId: {
     type: String,
     default: 'dd3803b8-4b20-4ed6-b58c-49a3e499380c',
   },
+  tabIndex: {
+    type: [String, Number, undefined],
+    default: 0,
+  },
+  token: {
+    type: [String, null, undefined],
+    default: null,
+  },
 });
 
+console.log('store.current', store.current);
+
+const chatObjectId = Number(props.chatObjectId);
 const erpUserId = props.erpUserId;
+const token = props.token;
+
+console.log('chatObjectId:', chatObjectId);
+console.log('erpUserId:', erpUserId);
+console.log('token:', token);
 
 uni.$on('refresh@chat-index', () => {
-  store.getChatObjects();
-  store.getBadges();
+  store
+    .getChatObjects()
+    .then(res => {
+      console.log('getChatObjects:', res);
+    })
+    .catch(err => {
+      console.error('Error fetching chat objects:', err);
+    });
+  store
+    .getBadges()
+    .then(res => {
+      console.log('getBadges:', res);
+    })
+    .catch(err => {
+      console.error('Error fetching badges:', err);
+    });
 });
 
 uni.$emit('refresh@chat-index');
@@ -78,7 +112,7 @@ const tabs = ref([
     icon: 'i-ic:round-message',
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/chat/message.vue',
-    isLazy: true,
+    isLazy: false,
     badge: store.totalBadges,
     isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
@@ -105,8 +139,11 @@ const tabs = ref([
   },
 ]);
 
-const activeIndex = ref(0);
-
+const activeIndex = ref(Number(props.tabIndex) || 0);
+const tab = tabs.value[activeIndex.value] || tabs.value[0];
+if (tab && !tab.isLazy) {
+  tab.isLazy = true;
+}
 // 切换Tab
 const switchTab = index => {
   activeIndex.value = index;
