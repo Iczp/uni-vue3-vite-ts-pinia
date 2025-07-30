@@ -157,6 +157,19 @@ const onSwiperChange = async e => {
     tab.isLazy = true;
   }
 };
+
+onLoad(req => {
+  // 页面隐藏时可以执行一些清理操作
+  console.log('Chat index onLoad', req);
+});
+onHide(() => {
+  // 页面隐藏时可以执行一些清理操作
+  console.log('Chat index page onHide');
+});
+onShow(() => {
+  // 页面显示时可以执行一些初始化操作
+  console.log('Chat index page onShow');
+});
 </script>
 <style>
 body,

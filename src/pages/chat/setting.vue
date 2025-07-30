@@ -95,7 +95,7 @@
 import Cell from './components/Cell.vue';
 import CellGroup from './components/CellGroup.vue';
 import ChatObject from './components/ChatObject.vue';
-import { getDestinationList, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
+import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
@@ -160,7 +160,7 @@ const onRefresh = () => {
 
   Promise.all([
     getSessionUnitItem({ id: props.id }),
-    getDestinationList({ id: props.id, maxResultCount: 13 }),
+    getMembers({ id: props.id, maxResultCount: 13 }),
   ])
     .then(([sessionUnitRes, destinationListRes]) => {
       console.log('getSessionUnitItem', sessionUnitRes);

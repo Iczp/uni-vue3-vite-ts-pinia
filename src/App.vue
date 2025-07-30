@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
 import { useBridge } from './hooks/bridge';
+import { isHtml5Plus } from './utils/platform';
 
 const events = 'connected,reconnected,reconnecting,close,received'
   .split(',')
@@ -9,15 +10,16 @@ const events = 'connected,reconnected,reconnecting,close,received'
 onLaunch(() => {
   console.log('App Launch');
 
-  events.forEach(event => {
-    console.log(`uni.$on: ${event}`);
-    uni.$on(event, (...args) => {
-      console.log(`##############Event: ${event}`, ...args);
+  if (isHtml5Plus) {
+    events.forEach(event => {
+      console.log(`uni.$on: ${event}`);
+      uni.$on(event, (...args) => {
+        console.log(`#--H5--# Event: ${event}`, ...args);
+      });
     });
-  });
-
-  // 初始化桥接
-  useBridge();
+    // 初始化桥接
+    useBridge();
+  }
 });
 onShow(() => {
   console.log('App Show');

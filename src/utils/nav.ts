@@ -45,6 +45,28 @@ export const navTo = (
     },
   });
 
+  //
+export const goto = (params: {
+  url: string;
+  query: { [key: string]: any };
+  options?: {
+    animationType?: AnimationType;
+    [key: string]: any;
+  };
+}) => {
+  const { url, query, options } = params;
+
+  if (!isHtml5Plus) {
+  }
+  uni.navigateTo({
+    url: toUrl(url, query),
+    animationType: options?.animationType || 'pop-in',
+    fail(err) {
+      console.error(err);
+    },
+  });
+};
+
 export const redirectTo = (uri: string, obj: any) =>
   uni.redirectTo({
     url: toUrl(uri, obj),

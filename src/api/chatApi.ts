@@ -105,11 +105,11 @@ export const getSessionUnitItemDetail = ({ id }: { id: string }) =>
     method: 'GET',
   });
 
-export const getDestinationList = (data: Chat.DestinationListInput) => {
+export const getMembers = (data: Chat.DestinationListInput) => {
   const id = data.id || '';
   delete data.id;
   return chatRequest<Chat.PagedResult<Chat.ChatObjectDto>>({
-    url: `/api/chat/session-unit/${id}/destination`,
+    url: `/api/chat/session-unit/${id}/members`,
     method: 'GET',
     data,
   });
