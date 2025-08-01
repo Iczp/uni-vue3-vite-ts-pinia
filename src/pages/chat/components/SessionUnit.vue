@@ -12,8 +12,18 @@
       </div>
       <div class="flex flex-row justify-between gap-8 h-24 items-center text-12">
         <div class="text-ellipsis max-w-220">
-          <span class="text-gray-600">王总:</span>
-          <!-- <span class="text-red">[图片]</span> -->
+          <!-- @我 -->
+          <span v-if="remindCount > 0" class="remind">
+            {{ Number(remindCount) > 99 ? '99+' : remindCount }}@我
+          </span>
+          <!-- 我关注的 flowing -->
+          <span v-if="followingCount > 0" class="following" :title="followingCount.toString()">
+            <!-- <HeartFilled /> -->
+            {{ followingCount }}
+          </span>
+
+          <!-- 发送人信息 -->
+          <span v-if="isShowSender" class="sender">{{ displaySenderName }}</span>
           <span class="text-gray-400">{{ messageText }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
@@ -30,7 +40,8 @@
 import TimeAgo from './TimeAgo.vue';
 import Avatar from './Avatar.vue';
 import Badge from './Badge.vue';
-import { ObjectTypes } from '@/utils/enums';
+import { MessageTypes, ObjectTypes } from '@/utils/enums';
+import { getSenderNameForMessage } from '@/utils/messageHelper';
 const props = defineProps({
   item: {
     type: Object as () => Chat.SessionUnitDto,
@@ -43,7 +54,29 @@ const props = defineProps({
   },
 });
 
-const badge = computed(() => props.item?.badge);
+const remindMeCount = computed(() => props.item?.remindMeCount || 0);
+
+const remindAllCount = computed(() => props.item?.remindAllCount || 0);
+
+const remindCount = computed(() => remindMeCount.value + remindAllCount.value);
+const followingCount = computed(() => props.item?.followingCount || 0);
+
+const messageType = computed(
+  () => props.item?.lastMessage?.messageType as MessageTypes | undefined,
+);
+
+const isSelfSender = computed(
+  () => props.item?.id == props.item?.lastMessage?.senderSessionUnit?.id,
+);
+
+const isShowSender = computed(() => senderName.value && messageType.value != MessageTypes.Cmd);
+
+const displaySenderName = computed(() => (isSelfSender.value ? '我' : senderName.value));
+
+const badge = computed(() => props.item?.publicBadge || 0);
+
+const senderName = computed(() => getSenderNameForMessage(props.item?.lastMessage));
+
 const objectType = computed(() => props.item?.destination?.objectType as ObjectTypes);
 
 const isImmersed = computed(() => props.item?.setting?.isImmersed);
@@ -104,5 +137,43 @@ const messageText = computed(() => {
   top: 0;
   z-index: 1;
   transform: translate(50%, -50%);
+}
+.remind {
+  display: inline-flex;
+  margin-right: 4px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: #ff4d4f;
+  box-shadow: 0 0 0 1px #fff;
+  color: white;
+  /* font-size: 12px; */
+}
+.following {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: #ff4d4f;
+  color: white;
+}
+.sender {
+  color: var(--session-item-sender-color, #757575);
+}
+.sender::after {
+  margin: 0 2px;
+  color: var(--session-item-sender-after-color, #757575);
+  content: ':';
+}
+.flash {
+  animation: flash 0.5s infinite;
+}
+@keyframes flash {
+  from {
+    background: rgba(255, 0, 0, 0.637);
+  }
+  to {
+    background: rgba(255, 0, 0, 0);
+  }
 }
 </style>

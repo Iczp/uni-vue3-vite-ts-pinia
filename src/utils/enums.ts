@@ -58,3 +58,20 @@ export const messageTypeDescriptions: { [key in MessageTypes]: string } = {
   [MessageTypes.Article]: '文章',
   [MessageTypes.History]: '聊天历史消息',
 };
+
+
+
+export enum EditorTypes {
+    'Undefined' = 0,
+    'Markdown' = 1,
+    'Html' = 2,
+}
+
+/**
+ * 红包发放方式（0：随机金额;1:固定金额）
+ */
+export enum GrantModes {
+  'Undefined' = 0,
+  'Markdown' = 1,
+  'Html' = 2,
+}

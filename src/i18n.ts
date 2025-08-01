@@ -1,3 +1,7 @@
+
+
+console.log('createI18n', 555);
+
 import { createI18n } from 'vue-i18n';
 import zhCN from './locales/zh-CN.json';
 import enUS from './locales/en-US.json';
@@ -14,6 +18,8 @@ export const i18n = createI18n<[MessageSchema], Lang>({
     'en-US': enUS,
   },
 });
+
+console.log('i18n initialized with locale:', i18n.global.locale);
 
 export const language: {
   [key: string]: string;
