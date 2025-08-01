@@ -35,7 +35,7 @@
           <div v-if="isToping" class="text-gray-400 i-ic:baseline-star"></div>
           <div v-if="isImmersed" class="text-gray-400 i-ic:baseline-notifications-off"></div>
           <!-- <div v-if="item?.badge" class="badge">{{ item?.badge || 0 }}</div> -->
-          <Badge :count="badge" :dot="!isImmersed && badge > 0" :max="9" />
+          <Badge :count="badge" :dot="!isImmersed && badge > 0" :max="99" />
         </div>
       </div>
     </div>
