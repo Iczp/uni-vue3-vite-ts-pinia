@@ -10,7 +10,7 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 // 引入 uView UI
 import uView from './uni_modules/vk-uview-ui';
 
-import { i18n } from './i18n';
+// import { i18n } from './i18n';
 
 export function createApp() {
   const app = createSSRApp(App).use(store);
@@ -19,7 +19,7 @@ export function createApp() {
   // vue-virtual-scroller
   app.use(VueVirtualScroller);
   // i18n
-  app.use(i18n)
+  // app.use(i18n)
 
   app.config.globalProperties.$createElement = h;
   return {
