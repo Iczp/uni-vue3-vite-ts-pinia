@@ -10,7 +10,10 @@
 
       <!-- 右侧的内容骨架 -->
       <div class="skeleton-content">
-        <div class="skeleton-line short skeleton"></div>
+        <div class="flex flex-row justify-between">
+          <span class="skeleton-line short skeleton"></span>
+          <span class="skeleton-line w-64 skeleton"></span>
+        </div>
         <div class="skeleton-line skeleton"></div>
       </div>
     </div>

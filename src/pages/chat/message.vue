@@ -8,7 +8,7 @@
       </AppNavBar>
       <!-- <view class="h-48 px-12 flex items-center justify-between">
         <u-search
-          :placeholder="`搜索(${dataList.length}/${totalCount}) max:${maxLastMessageId}, min:${minLastMessageId}`"
+          :placeholder="`搜索(${dataList.length}/${totalCount}) max:${maxTicks}, min:${minTicks}`"
           :focus="false"
           :animation="false"
           @search="onSearch"
@@ -31,6 +31,18 @@
       :auto="true"
       :default-page-size="query.maxResultCount!"
     >
+      <!-- <template #top>
+        <div @click="fetchLatest">
+          totalCount:{{ totalCount }}, maxTicks:{{ maxTicks }}, minTicks:{{ minTicks }}
+        </div>
+      </template> -->
+      <!-- <template #bottom>
+        <div class="flex flex-center h-48 text-12 text-gray-500">
+          共有
+          <span class="font-bold mx-2">{{ dataList.length }}</span>
+          好友
+        </div>
+      </template> -->
       <template #empty>
         <div class="text-12 text-gray-400">没有消息</div>
       </template>
@@ -47,7 +59,7 @@
       </template>
 
       <template #loadingMoreLoading>
-        <SessionUnitSkeleton :count="1" />
+        <SessionUnitSkeleton :count="3" />
       </template>
 
       <template #loadingMoreNoMore>
@@ -79,31 +91,27 @@ import SessionUnitSkeleton from './components/SessionUnitSkeleton.vue';
 import { useChatStore } from '@/store/chatStore';
 import { updateSortedList } from '@/utils/list';
 import { navToChat } from '@/utils/nav';
+import { jsonParse } from '@/utils/object';
 
 const userStore = useUser();
 const authStore = useAuth();
 const chatStore = useChatStore();
 
-const onRefresh = () => {
-  uni.$emit('refresh@chat-index');
-  console.log('刷新');
-};
-
-const setMaxMessageId = (id: number | null | undefined, force: boolean = false) => {
-  if (force || Number(id) > (maxLastMessageId.value || 0)) {
-    maxLastMessageId.value = id;
-    console.log('setMaxMessageId', id);
+const setMaxTicks = (id: number | null | undefined, force: boolean = false) => {
+  if (force || Number(id) > (maxTicks.value || 0)) {
+    maxTicks.value = id;
+    console.log('setMaxTicks', id);
   }
 };
-const setMinMessageId = (id: number | null | undefined, force: boolean = false) => {
-  if (force || Number(id) < (minLastMessageId.value || Infinity)) {
-    minLastMessageId.value = id;
-    console.log('setMinMessageId', id);
+const setMinTicks = (id: number | null | undefined, force: boolean = false) => {
+  if (force || Number(id) < (minTicks.value || Infinity)) {
+    minTicks.value = id;
+    console.log('setMinTicks', id);
   }
 };
 const sysInfo = uni.getSystemInfoSync();
 const fullScreenCount = computed(() => {
-  const height = sysInfo.windowHeight;
+  const height = sysInfo.windowHeight - 96 - 60;
 
   const count = Math.floor(height / 64);
   console.log('height', height, count);
@@ -113,7 +121,7 @@ const fullScreenCount = computed(() => {
 const {
   pagingRef,
   dataList,
-  queryList: queryList,
+  queryList: ___queryList,
   isPending,
   isEof,
   query,
@@ -124,40 +132,43 @@ const {
     ownerId: 13,
     maxResultCount: Math.max(Math.min(Math.floor(fullScreenCount.value * 2), 100), 16),
     keyword: '',
-    minMessageId: null,
-    maxMessageId: 7277454,
+    // minMessageId: null,
+    // maxMessageId: 7277454,
+    // maxTicks: 638789301637991000,
+    sorting: 'sorting desc,ticks desc',
   },
   service: getSessionUnitList,
   format: (res, input) => {
     if (input?.skipCount == 0) {
-      const lastMessageId = getMaxLastMessageId(res.items);
-      setMaxMessageId(lastMessageId);
+      const ticks = getMaxTicks(res.items);
+      setMaxTicks(ticks);
     }
     return res;
   },
 });
-// 获取 dataList 数组中 lastMessageId 的最大值
-const getMaxLastMessageId = (list: Chat.SessionUnitDto[]) => {
+// 获取 dataList 数组中 ticks 的最大值
+const getMaxTicks = (list: Chat.SessionUnitDto[]): number | null => {
   if (list?.length === 0) return null; // 如果数组为空，则返回 null
   return list?.reduce((max, item) => {
-    return Math.max(max, item.lastMessageId || 0); // 确保 item.lastMessageId 存在，如果不存在则默认为 0
+    return Math.max(max, item.ticks || 0); // 确保 item.ticks 存在，如果不存在则默认为 0
   }, 0);
 };
 
-// 获取 dataList 数组中 lastMessageId 的最小值
-const getMinLastMessageId = (list: Chat.SessionUnitDto[]) => {
+// 获取 dataList 数组中 ticks 的最小值
+const getMinTicks = (list: Chat.SessionUnitDto[]): number | null => {
   if (list.length === 0) return null; // 如果数组为空，则返回 null
   return list.reduce((min, item) => {
-    return Math.min(min, item.lastMessageId || Infinity); // 确保 item.lastMessageId 存在，如果不存在则默认为 Infinity
+    return Math.min(min, item.ticks || Infinity); // 确保 item.ticks 存在，如果不存在则默认为 Infinity
   }, Infinity);
 };
 
-const minLastMessageId = ref<number | null>();
-const maxLastMessageId = ref<number | null>();
+const minTicks = ref<number | null>();
+const maxTicks = ref<number | null>();
 
 const updateDatalist = (list: Chat.SessionUnitDto[]) => {
+  console.log('updateDatalist', list);
   list.forEach((newItem, index) => {
-    // newItem.badge = newItem.lastMessageId;
+    // newItem.badge = newItem.ticks;
     const existingItem = dataList.value.find(item => item.id === newItem.id);
     if (existingItem) {
       // 如果 ID 存在，则更新项目
@@ -167,12 +178,12 @@ const updateDatalist = (list: Chat.SessionUnitDto[]) => {
       dataList.value.push(newItem);
     }
   });
-  // 按 sorting 和 lastMessageId 降序排序
+  // 按 sorting 和 ticks 降序排序
   dataList.value.sort((a, b) => {
     if (a.sorting !== b.sorting) {
       return (b.sorting || 0) - (a.sorting || 0); // 首先按 sorting 降序排序
     } else {
-      return (b.lastMessageId || 0) - (a.lastMessageId || 0); // 如果 sorting 相同，则按 lastMessageId 降序排序
+      return (b.ticks || 0) - (a.ticks || 0); // 如果 sorting 相同，则按 ticks 降序排序
     }
   });
   dataList.value = [...dataList.value];
@@ -180,48 +191,84 @@ const updateDatalist = (list: Chat.SessionUnitDto[]) => {
   // pagingRef.value?.resetTotalData ();
 };
 
-const fetchLatest = () => {
+const loadStorage = () => {
+  const messageListJson = uni.getStorageSync(`message-list-${query.value.ownerId}`);
+  if (messageListJson) {
+    const messageList = jsonParse(messageListJson);
+    console.log('messageList', messageList);
+    if (Array.isArray(messageList) && messageList.length > 0) {
+      updateDatalist(messageList);
+      setMaxTicks(getMaxTicks(messageList));
+      setMinTicks(getMinTicks(messageList));
+    }
+  }
+};
+
+const fetchLatest = async () => {
   const q = {
-    minMessageId: Number(maxLastMessageId.value) + 1,
-    maxMessageId: null,
+    minTicks: maxTicks.value ? Math.floor(maxTicks.value) + 100 : null,
+    // minTicks: 638894630088401300,
+    maxTicks: null,
     keyword: '',
     ownerId: query.value.ownerId,
     skipCount: 0,
+    // maxResultCount: 1,
     maxResultCount: query.value.maxResultCount,
+    sorting: 'sorting desc,ticks desc',
   };
-  getSessionUnitList(q).then(res => {
+  console.warn('fetchLatest', q);
+  const res = await getSessionUnitList(q);
+  console.log('fetchLatest', res);
+  if (res.items.length > 0) {
+    res.items[0].badge = '8';
     updateDatalist(res.items);
-    console.log('fetchLatest', q, res);
-  });
+    setMaxTicks(getMaxTicks(res.items));
+    setMinTicks(getMinTicks(res.items));
+    // return;
+  } else {
+    // uni.showToast({ title: '没有新消息', icon: 'none' });
+  }
 };
 // const totalCount = ref(0);
-
-const _queryList = (pageNo: number, pageSize: number) => {
-  console.log('queryList', pageNo, pageSize);
-
-  if (pageNo == 1) {
-    minLastMessageId.value = null;
-  }
-  query.value.maxMessageId = minLastMessageId.value;
-  query.value.maxResultCount = pageSize;
+const fetchHistory = async () => {
+  query.value.maxTicks = minTicks.value;
   isPending.value = true;
-  getSessionUnitList(query.value)
-    .then(res => {
-      if (pageNo == 1) {
-        totalCount.value = res.totalCount;
-      }
-      setMaxMessageId(res.items[0]?.lastMessageId);
-      setMinMessageId(res.items[res.items.length - 1]?.lastMessageId);
-      pagingRef.value?.complete(res.items);
-      isEof.value = res.items.length < pageSize;
-    })
-    .catch(err => {
-      console.error('Error fetching data:', err);
-      pagingRef.value?.complete(false);
-    })
-    .finally(() => {
-      isPending.value = false;
-    });
+  try {
+    console.warn('fetchHistory', query.value);
+    const res = await getSessionUnitList(query.value);
+    if (query.value.maxTicks == null) {
+      totalCount.value = res.totalCount;
+      uni.setStorage({
+        key: `message-list-${query.value.ownerId}`,
+        data: JSON.stringify(res.items),
+      });
+    }
+    setMaxTicks(getMaxTicks(res.items));
+    setMinTicks(getMinTicks(res.items));
+    isEof.value = res.items.length < query.value.maxResultCount!;
+    pagingRef.value?.complete(res.items);
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    pagingRef.value?.complete(false);
+  } finally {
+    isPending.value = false;
+  }
+};
+
+// fetchLatest();
+const queryList = async (pageNo: number, pageSize: number) => {
+  console.log('queryList', pageNo, pageSize);
+  // 下拉刷新时
+  if (pageNo == 1) {
+    loadStorage();
+  }
+  if (pageNo == 1 && dataList.value.length > 0) {
+    // await fetchLatest();
+
+    pagingRef.value?.complete(dataList.value);
+  } else {
+    await fetchHistory();
+  }
 };
 
 watch(
@@ -249,6 +296,11 @@ const onSearch = () => {
   console.log('搜索关键字:', query.value.keyword);
 };
 
+const onRefresh = () => {
+  uni.$emit('refresh@chat-index');
+  fetchLatest();
+  console.log('刷新');
+};
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
   uni.$on('new-message@signalR', fetchLatest);

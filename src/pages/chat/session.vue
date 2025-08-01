@@ -46,7 +46,12 @@ const props = defineProps({
   },
 });
 
-const title = ref(props.title);
+const title = computed(
+  () =>
+    destination.value?.displayName ||
+    destination.value?.name ||
+    decodeURIComponent(props.title || '聊天'),
+);
 const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
 const setting = computed(() => sessionUnit.value?.setting);
 const destination = computed(() => sessionUnit.value?.destination);
@@ -65,15 +70,35 @@ console.log(windowHeight);
 const pageStyle = reactive({
   // height: `${windowHeight}px`,
 });
+// uni.getStorage({
+//   key: `sessionUnit-${props.id}`,
+//   success: res => {
+//     console.log('sessionUnitJson', res.data);
+//     sessionUnit.value = JSON.parse(res.data);
+//     // title.value = destination.value?.displayName || destination.value?.name || '';
+//   },
+//   fail: () => {
+//     console.log('No session unit found in storage');
+//   },
+// });
 
-getSessionUnitItemDetail({ id: props.id }).then(res => {
-  console.log('getSessionUnitItem', res);
-  title.value = res.destination?.displayName || res.destination?.name || '';
-  // if (res.destination?.objectType == ObjectTypes.Room) {
-  //   title.value += `(${res.sessionUnitCount})`;
-  // }
-  sessionUnit.value = res;
-});
+const sessionUnitJson = uni.getStorageSync(`sessionUnit-${props.id}`);
+if (sessionUnitJson) {
+  sessionUnit.value = JSON.parse(sessionUnitJson);
+  // title.value = destination.value?.displayName || destination.value?.name || '';
+}
+
+getSessionUnitItemDetail({ id: props.id })
+  .then(res => {
+    console.log('getSessionUnitItem', res);
+    res.localTime = new Date();
+    sessionUnit.value = res;
+    uni.setStorageSync(`sessionUnit-${props.id}`, JSON.stringify(res));
+    // title.value = destination.value?.displayName || destination.value?.name || '';
+  })
+  .catch(err => {
+    console.error('Error fetching session unit item:', err);
+  });
 const onMoreClick = () => {
   console.log('onMoreClick');
   navToSetting({

@@ -106,9 +106,9 @@ export const getLocalToken = () => {
   const storeValue = uni.getStorageSync(authStorageKey);
   // console.log('getLocalToken', authStorageKey, storeValue);
   let token = jsonParse(storeValue);
-  if (isExpired(token)) {
-    // uni.removeStorageSync(authStorageKey);
-    return null;
-  }
+  // if (isExpired(token)) {
+  //   // uni.removeStorageSync(authStorageKey);
+  //   return null;
+  // }
   return token;
 };

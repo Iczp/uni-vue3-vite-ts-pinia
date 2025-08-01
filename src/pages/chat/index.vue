@@ -81,15 +81,15 @@ console.log('chatObjectId:', chatObjectId);
 console.log('erpUserId:', erpUserId);
 console.log('token:', token);
 
+store
+  .getChatObjects()
+  .then(res => {
+    console.log('getChatObjects:', res);
+  })
+  .catch(err => {
+    console.error('Error fetching chat objects:', err);
+  });
 uni.$on('refresh@chat-index', () => {
-  store
-    .getChatObjects()
-    .then(res => {
-      console.log('getChatObjects:', res);
-    })
-    .catch(err => {
-      console.error('Error fetching chat objects:', err);
-    });
   store
     .getBadges()
     .then(res => {

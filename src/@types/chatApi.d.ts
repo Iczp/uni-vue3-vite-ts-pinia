@@ -203,11 +203,7 @@ declare namespace Chat {
     creationTime?: string | null;
     LastModificationTime?: string | null;
     sessionUnitCount?: number | null;
-    [key: string]: any; // 允许任意额外的属性
-  }
-
-  export interface SessionUnitDetailDto extends SessionUnitDto {
-    sessionUnitCount?: number | null;
+    localTime?: Date | String | null; // 本地时间
     [key: string]: any; // 允许任意额外的属性
   }
 

@@ -1,10 +1,10 @@
 <template>
-  <div class="session-unit gap-12">
+  <div class="session-unit gap-12" :class="{ toping: isToping }">
     <Avatar :size="48" :objectType="objectType" :item="item?.destination" class="text-24" />
     <div class="flex flex-1 flex-col">
       <div class="flex flex-row justify-between w-full gap-8 h-24 items-center text-14">
         <div class="text-15 text-ellipsis max-w-160">
-          {{ item?.destination?.name }}
+          {{ index }} - {{ item?.destination?.name }}
         </div>
         <div class="text-ellipsis max-w-100 text-gray-300 text-12">
           <TimeAgo :time="item?.lastMessage?.creationTime" />
@@ -17,7 +17,7 @@
           <span class="text-gray-400">{{ messageText }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
-          <div v-if="isFav" class="text-gray-400 i-ic:baseline-star"></div>
+          <div v-if="isToping" class="text-gray-400 i-ic:baseline-star"></div>
           <div v-if="isImmersed" class="text-gray-400 i-ic:baseline-notifications-off"></div>
           <!-- <div v-if="item?.badge" class="badge">{{ item?.badge || 0 }}</div> -->
           <Badge :count="badge" :dot="!isImmersed && badge > 0" :max="9" />
@@ -47,7 +47,7 @@ const badge = computed(() => props.item?.badge);
 const objectType = computed(() => props.item?.destination?.objectType as ObjectTypes);
 
 const isImmersed = computed(() => props.item?.setting?.isImmersed);
-const isFav = computed(() => Number(props.item?.sorting) > 0);
+const isToping = computed(() => Number(props.item?.sorting) > 0);
 
 const messageText = computed(() => {
   return props.item?.lastMessage?.content?.text;
@@ -64,6 +64,15 @@ const messageText = computed(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16rpx 24rpx;
+}
+.toping {
+  background-color: #f0f0f0;
+}
+.session-unit:hover {
+  background-color: #f5f5f5;
+}
+.session-unit:active {
+  background-color: #e4e4e4;
 }
 .session-unit::after {
   position: absolute;
