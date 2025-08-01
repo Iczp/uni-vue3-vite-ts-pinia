@@ -124,10 +124,10 @@ const sendClick = () => {
 <style lang="scss" scoped>
 .chat-input {
   // position: absolute;
-  position: sticky;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  // position: sticky;
+  // left: 0;
+  // right: 0;
+  // bottom: 0;
   z-index: 100;
   border-top: 1rpx solid #ddd;
   width: 100%;

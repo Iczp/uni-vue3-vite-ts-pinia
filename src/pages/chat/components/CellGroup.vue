@@ -1,12 +1,14 @@
 <template>
   <div class="cell-group text-gray-500">
     <slot v-if="label" name="label">
-      <div class="cell-label flex flex-row gap-8 items-center h-32 items-center px-12 ">
+      <div class="cell-label flex flex-row gap-8 items-center h-32 items-center px-12">
         <i v-if="icon" :class="icon"></i>
         <span>{{ label }}</span>
       </div>
     </slot>
-    <slot></slot>
+    <div class="cell-group-list flex flex-col">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -37,5 +39,7 @@ const props = defineProps({
 }
 .cell-group:first-child {
   margin-top: 0;
+}
+.cell-group-list {
 }
 </style>

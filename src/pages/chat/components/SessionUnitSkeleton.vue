@@ -3,7 +3,7 @@
   <div class="message-list-skeleton relative flex flex-col">
     <div
       v-if="text"
-      class="absolute left-0 right-0 top-0 bottom-0 z-1 flex flex-center text-gray-300"
+      class="absolute left-0 right-0 top-0 bottom-0 z-1 flex text-12 flex-center text-gray-300"
     >
       {{ text }}
     </div>
@@ -78,7 +78,7 @@ defineProps({
 .skeleton-line {
   margin-bottom: 10px;
   border-radius: 4px;
-  height: 36rpx;
+  height: 32rpx;
 }
 .skeleton-line:last-child {
   margin-bottom: 0;

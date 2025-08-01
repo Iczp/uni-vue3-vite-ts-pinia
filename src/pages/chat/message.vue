@@ -43,19 +43,20 @@
           好友
         </div>
       </template> -->
-      <template #empty>
-        <div class="text-12 text-gray-400">没有消息</div>
-      </template>
-
-      <template #loading>
-        <SessionUnitSkeleton :count="fullScreenCount" />
-        <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
-      </template>
 
       <template #backToTop>
         <div class="flex flex-center bg-gray-300 bg-opacity-50 w-36 h-36 rounded-[50%]">
           <i class="text-14 text-gray-6 i-ic:sharp-vertical-align-top"></i>
         </div>
+      </template>
+
+      <template #empty="{ isLoadFailed }">
+        <div class="text-12 text-gray-400">没有消息({{ isLoadFailed }})</div>
+      </template>
+
+      <template #loading>
+        <SessionUnitSkeleton :count="fullScreenCount" />
+        <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
       </template>
 
       <template #loadingMoreLoading>

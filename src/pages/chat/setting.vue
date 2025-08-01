@@ -52,39 +52,39 @@
       </div>
 
       <CellGroup v-if="objectType == ObjectTypes.Room" label="群设置">
-        <Cell label="群名称" class="border-before" :value="groupName" arrow></Cell>
-        <Cell label="群二维码" class="border-before" valueIcon="i-ic:round-qrcode" arrow></Cell>
-        <Cell label="群管理" class="border-before" arrow></Cell>
-        <Cell label="群公告" class="border-before" arrow></Cell>
-        <Cell label="备注" class="border-after border-before" arrow></Cell>
+        <Cell label="群名称" :value="groupName" arrow></Cell>
+        <Cell label="群二维码" valueIcon="i-ic:round-qrcode" arrow></Cell>
+        <Cell label="群管理" arrow></Cell>
+        <Cell label="群公告" arrow></Cell>
+        <Cell label="备注" arrow></Cell>
       </CellGroup>
 
       <CellGroup>
-        <Cell label="查找聊天记录" class="border-after border-before" arrow></Cell>
+        <Cell label="查找聊天记录" arrow></Cell>
       </CellGroup>
 
       <CellGroup label="设置">
-        <Cell label="免打扰" class="border-before" arrow>
+        <Cell label="免打扰" arrow>
           <switch :checked="isImmersed" color="#298fff" style="transform: scale(0.84);" />
         </Cell>
-        <Cell label="置顶聊天" class="border-before" arrow>
+        <Cell label="置顶聊天" arrow>
           <switch :checked="isToping" color="#298fff" style="transform: scale(0.84);" />
         </Cell>
-        <Cell label="提醒" class="border-before" arrow>
+        <Cell label="提醒" arrow>
           <switch :checked="isRemind" color="#298fff" style="transform: scale(0.84);" />
         </Cell>
       </CellGroup>
 
       <CellGroup>
-        <Cell label="设置聊天背景" class="border-after border-before" :disabled="true" arrow></Cell>
+        <Cell label="设置聊天背景" :disabled="true" arrow></Cell>
       </CellGroup>
 
       <CellGroup>
-        <Cell label="清空聊天记录" class="border-after border-before" arrow></Cell>
+        <Cell label="清空聊天记录" arrow></Cell>
       </CellGroup>
 
       <CellGroup>
-        <Cell label="投诉" class="border-after border-before" arrow></Cell>
+        <Cell label="投诉" arrow></Cell>
       </CellGroup>
     </div>
   </z-paging>

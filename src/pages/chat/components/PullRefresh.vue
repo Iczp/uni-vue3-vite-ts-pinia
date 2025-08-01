@@ -6,6 +6,7 @@
     @touchend="onTouchEnd"
     @touchcancel="onTouchEnd"
   >
+    <!-- <slot name="top"><div class="bg-red-300 h-48 flex flex-center">top</div></slot> -->
     <!-- 1. 刷新指示器 -->
     <div class="pull-refresh-indicator" :style="indicatorStyle">
       <slot name="indicator" :status="status">
@@ -19,9 +20,10 @@
     </div>
 
     <!-- 2. 内容区域，通过插槽传入 -->
-    <div ref="contentRef" class="pull-refresh-content" :style="contentStyle">
+    <div ref="contentRef" class="pull-refresh-content" :style="contentStyle" @scroll="onScroll">
       <slot></slot>
     </div>
+    <slot name="bottom">bottom</slot>
   </div>
 </template>
 
@@ -57,6 +59,10 @@ const emit = defineEmits(['refresh', 'update:loading']);
 
 // 内部状态
 const pulling = ref(false); // 是否正在拖拽
+const isScrollTop = ref(true); // 是否正在拖拽
+
+const scrollTop = ref(0); // 当前滚动位置
+const scrollLeft = ref(0); // 当前滚动位置
 const startY = ref(0);
 const diffY = ref(0); // 经过阻尼计算后的下拉距离
 const status = ref('normal'); // 'normal', 'pulling', 'releasing', 'loading'
@@ -74,6 +80,21 @@ onMounted(() => {
     console.warn('[PullRefresh] No scrollable element found in the slot.');
   }
 });
+
+const onScroll = e => {
+  scrollTop.value = e.target.scrollTop;
+  scrollLeft.value = e.target.scrollLeft;
+
+  console.log('onScroll', e.target.scrollTop);
+  if (scrollableEl.value) {
+    // 如果滚动到顶部，允许下拉刷新
+    if (scrollableEl.value.scrollTop === 0) {
+      isScrollTop.value = true;
+    } else {
+      isScrollTop.value = false;
+    }
+  }
+};
 
 // 计算属性
 const indicatorText = computed(() => {
@@ -95,6 +116,12 @@ const contentStyle = computed(() => ({
 // Touch 事件处理
 const onTouchStart = e => {
   if (props.loading || !scrollableEl.value) return;
+
+  if (scrollTop.value > 0) {
+    // 如果不是在顶部，直接返回
+    // pulling.value = false;
+    return;
+  }
 
   // 只有在滚动内容顶部时才触发
   if (scrollableEl.value.scrollTop === 0) {
@@ -161,29 +188,40 @@ watch(
 
 <style lang="scss" scoped>
 .pull-refresh-wrapper {
+  display: flex;
   overflow: hidden;
-  position: relative;
-  /* 确保它有自己的高度上下文 */
-  height: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: inherit;
+  flex-direction: column;
 }
 .pull-refresh-indicator {
   display: flex;
   position: absolute;
   left: 0;
   right: 0;
-  top: -50px; /* 默认的 headHeight */
+  // top: -50px; /* 默认的 headHeight */
+  bottom: 100%;
   justify-content: center;
   align-items: center;
   height: 50px; /* 默认的 headHeight */
+  background-color: #4d8df6;
   font-size: 14px;
   color: #888;
+  // transform: translateY(-100%);
 }
 .pull-refresh-indicator .text {
   margin-left: 8px;
 }
 .pull-refresh-content {
+  display: flex;
   overflow: auto;
-  height: 100%;
+  flex-direction: column;
+  flex: 1;
+  // height: 100%;
 }
 /* 默认指示器样式 */
 .arrow {
