@@ -59,10 +59,10 @@
       </template>
 
       <template #loadingMoreLoading>
-        <SessionUnitSkeleton :count="3" />
+        <SessionUnitSkeleton :count="3" text="加载中..." />
       </template>
       <template #loadingMoreDefault>
-        <SessionUnitSkeleton :count="3" @click="loadingMoreClick" />
+        <SessionUnitSkeleton :count="3" @click="loadingMoreClick" text="加载更多..." />
       </template>
 
       <template #loadingMoreNoMore>

@@ -1,6 +1,12 @@
 <!-- src/components/MessageListSkeleton.vue -->
 <template>
-  <div class="message-list-skeleton flex flex-col">
+  <div class="message-list-skeleton relative flex flex-col">
+    <div
+      v-if="text"
+      class="absolute left-0 right-0 top-0 bottom-0 z-1 flex flex-center text-gray-300"
+    >
+      {{ text }}
+    </div>
     <!-- 使用 v-for 循环渲染指定数量的骨架项 -->
     <div v-for="n in count" :key="n" class="skeleton-item flex flex-row gap-12 px-12 py-8">
       <!-- 左侧的头像骨架 -->
@@ -29,13 +35,16 @@ defineProps({
     type: Number,
     default: 10, // 默认显示 5 条
   },
+  text: {
+    type: String,
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 /* 整个骨架屏列表的容器 */
 .message-list-skeleton {
-  background-color: #fff;
+  // background-color: #fff;
 }
 /* 单个骨架项 */
 .skeleton-item {
