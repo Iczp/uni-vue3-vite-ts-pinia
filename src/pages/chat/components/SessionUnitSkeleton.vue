@@ -27,8 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
-
 // 定义 props，允许父组件传入要显示的骨架项数量
 defineProps({
   count: {
@@ -44,7 +42,7 @@ defineProps({
 <style lang="scss" scoped>
 /* 整个骨架屏列表的容器 */
 .message-list-skeleton {
-  // background-color: #fff;
+  background-color: #fff0;
 }
 /* 单个骨架项 */
 .skeleton-item {

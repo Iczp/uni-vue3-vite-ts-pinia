@@ -24,7 +24,12 @@
 
           <!-- 发送人信息 -->
           <span v-if="isShowSender" class="sender">{{ displaySenderName }}</span>
-          <span class="text-gray-400">{{ messageText }}</span>
+
+          <!--消息预览-->
+          <span v-if="preview.contentType" class="message-type" :message-type="item?.messageType">
+            {{ preview.contentType }}
+          </span>
+          <span class="text-gray-400">{{ preview.contentText }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
           <div v-if="isToping" class="text-gray-400 i-ic:baseline-star"></div>
@@ -41,7 +46,7 @@ import TimeAgo from './TimeAgo.vue';
 import Avatar from './Avatar.vue';
 import Badge from './Badge.vue';
 import { MessageTypes, ObjectTypes } from '@/utils/enums';
-import { getSenderNameForMessage } from '@/utils/messageHelper';
+import { formatMessageContent, getSenderNameForMessage } from '@/utils/messageHelper';
 const props = defineProps({
   item: {
     type: Object as () => Chat.SessionUnitDto,
@@ -82,9 +87,8 @@ const objectType = computed(() => props.item?.destination?.objectType as ObjectT
 const isImmersed = computed(() => props.item?.setting?.isImmersed);
 const isToping = computed(() => Number(props.item?.sorting) > 0);
 
-const messageText = computed(() => {
-  return props.item?.lastMessage?.content?.text;
-});
+const preview = computed(() => formatMessageContent(props.item.lastMessage));
+
 // const onSessionClick = () => {
 //   console.log('onSessionClick', props.index, props.item);
 //   props.item.badge = Number(props.item.badge || 0) + 1;
@@ -164,6 +168,10 @@ const messageText = computed(() => {
   margin: 0 2px;
   color: var(--session-item-sender-after-color, #757575);
   content: ':';
+}
+.message-type {
+  margin-right: 4px;
+  color: var(--preview-message-type-color, #666);
 }
 .flash {
   animation: flash 0.5s infinite;

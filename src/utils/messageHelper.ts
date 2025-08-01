@@ -1,5 +1,11 @@
-import { MessageTypes } from "./enums";
-import { formatText } from "./formatWords";
+import { FileContentDto } from '@/types/message/FileContentDto';
+import { MessageTypes } from './enums';
+import { formatText } from './formatWords';
+import { SoundContentDto } from '@/types/message/SoundContentDto';
+import { LinkContentDto } from '@/types/message/LinkContentDto';
+import { HistoryContentOutput } from '@/types/message/HistoryContentOutput';
+import { CmdContentDto } from '@/types/message/CmdContentDto';
+import { TextContentDto } from '@/types/message/TextContentDto';
 
 export const getSenderNameForMessage = (entity?: Chat.MessageDto | null): string | undefined => {
   if (!entity) {
@@ -20,12 +26,11 @@ export const getSenderNameForMessage = (entity?: Chat.MessageDto | null): string
   );
 };
 
-
 export const formatMessageContent = (
-  entity?: Chat.MessageDto,
+  entity?: Chat.MessageDto | null,
   t?: any,
 ): {
-  contentType: string | undefined;
+  contentType: string | null | undefined;
   contentText: string;
 } => {
   t = t || ((k: string): string => k);
@@ -39,7 +44,7 @@ export const formatMessageContent = (
   }
 
   if (isRollbacked) {
-    contentText = t('Message is rollbacked');
+    contentText = `消息已撤回`;
     return { contentType, contentText };
   }
 
@@ -76,7 +81,7 @@ export const formatMessageContent = (
       contentText = formatText((content as HistoryContentOutput).title!);
       break;
     case MessageTypes.Cmd:
-      contentType = `[${t('MessageType.Cmd')}]`;
+      contentType = `[系统]`;
       contentText = formatText((content as CmdContentDto).text!);
       break;
     case MessageTypes.Text:
