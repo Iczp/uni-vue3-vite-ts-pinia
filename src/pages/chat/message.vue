@@ -61,6 +61,9 @@
       <template #loadingMoreLoading>
         <SessionUnitSkeleton :count="3" />
       </template>
+      <template #loadingMoreDefault>
+        <SessionUnitSkeleton :count="3" @click="loadingMoreClick" />
+      </template>
 
       <template #loadingMoreNoMore>
         <view class="flex flex-center h-48 text-12 text-gray-500">
@@ -213,6 +216,7 @@ const fetchLatest = async () => {
     ownerId: query.value.ownerId,
     skipCount: 0,
     // maxResultCount: 1,
+    // maxResultCount: 1,
     maxResultCount: query.value.maxResultCount,
     sorting: 'sorting desc,ticks desc',
   };
@@ -220,7 +224,7 @@ const fetchLatest = async () => {
   const res = await getSessionUnitList(q);
   console.log('fetchLatest', res);
   if (res.items.length > 0) {
-    res.items[0].badge = '8';
+    // res.items[0].badge = '8';
     updateDatalist(res.items);
     setMaxTicks(getMaxTicks(res.items));
     setMinTicks(getMinTicks(res.items));
@@ -282,6 +286,10 @@ watch(
   { immediate: true },
 );
 
+const loadingMoreClick = () => {
+  console.log('loadingMoreClick');
+  pagingRef.value?.doLoadMore('click');
+};
 const onSessionUnitClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onSessionUnitClick', item, index);
   dataList.value[index].badge = '123';
@@ -303,11 +311,16 @@ const onRefresh = () => {
 };
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
-  uni.$on('new-message@signalR', fetchLatest);
+  uni.$on('new-message@signalR', e => {
+    console.log('new-message@signalR', e);
+    fetchLatest();
+  });
 
   uni.$on('connected@signalr', e => {
     console.log('signalR connected', e);
+
     fetchLatest();
+    uni.showToast({ title: 'SignalR连接成功', icon: 'none' });
   });
 });
 onUnmounted(() => {
