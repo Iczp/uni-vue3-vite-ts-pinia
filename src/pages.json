@@ -69,6 +69,13 @@
       }
     },
     {
+      "path": "pages/chat/sessions/group-name",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "修改群名称"
+      }
+    },
+    {
       "path": "pages/chat/bouncing-scroll-demo",
       "style": {
         "navigationStyle": "custom",
