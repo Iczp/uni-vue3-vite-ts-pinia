@@ -93,9 +93,9 @@
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
-import Cell from './components/Cell.vue';
-import CellGroup from './components/CellGroup.vue';
-import ChatObject from './components/ChatObject.vue';
+import Cell from '@/pages/chat/components/Cell.vue';
+import CellGroup from '@/pages/chat/components/CellGroup.vue';
+import ChatObject from '@/pages/chat/components/ChatObject.vue';
 import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';

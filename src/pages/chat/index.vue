@@ -47,8 +47,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import NavBtn from './components/nav-btn.vue';
+import NavBtn from '@/pages/chat/components/nav-btn.vue';
 import { useChatStore } from '@/store/chatStore';
 const store = useChatStore();
 
@@ -115,27 +114,27 @@ const tabs = ref([
     isLazy: false,
     badge: store.totalBadges,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/message.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/messages/message.vue'))),
   },
   {
     text: '通讯录',
     icon: 'i-ic:baseline-switch-account',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '/pages/chat/contacts.vue',
+    path: '/pages/chat/contacts/contacts.vue',
     isLazy: false,
     badge: 0,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/contacts.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/contacts/contacts.vue'))),
   },
   {
     text: '我的',
     icon: 'i-ic:round-person',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '@/pages/chat/mine.vue',
+    path: '@/pages/chat/mine/mine.vue',
     isLazy: false,
     badge: 0,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/mine.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/mine/mine.vue'))),
   },
 ]);
 

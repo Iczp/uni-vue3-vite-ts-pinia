@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import PullRefresh from './components/PullRefresh.vue';
+import PullRefresh from '@/pages/chat/components/PullRefresh.vue';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';

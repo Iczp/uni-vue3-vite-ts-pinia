@@ -84,7 +84,7 @@ export const jsonParse = (json: string) => {
 };
 
 export const navToChat = (args: { [key: string]: any }) => {
-  var url = toUrl('/pages/chat/session', args);
+  var url = toUrl('/pages/chat/sessions/session', args);
   return navToWebview(
     url,
     { title: args?.title || '' },
@@ -95,7 +95,7 @@ export const navToChat = (args: { [key: string]: any }) => {
 };
 
 export const navToSetting = (args: { [key: string]: any }) => {
-  var url = toUrl('/pages/chat/setting', args);
+  var url = toUrl('/pages/chat/sessions/setting', args);
 
   console.log('isHtml5Plus', isHtml5Plus);
   return navToWebview(

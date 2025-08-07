@@ -81,11 +81,11 @@
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
-import MessageItem from './components/MessageItem.vue';
-import NavBtn from './components/nav-btn.vue';
-import Divider from './components/Divider.vue';
+import MessageItem from '@/pages/chat/components/MessageItem.vue';
+import NavBtn from '@/pages/chat/components/nav-btn.vue';
+import Divider from '@/pages/chat/components/Divider.vue';
 import { getMessageList } from '@/api/chatApi';
-import ChatInput from './components/ChatInput.vue';
+import ChatInput from '@/pages/chat/components/ChatInput.vue';
 import { getSessionUnitItemDetail } from '@/api/chatApi';
 import { ObjectTypes } from '@/utils/enums';
 import { navToSetting } from '@/utils/nav';

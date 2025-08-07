@@ -76,10 +76,10 @@
 </template>
 
 <script lang="ts" setup>
-import CellGroup from './components/CellGroup.vue';
-import Cell from './components/Cell.vue';
-import Badge from './components/Badge.vue';
-import Avatar from './components/Avatar.vue';
+import CellGroup from '@/pages/chat/components/CellGroup.vue';
+import Cell from '@/pages/chat/components/Cell.vue';
+import Badge from '@/pages/chat/components/Badge.vue';
+import Avatar from '@/pages/chat/components/Avatar.vue';
 
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';

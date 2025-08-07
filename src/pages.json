@@ -55,14 +55,14 @@
       }
     },
     {
-      "path": "pages/chat/session",
+      "path": "pages/chat/sessions/session",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "session"
       }
     },
     {
-      "path": "pages/chat/setting",
+      "path": "pages/chat/sessions/setting",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "聊天设置"
