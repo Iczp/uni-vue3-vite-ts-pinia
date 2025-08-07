@@ -1,18 +1,22 @@
 <template>
   <div
-    class="cell flex flex-row justify-between items-center gap-12 px-12 text-dark-500"
+    class="cell flex flex-row justify-between items-center gap-12 px-12 box-border text-dark-500"
     :disabled="disabled"
   >
     <slot name="label">
-      <div class="cell-label flex flex-row gap-8 items-center max-w-[50%]">
-        <i v-if="icon" :class="icon"></i>
+      <div class="cell-label flex flex-row gap-8 items-center max-w-[50%] text-gray-600">
+        <slot name="icon">
+          <i v-if="icon" class="text-16" :class="icon"></i>
+        </slot>
         <span class="text-ellipsis">{{ label }}</span>
       </div>
     </slot>
-    <slot :value="value">
+    <slot>
       <div class="cell-value flex flex-row gap-4 items-center max-w-[45%]">
-        <i v-if="valueIcon" :class="valueIcon"></i>
-        <span class="text-ellipsis">{{ value }}</span>
+        <slot name="value">
+          <i v-if="valueIcon" :class="valueIcon"></i>
+          <span class="text-ellipsis">{{ value }}</span>
+        </slot>
         <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
       </div>
     </slot>
@@ -57,6 +61,9 @@ const props = defineProps({
 }
 .cell[disabled='true'] {
   color: #ccc;
+  .cell-label {
+    color: #ccc;
+  }
 }
 .cell:not([disabled='true']):active {
   background-color: rgba(0, 0, 0, 0.05);

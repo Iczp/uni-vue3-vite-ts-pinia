@@ -63,7 +63,7 @@ const props = defineProps({
   },
   tabIndex: {
     type: [String, Number, undefined],
-    default: 0,
+    default: 2,
   },
   token: {
     type: [String, null, undefined],
@@ -131,11 +131,11 @@ const tabs = ref([
     text: '我的',
     icon: 'i-ic:round-person',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '@/pages/chat/profile.vue',
+    path: '@/pages/chat/mine.vue',
     isLazy: false,
     badge: 0,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/profile.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/mine.vue'))),
   },
 ]);
 

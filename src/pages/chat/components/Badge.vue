@@ -1,6 +1,10 @@
 <template>
   <div v-if="visible" class="badge">
-    <span v-if="visible">{{ formatCount || '' }}</span>
+    <span v-if="visible">
+      <slot>
+        {{ formatCount || '' }}
+      </slot>
+    </span>
   </div>
 </template>
 
@@ -68,5 +72,9 @@ const visible = computed(() => {
   top: 0;
   z-index: 1;
   transform: translate(50%, -50%);
+}
+.badge.gray {
+  background-color: #f6f6f6;
+  color: rgb(79, 79, 79);
 }
 </style>

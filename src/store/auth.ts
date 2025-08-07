@@ -31,11 +31,13 @@ export const useAuth = defineStore({
       // const erpHeader = {};
       const token = await fetchToken(erpHeader);
       this.setToken(token);
+      return token;
     },
     async refreshToken() {
       if (!this.token) return;
       const token = await refreshToken(this.token!.refresh_token!);
       this.setToken(token);
+      return token;
     },
   },
 });

@@ -2,7 +2,7 @@
   <z-paging
     ref="pagingRef"
     :refresher-only="true"
-    @refresh="onRefresh"
+    @onRefresh="onRefresh"
     :defaultPageSize="999"
     :auto="true"
   >
@@ -27,6 +27,7 @@
             v-for="(item, index) in dataList"
             :key="item.id"
             :item="item.owner"
+            :size="48"
             :vertical="true"
             class="flex w-[20%] flex-center"
           />
