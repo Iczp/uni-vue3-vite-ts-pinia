@@ -17,7 +17,7 @@
       <div class="bg-white border-after relative p-12 flex flex-col gap-8">
         <div class="flex flex-row flex-wrap gap-y-8 box-border">
           <ChatObject
-            v-if="dataList.length == 0"
+            v-if="isPending && dataList.length == 0"
             v-for="item in skeletonCount"
             :vertical="true"
             :key="item"
@@ -52,8 +52,13 @@
         </div>
       </div>
 
-      <CellGroup v-if="objectType == ObjectTypes.Room" label="群设置">
-        <Cell label="群名称" :value="groupName" arrow></Cell>
+      <CellGroup>
+        <Cell label="类型" :value="destinationObjectType" arrow></Cell>
+      </CellGroup>
+      <!-- destinationObjectType: {{ destinationObjectType }} -->
+      <!-- label="群设置" -->
+      <CellGroup v-if="destinationObjectType == ObjectTypes.Room">
+        <Cell label="群名称" :value="groupName" @click="navToGroupName" arrow></Cell>
         <Cell label="群二维码" valueIcon="i-ic:round-qrcode" arrow></Cell>
         <Cell label="群管理" arrow></Cell>
         <Cell label="群公告" arrow></Cell>
@@ -65,13 +70,13 @@
       </CellGroup>
 
       <CellGroup label="设置">
-        <Cell label="免打扰" arrow>
+        <Cell label="免打扰" :active="false">
           <switch :checked="isImmersed" color="#298fff" style="transform: scale(0.84);" />
         </Cell>
-        <Cell label="置顶聊天" arrow>
+        <Cell label="置顶聊天" :active="false">
           <switch :checked="isToping" color="#298fff" style="transform: scale(0.84);" />
         </Cell>
-        <Cell label="提醒" arrow>
+        <Cell label="提醒" :active="false">
           <switch :checked="isRemind" color="#298fff" style="transform: scale(0.84);" />
         </Cell>
       </CellGroup>
@@ -100,6 +105,7 @@ import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
+import { goto, navTo } from '@/utils/nav';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -133,7 +139,7 @@ const isShopkeeperOrWaiter = computed(() =>
     sessionUnit.value?.ownerObjectType || ObjectTypes.Anonymous,
   ),
 );
-
+const isPending = ref(false);
 const pagingRef = ref();
 const dataList = ref<Chat.ChatObjectDto[]>([]);
 
@@ -145,7 +151,9 @@ const isImmersed = ref(false);
 const isToping = ref(false);
 const isRemind = ref(false);
 
-const objectType = computed(() => sessionUnit.value?.destination?.objectType || props?.objectType);
+const destinationObjectType = computed(
+  () => sessionUnit.value?.destinationObjectType || destination.value?.objectType,
+);
 const windowHeight = uni.getSystemInfoSync().windowHeight;
 console.log(windowHeight);
 const pageStyle = reactive({
@@ -156,9 +164,13 @@ const onScroll = e => {
   console.log('onScroll', e);
 };
 
+const navToGroupName = () => {
+  goto({ url: '/pages/chat/sessions/group-name', query: { id: props.id } });
+};
+
 const onRefresh = () => {
   console.log('onRefresh');
-
+  isPending.value = true;
   Promise.all([
     getSessionUnitItem({ id: props.id }),
     getMembers({ id: props.id, maxResultCount: 13 }),
@@ -180,6 +192,9 @@ const onRefresh = () => {
     .catch(err => {
       console.error('Error fetching data:', err);
       pagingRef.value?.complete(false);
+    })
+    .finally(() => {
+      isPending.value = false;
     });
 
   // getSessionUnitItem({ id: props.id }).then(res => {

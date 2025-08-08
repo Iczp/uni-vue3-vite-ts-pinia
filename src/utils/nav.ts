@@ -48,7 +48,7 @@ export const navTo = (
   //
 export const goto = (params: {
   url: string;
-  query: { [key: string]: any };
+  query?: { [key: string]: any };
   options?: {
     animationType?: AnimationType;
     [key: string]: any;
