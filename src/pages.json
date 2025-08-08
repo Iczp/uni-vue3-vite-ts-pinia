@@ -93,7 +93,7 @@
       "path": "pages/chat/sessions/group-members",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTitleText": "管理群成员"
+        "navigationBarTitleText": "群成员"
       }
     },
     {
@@ -107,7 +107,7 @@
       "path": "pages/chat/sessions/group-qrcode",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTitleText": "管理二维码"
+        "navigationBarTitleText": "群二维码"
       }
     },
     {
