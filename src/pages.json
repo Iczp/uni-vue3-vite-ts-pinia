@@ -76,6 +76,41 @@
       }
     },
     {
+      "path": "pages/chat/sessions/remark",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "备注"
+      }
+    },
+    {
+      "path": "pages/chat/sessions/logs",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "聊天记录"
+      }
+    },
+    {
+      "path": "pages/chat/sessions/group-members",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "管理群成员"
+      }
+    },
+    {
+      "path": "pages/chat/sessions/group-manage",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "管理"
+      }
+    },
+    {
+      "path": "pages/chat/sessions/group-qrcode",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "管理二维码"
+      }
+    },
+    {
       "path": "pages/chat/bouncing-scroll-demo",
       "style": {
         "navigationStyle": "custom",

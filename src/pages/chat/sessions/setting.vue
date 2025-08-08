@@ -48,7 +48,9 @@
           </div>
         </div>
         <div class="flex flex-center">
-          <span class="text-sky-500 text-12">查看更多({{ totalCount }})</span>
+          <span class="text-sky-500 text-12" @click="navToGroupMembers">
+            查看更多({{ totalCount }})
+          </span>
         </div>
       </div>
 
@@ -59,14 +61,14 @@
       <!-- label="群设置" -->
       <CellGroup v-if="destinationObjectType == ObjectTypes.Room">
         <Cell label="群名称" :value="groupName" @click="navToGroupName" arrow></Cell>
-        <Cell label="群二维码" valueIcon="i-ic:round-qrcode" arrow></Cell>
-        <Cell label="群管理" arrow></Cell>
+        <Cell label="群二维码" @click="navToGroupQrcode" valueIcon="i-ic:round-qrcode" arrow></Cell>
+        <Cell label="群管理" @click="navToGroupManage" arrow></Cell>
         <Cell label="群公告" arrow></Cell>
-        <Cell label="备注" arrow></Cell>
+        <Cell label="备注" @click="navToRemark" arrow></Cell>
       </CellGroup>
 
       <CellGroup>
-        <Cell label="查找聊天记录" arrow></Cell>
+        <Cell label="查找聊天记录" @click="navToLogs" arrow></Cell>
       </CellGroup>
 
       <CellGroup label="设置">
@@ -105,7 +107,7 @@ import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
-import { goto, navTo } from '@/utils/nav';
+import {  navTo } from '@/utils/nav';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -165,7 +167,22 @@ const onScroll = e => {
 };
 
 const navToGroupName = () => {
-  goto({ url: '/pages/chat/sessions/group-name', query: { id: props.id } });
+  navTo({ url: '/pages/chat/sessions/group-name', query: { id: props.id } });
+};
+const navToGroupManage = () => {
+  navTo({ url: '/pages/chat/sessions/group-manage', query: { id: props.id } });
+};
+const navToRemark = () => {
+  navTo({ url: '/pages/chat/sessions/remark', query: { id: props.id } });
+};
+const navToGroupMembers = () => {
+  navTo({ url: `/pages/chat/sessions/group-members?id=${props.id}` });
+};
+const navToGroupQrcode = () => {
+  navTo({ url: `/pages/chat/sessions/group-qrcode?id=${props.id}` });
+};
+const navToLogs = () => {
+  navTo({ url: `/pages/chat/sessions/logs?id=${props.id}` });
 };
 
 const onRefresh = () => {

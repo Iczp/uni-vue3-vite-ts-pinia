@@ -5,7 +5,13 @@ export function useSessionUnitDetail({ sessionUnitId }: { sessionUnitId: string 
   const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
   const setting = computed(() => sessionUnit.value?.setting);
   const destination = computed(() => sessionUnit.value?.destination);
+  const destinationObjectType = computed(
+    () => sessionUnit.value?.destinationObjectType || destination.value?.objectType,
+  );
   const owner = computed(() => sessionUnit.value?.owner);
+  const ownerObjectType = computed(
+    () => sessionUnit.value?.ownerObjectType || owner.value?.objectType,
+  );
   const isInputEnabled = computed(() => setting.value?.isInputEnabled || false);
   const isShopkeeperOrWaiter = computed(() =>
     [ObjectTypes.ShopKeeper, ObjectTypes.ShopWaiter].includes(
@@ -45,7 +51,9 @@ export function useSessionUnitDetail({ sessionUnitId }: { sessionUnitId: string 
     sessionUnit,
     setting,
     destination,
+    destinationObjectType,
     owner,
+    ownerObjectType,
     isInputEnabled,
     isShopkeeperOrWaiter,
     isImmersed,

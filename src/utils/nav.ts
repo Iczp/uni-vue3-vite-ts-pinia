@@ -32,21 +32,7 @@ export const toUrl = (uri: string, obj: any) => {
   return url;
 };
 
-export const navTo = (
-  uri: string,
-  obj?: any,
-  opts: { animationType?: AnimationType } = { animationType: 'pop-in' },
-) =>
-  uni.navigateTo({
-    url: toUrl(uri, obj),
-    animationType: opts.animationType,
-    fail(err) {
-      console.error(err);
-    },
-  });
-
-  //
-export const goto = (params: {
+export const navTo = (params: {
   url: string;
   query?: { [key: string]: any };
   options?: {
@@ -56,7 +42,14 @@ export const goto = (params: {
 }) => {
   const { url, query, options } = params;
 
-  if (!isHtml5Plus) {
+  if (isHtml5Plus) {
+    return navToWebview(
+      toUrl(url, query),
+      {},
+      {
+        animationType: options?.animationType || 'pop-in',
+      },
+    );
   }
   uni.navigateTo({
     url: toUrl(url, query),

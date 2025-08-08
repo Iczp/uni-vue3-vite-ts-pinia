@@ -16,7 +16,7 @@
         title="Z-Paging"
         size="large"
         is-link
-        @click="navTo('/pages/test/z-paging', { title: 'Z-Paging' })"
+        @click="navTo({ url: '/pages/test/z-paging', query: { title: 'Z-Paging' } })"
       />
     </van-cell-group>
 
@@ -110,12 +110,14 @@ function goTest() {
 }
 
 const onChat = () => {
-
   navToWebview('/pages/chat/index');
 };
 function goScan() {
-  navTo('/pages/test/scan', {
-    title: '扫码',
+  navTo({
+    url: '/pages/test/scan',
+    query: {
+      title: '扫码',
+    },
   });
 }
 const bg = ref('#02dd64');
