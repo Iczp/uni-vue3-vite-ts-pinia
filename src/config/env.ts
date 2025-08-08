@@ -19,6 +19,7 @@ const envMap = {
   },
 };
 
+
 type ApiEnv = keyof typeof envMap;
 type Env<T extends ApiEnv> = {
   apiEnv: T;

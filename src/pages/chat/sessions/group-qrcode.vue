@@ -1,23 +1,32 @@
 <template>
   <z-paging ref="pagingRef">
     <template #top>
-      <AppNavBar :title="''" :isBack="true" :isMore="false" :border="true"></AppNavBar>
+      <AppNavBar :title="''" :isBack="true" :isMore="false" :border="false"></AppNavBar>
     </template>
-    <div class="flex flex-col flex-center gap-12 mt-36">
+    <div ref="divRef" class="flex flex-col flex-center gap-12 mt-24 p-12" @click="handleSave">
       <div>
-        <Avatar />
+        <Avatar :size="56" />
       </div>
-
+      <div class="font-bold text-16">群聊:{{ name }}</div>
       <QrCode :text="qrText"></QrCode>
-      <div>
+      <div class="text-12">
         {{ qrText }}
       </div>
+      <div class="text-gray text-12">该二维码7天(8月12日)内有效,重新进入将更新</div>
+    </div>
+
+    <div class="flex flex-col mt-36">
+      <u-button type="primary" @click="handleSave">保存</u-button>
     </div>
   </z-paging>
 </template>
 <script lang="ts" setup>
+import html2canvas from 'html2canvas';
 import QrCode from '@/pages/chat/components/QrCode.vue';
 import Avatar from '@/pages/chat/components/Avatar.vue';
+
+import env from '@/config/env';
+import { chat_base_url } from '@/config';
 const pagingRef = ref();
 const props = defineProps({
   id: {
@@ -26,9 +35,30 @@ const props = defineProps({
   },
 });
 
+const divRef = ref<HTMLDivElement | undefined>();
+
 const name = ref('555');
 
-const qrText = ref(`https://www.baidu.com?id=${props.id}`);
+const qrText = ref(`${chat_base_url}/qr/g?id=${props.id}`);
+
+const handleSave = () => {
+  console.log(divRef.value);
+  uni.showLoading({ title: '保存中...' });
+  html2canvas(divRef.value!)
+    .then(canvas => {
+      console.log('canvas', canvas);
+      const img = canvas.toDataURL('image/png');
+      console.log('img', img);
+      document.body.appendChild(canvas);
+      uni.showToast({ title: '保存成功', icon: 'none' });
+    })
+    .catch(err => {
+      uni.showToast({ title: '保存失败', icon: 'none' });
+    })
+    .finally(() => {
+      uni.hideLoading();
+    });
+};
 </script>
 <style lang="scss" scoped>
 :deep(.uni-input-input),

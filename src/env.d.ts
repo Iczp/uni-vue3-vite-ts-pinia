@@ -7,10 +7,10 @@ declare module '*.vue' {
   export default component;
 }
 
-
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      VITE_CHAT_BASE_URL: string;
       VITE_API_BASE_URL: string;
       VITE_APP_TITLE: string;
       VITE_AUTH_TOKEN_URL: string;

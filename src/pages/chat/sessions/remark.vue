@@ -1,7 +1,7 @@
 <template>
   <z-paging ref="pagingRef">
     <template #top>
-      <AppNavBar :title="''" :isBack="true" :isMore="false" :border="true"></AppNavBar>
+      <AppNavBar :title="''" :isBack="true" :isMore="false" :border="false"></AppNavBar>
     </template>
     <div class="flex flex-col gap-12 flex-center mt-36">
       <div class="text-18 font-bold">修改群备注</div>
