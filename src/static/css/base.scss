@@ -93,6 +93,10 @@ checkbox {
     transform: rotate(360deg);
   }
 }
+.border-before,
+.border-after {
+  position: relative;
+}
 .border-before::before,
 .border-after::after {
   position: absolute;
