@@ -1,6 +1,7 @@
 <template>
   <div
     class="cell flex flex-row justify-between items-center gap-12 px-12 box-border text-dark-500"
+    :class="{ active: !!active }"
     :disabled="disabled"
   >
     <slot name="label">
@@ -26,10 +27,10 @@
 <script setup>
 const props = defineProps({
   label: {
-    type: [String, null, undefined],
+    type: [Number, String, null, undefined],
   },
   value: {
-    type: [String, null, undefined],
+    type: [Number, String, null, undefined],
     default: '',
   },
   icon: {
@@ -50,6 +51,10 @@ const props = defineProps({
     type: [Boolean],
     default: false,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 </script>
 
@@ -65,7 +70,7 @@ const props = defineProps({
     color: #ccc;
   }
 }
-.cell:not([disabled='true']):active {
+.active:not([disabled='true']):active {
   background-color: rgba(0, 0, 0, 0.05);
 }
 .cell:first-child::before,
