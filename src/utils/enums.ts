@@ -59,12 +59,28 @@ export const messageTypeDescriptions: { [key in MessageTypes]: string } = {
   [MessageTypes.History]: '聊天历史消息',
 };
 
+/**
+ * 验证方式
+ */
+export enum VerificationMethods {
+  //不需要验证
+  'None' = 0,
+  //需要验证
+  'Required' = 1,
+  //拒绝验证
+  'Rejected' = 2,
+}
 
+export const VerificationMethodDescriptions: { [key in VerificationMethods]: string } = {
+  [VerificationMethods.None]: '不需要验证',
+  [VerificationMethods.Required]: '需要验证',
+  [VerificationMethods.Rejected]: '拒绝验证',
+};
 
 export enum EditorTypes {
-    'Undefined' = 0,
-    'Markdown' = 1,
-    'Html' = 2,
+  'Undefined' = 0,
+  'Markdown' = 1,
+  'Html' = 2,
 }
 
 /**

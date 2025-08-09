@@ -5,19 +5,11 @@
       "path": "pages/index/index",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "消息"
       }
     },
+
     {
-      "name": "profile",
-      "path": "pages/profile/profile",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "个人"
-      }
-    },
-    {
-      "name": "profile",
       "path": "pages/test/scan",
       "style": {
         "navigationStyle": "custom",
@@ -25,7 +17,6 @@
       }
     },
     {
-      "name": "z-paging",
       "path": "pages/test/z-paging",
       "style": {
         "navigationStyle": "custom",
@@ -52,6 +43,13 @@
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "chat"
+      }
+    },
+    {
+      "path": "pages/chat/profiles/profile",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "profile"
       }
     },
     {

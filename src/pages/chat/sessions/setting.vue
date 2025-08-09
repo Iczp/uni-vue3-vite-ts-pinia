@@ -30,6 +30,7 @@
             :size="48"
             :vertical="true"
             class="flex w-[20%] flex-center"
+            @click="navToProfile(item)"
           />
 
           <div class="flex w-[20%] justify-center">
@@ -107,7 +108,7 @@ import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
-import {  navTo } from '@/utils/nav';
+import { navTo } from '@/utils/nav';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -183,6 +184,11 @@ const navToGroupQrcode = () => {
 };
 const navToLogs = () => {
   navTo({ url: `/pages/chat/sessions/logs?id=${props.id}` });
+};
+const navToProfile = (item: any) => {
+  console.log('navToProfile', item);
+  
+  navTo({ url: `/pages/chat/profiles/profile?id=${item.id}&vid=${props.id}` });
 };
 
 const onRefresh = () => {

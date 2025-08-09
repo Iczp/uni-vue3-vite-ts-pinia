@@ -1,7 +1,13 @@
 import { getSessionUnitItemDetail } from '@/api/chatApi';
 import { ObjectTypes } from '@/utils/enums';
 
-export function useSessionUnitDetail({ sessionUnitId }: { sessionUnitId: string }) {
+export function useSessionUnitDetail({
+  sessionUnitId,
+  auto = true,
+}: {
+  sessionUnitId: string;
+  auto?: boolean;
+}) {
   const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
   const setting = computed(() => sessionUnit.value?.setting);
   const destination = computed(() => sessionUnit.value?.destination);
@@ -24,6 +30,10 @@ export function useSessionUnitDetail({ sessionUnitId }: { sessionUnitId: string 
 
   const storageKey = `session-unit-${sessionUnitId}-detail`;
 
+  const setStorage = (value: any) => {
+    uni.setStorageSync(storageKey, JSON.stringify(value));
+  };
+
   const loadSessionUnitDetail = () => {
     const sessionUnitJson = uni.getStorageSync(storageKey);
     if (sessionUnitJson) {
@@ -35,7 +45,7 @@ export function useSessionUnitDetail({ sessionUnitId }: { sessionUnitId: string 
         console.log('getSessionUnitItem', res);
         res.localTime = new Date();
         sessionUnit.value = res;
-        uni.setStorageSync(storageKey, JSON.stringify(res));
+        setStorage(res);
       })
       .catch(err => {
         console.error('Error fetching session unit item:', err);
@@ -45,9 +55,12 @@ export function useSessionUnitDetail({ sessionUnitId }: { sessionUnitId: string 
       });
   };
 
-  loadSessionUnitDetail();
+  if (auto) {
+    loadSessionUnitDetail();
+  }
 
   return {
+    isPending,
     sessionUnit,
     setting,
     destination,

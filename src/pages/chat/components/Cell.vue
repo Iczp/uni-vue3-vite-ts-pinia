@@ -73,7 +73,7 @@ const props = defineProps({
 .active:not([disabled='true']):active {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.cell:first-child::before,
+.cell:not(.before-none):first-child::before,
 .cell::after {
   position: absolute;
   left: 24rpx;
@@ -83,13 +83,13 @@ const props = defineProps({
   content: '';
   transform: scaleY(0.33);
 }
-.cell:first-child::before {
+.cell:not(.before-none):first-child::before {
   top: 0;
 }
 .cell::after {
   bottom: 0;
 }
-.cell:first-child::before,
+.cell:not(.before-none):first-child::before,
 .cell:last-child::after {
   left: 0;
 }

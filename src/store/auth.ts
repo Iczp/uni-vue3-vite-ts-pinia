@@ -34,10 +34,19 @@ export const useAuth = defineStore({
       return token;
     },
     async refreshToken() {
-      if (!this.token) return;
+      if (!this.token) {
+        throw new Error('token is null');
+      }
       const token = await refreshToken(this.token!.refresh_token!);
       this.setToken(token);
       return token;
+    },
+    async getOrRefreshToken() {
+      if (!this.token) return;
+      if (isExpired(this.token)) {
+        return await this.refreshToken();
+      }
+      return this.token;
     },
   },
 });

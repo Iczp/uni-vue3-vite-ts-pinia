@@ -22,13 +22,14 @@ const chatRequest = async <T = any>(args: {
   responseType?: string;
   [key: string]: any;
 }): Promise<T> => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const url = args.url?.toLocaleLowerCase().startsWith('http')
       ? args.url
       : import.meta.env.VITE_CHAT_BASE_URL + args.url;
     console.log('request url', url);
 
     const auth = useAuth();
+    await auth.getOrRefreshToken();
     // console.log('auth.token', auth.token);
     const input = {
       url,
@@ -85,6 +86,19 @@ export const getBadgeByCurrentUser = (data?: { isImmersed?: boolean }) =>
     url: '/api/chat/session-unit/badge-by-current-user',
     method: 'GET',
     data,
+  });
+
+export const getChatObjectItem = (data: { id: number }) =>
+  chatRequest<Chat.BadgeDto[]>({
+    url: `/api/chat/chat-object/${data.id}`,
+    method: 'GET',
+    data: null,
+  });
+  export const getChatObjectDetail = (data: { id: number }) =>
+  chatRequest<Chat.BadgeDto[]>({
+    url: `/api/chat/chat-object/${data.id}/detail`,
+    method: 'GET',
+    data: null,
   });
 
 export const getSessionUnitList = (data?: Chat.SessionUnitListInput) =>

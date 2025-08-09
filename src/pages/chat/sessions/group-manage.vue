@@ -1,7 +1,7 @@
 <template>
   <z-paging ref="pagingRef">
     <template #top>
-      <AppNavBar :title="''" :isBack="true" :isMore="false" :border="true"></AppNavBar>
+      <AppNavBar :title="title" :isBack="true" :isMore="false" :border="true"></AppNavBar>
     </template>
     <div class="flex flex-col gap-12 flex-center mt-36">
       <div class="text-18 font-bold">修改群名称</div>
@@ -30,7 +30,7 @@
 </template>
 <script lang="ts" setup>
 const pagingRef = ref();
-
+const title = ref('群管理');
 const name = ref('555');
 </script>
 <style lang="scss" scoped>

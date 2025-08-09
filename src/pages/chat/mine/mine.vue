@@ -7,23 +7,36 @@
     :auto="false"
   >
     <template #top>
-      <AppNavBar title="我的" :isBack="false" :border="false"></AppNavBar>
+      <AppNavBar
+        title="我的"
+        :isBack="false"
+        :border="false"
+        class="bg-white"
+        backgroundColor="#ffffff"
+      ></AppNavBar>
     </template>
 
     <CellGroup>
-      <Cell>
+      <Cell class="before-none" :arrow="false">
         <template #label>
-          <div class="py-12 flex flex-row gap-12 items-center">
-            <Avatar :size="44" :item="chatStore.current" />
-            <div class="max-w-120 flex flex-col gap-4">
-              <div class="text-ellipsis text-16">
-                {{ chatStore.current?.name || '未登录' }}
+          <div class="py-12 flex flex-row gap-12">
+            <Avatar :size="48" :item="chatStore.current" />
+            <div class="max-w-240 flex flex-col gap-8">
+              <div class="flex items-center text-ellipsis text-16 font-bold ">
+                <span>{{ chatStore.current?.name || '-' }}</span>
+                <Gender :gender="chatStore.current?.gender" class="ml-4"></Gender>
               </div>
-              <div class="text-ellipsis text-12 text-gray">{{ chatStore.current?.code }}</div>
+              <div class="text-ellipsis text-14 text-dark-50">
+                账号: {{ chatStore.current?.code }}
+              </div>
+              <div class="text-ellipsis text-14 text-dark-100">
+                地区: {{ chatStore.current?.code }}
+              </div>
             </div>
           </div>
         </template>
       </Cell>
+      <Cell icon="i-ic:round-settings" label="设置" arrow></Cell>
     </CellGroup>
 
     <CellGroup>
@@ -48,10 +61,6 @@
     </CellGroup>
 
     <CellGroup>
-      <Cell icon="i-ic:round-settings" label="设置" arrow></Cell>
-    </CellGroup>
-
-    <CellGroup>
       <Cell icon="i-ic:round-touch-app" label="版本" arrow>
         <template #value>
           <div class="bg-gray-100 rounded-24px px-12 py-2 text-dark-100">新版本 v1.0.1</div>
@@ -63,12 +72,12 @@
       <Cell icon="i-ic:round-token" label="RefreshToken" @click="refreshToken" arrow></Cell>
     </CellGroup>
 
-    <div>
+    <!-- <div>
       <h3>authStore:</h3>
       <scroll-view scroll>
         <pre>{{ authStore.token }}</pre>
       </scroll-view>
-    </div>
+    </div> -->
     <template #loadingMoreNoMore>
       <view style="background-color: red;">这是完全自定义的没有更多数据view</view>
     </template>
@@ -80,11 +89,12 @@ import CellGroup from '@/pages/chat/components/CellGroup.vue';
 import Cell from '@/pages/chat/components/Cell.vue';
 import Badge from '@/pages/chat/components/Badge.vue';
 import Avatar from '@/pages/chat/components/Avatar.vue';
-
+import Gender from '@/pages/chat/components/Gender.vue';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';
 import { userHeader } from '@/api/userHeader';
+import { getChatObjectDetail } from '@/api/chatApi';
 
 const chatStore = useChatStore();
 
@@ -96,18 +106,48 @@ const env = ref(import.meta.env);
 const pagingRef = ref();
 
 const onRefresh = () => {
-  uni.$emit('refresh@chat-index');
-  pagingRef.value?.complete(true);
+  loadData();
   console.log('刷新');
 };
 const login = () => {
-  authStore.fetchToken(userHeader);
+  authStore
+    .fetchToken(userHeader)
+    .then(res => {
+      uni.showToast({
+        title: '登录成功',
+        icon: 'success',
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      uni.showToast({
+        title: `${err.data?.error || '登录失败'}${err.data?.error_description}`,
+        icon: 'none',
+      });
+    });
 };
 const refreshToken = () => {
-  authStore.refreshToken();
+  authStore.refreshToken().then(res => {
+    uni.showToast({
+      title: '刷新成功',
+      icon: 'success',
+    });
+  });
 };
 
 const opacity = ref(0);
+
+const loadData = () => {
+  if (chatStore.current?.id) {
+    getChatObjectDetail({ id: chatStore.current?.id })
+      .then(res => {
+        pagingRef.value?.complete(true);
+      })
+      .catch(err => {
+        pagingRef.value?.complete(false);
+      });
+  }
+};
 
 const onScroll = e => {
   // console.log("滚动事件", e);
@@ -117,6 +157,7 @@ const onScroll = e => {
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
   console.log('Message page mounted');
+  loadData();
 });
 </script>
 

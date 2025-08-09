@@ -65,6 +65,7 @@ declare namespace Chat {
     childrenCount: number;
     fullPath: string;
     fullPathName: string;
+    verificationMethod?: Number | null;
     [key: string]: any; // 允许任意额外的属性
   }
 

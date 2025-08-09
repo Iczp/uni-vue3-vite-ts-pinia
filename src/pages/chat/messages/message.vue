@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <view class="flex flex-col line-after z-999">
-      <AppNavBar title="" :isBack="true" :border="true">
+      <AppNavBar title="" :isBack="true" :border="false">
         <template #left>
           <CurrentChatObject />
         </template>
