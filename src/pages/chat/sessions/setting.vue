@@ -1,106 +1,115 @@
 <template>
-  <z-paging
-    ref="pagingRef"
-    :refresher-only="true"
-    @onRefresh="onRefresh"
-    :defaultPageSize="999"
-    :auto="true"
-  >
-    <template #top>
-      <AppNavBar :title="title" :isBack="true" :border="true"></AppNavBar>
-    </template>
+  <div>
+    <z-paging
+      ref="pagingRef"
+      :refresher-only="true"
+      @onRefresh="onRefresh"
+      :defaultPageSize="999"
+      :auto="true"
+    >
+      <template #top>
+        <AppNavBar :title="title" :isBack="true" :border="true"></AppNavBar>
+      </template>
 
-    <div class="setting-page" :style="pageStyle">
-      <!-- <div>isHtml5Plus:{{ isHtml5Plus }}</div>
+      <div class="setting-page" :style="pageStyle">
+        <!-- <div>isHtml5Plus:{{ isHtml5Plus }}</div>
       <div>{{ userAgent }}</div> -->
 
-      <div class="bg-white border-after relative p-12 flex flex-col gap-8">
-        <div class="flex flex-row flex-wrap gap-y-8 box-border">
-          <ChatObject
-            v-if="isPending && dataList.length == 0"
-            v-for="item in skeletonCount"
-            :vertical="true"
-            :key="item"
-            class="flex w-[20%] flex-center"
-          />
-          <ChatObject
-            v-for="(item, index) in dataList"
-            :key="item.id"
-            :item="item.owner"
-            :size="48"
-            :vertical="true"
-            class="flex w-[20%] flex-center"
-            @click="navToProfile(item)"
-          />
+        <div class="bg-white border-after relative p-12 flex flex-col gap-8">
+          <div class="flex flex-row flex-wrap gap-y-8 box-border">
+            <ChatObject
+              v-if="isPending && dataList.length == 0"
+              v-for="item in skeletonCount"
+              :vertical="true"
+              :key="item"
+              class="flex w-[20%] flex-center"
+            />
+            <ChatObject
+              v-for="(item, index) in dataList"
+              :key="item.id"
+              :item="item.owner"
+              :size="48"
+              :vertical="true"
+              class="flex w-[20%] flex-center"
+              @click="showProfile(item)"
+            />
 
-          <div class="flex w-[20%] justify-center">
-            <div
-              class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
-            >
-              <i class="i-ic:round-plus text-24 text-gray-400"></i>
+            <div class="flex w-[20%] justify-center">
+              <div
+                class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
+              >
+                <i class="i-ic:round-plus text-24 text-gray-400"></i>
+              </div>
+            </div>
+            <div class="flex w-[20%] justify-center">
+              <div
+                class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
+              >
+                <i class="i-ic:round-minus text-24 text-gray-400"></i>
+              </div>
             </div>
           </div>
-          <div class="flex w-[20%] justify-center">
-            <div
-              class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
-            >
-              <i class="i-ic:round-minus text-24 text-gray-400"></i>
-            </div>
+          <div class="flex flex-center">
+            <span class="text-sky-500 text-12" @click="navToGroupMembers">
+              查看更多({{ totalCount }})
+            </span>
           </div>
         </div>
-        <div class="flex flex-center">
-          <span class="text-sky-500 text-12" @click="navToGroupMembers">
-            查看更多({{ totalCount }})
-          </span>
-        </div>
+
+        <CellGroup>
+          <Cell label="类型" :value="destinationObjectType" arrow></Cell>
+        </CellGroup>
+        <!-- destinationObjectType: {{ destinationObjectType }} -->
+        <!-- label="群设置" -->
+        <CellGroup v-if="destinationObjectType == ObjectTypes.Room">
+          <Cell label="群名称" :value="groupName" @click="navToGroupName" arrow></Cell>
+          <Cell
+            label="群二维码"
+            @click="navToGroupQrcode"
+            valueIcon="i-ic:round-qrcode"
+            arrow
+          ></Cell>
+          <Cell label="群管理" @click="navToGroupManage" arrow></Cell>
+          <Cell label="群公告" arrow></Cell>
+          <Cell label="备注" @click="navToRemark" arrow></Cell>
+        </CellGroup>
+
+        <CellGroup>
+          <Cell label="查找聊天记录" @click="navToLogs" arrow></Cell>
+        </CellGroup>
+
+        <CellGroup label="设置">
+          <Cell label="免打扰" :active="false">
+            <switch :checked="isImmersed" color="#298fff" style="transform: scale(0.84);" />
+          </Cell>
+          <Cell label="置顶聊天" :active="false">
+            <switch :checked="isToping" color="#298fff" style="transform: scale(0.84);" />
+          </Cell>
+          <Cell label="提醒" :active="false">
+            <switch :checked="isRemind" color="#298fff" style="transform: scale(0.84);" />
+          </Cell>
+        </CellGroup>
+
+        <CellGroup>
+          <Cell label="设置聊天背景" :disabled="true" arrow></Cell>
+        </CellGroup>
+
+        <CellGroup>
+          <Cell label="清空聊天记录" arrow></Cell>
+        </CellGroup>
+
+        <CellGroup>
+          <Cell label="投诉" arrow></Cell>
+        </CellGroup>
       </div>
-
-      <CellGroup>
-        <Cell label="类型" :value="destinationObjectType" arrow></Cell>
-      </CellGroup>
-      <!-- destinationObjectType: {{ destinationObjectType }} -->
-      <!-- label="群设置" -->
-      <CellGroup v-if="destinationObjectType == ObjectTypes.Room">
-        <Cell label="群名称" :value="groupName" @click="navToGroupName" arrow></Cell>
-        <Cell label="群二维码" @click="navToGroupQrcode" valueIcon="i-ic:round-qrcode" arrow></Cell>
-        <Cell label="群管理" @click="navToGroupManage" arrow></Cell>
-        <Cell label="群公告" arrow></Cell>
-        <Cell label="备注" @click="navToRemark" arrow></Cell>
-      </CellGroup>
-
-      <CellGroup>
-        <Cell label="查找聊天记录" @click="navToLogs" arrow></Cell>
-      </CellGroup>
-
-      <CellGroup label="设置">
-        <Cell label="免打扰" :active="false">
-          <switch :checked="isImmersed" color="#298fff" style="transform: scale(0.84);" />
-        </Cell>
-        <Cell label="置顶聊天" :active="false">
-          <switch :checked="isToping" color="#298fff" style="transform: scale(0.84);" />
-        </Cell>
-        <Cell label="提醒" :active="false">
-          <switch :checked="isRemind" color="#298fff" style="transform: scale(0.84);" />
-        </Cell>
-      </CellGroup>
-
-      <CellGroup>
-        <Cell label="设置聊天背景" :disabled="true" arrow></Cell>
-      </CellGroup>
-
-      <CellGroup>
-        <Cell label="清空聊天记录" arrow></Cell>
-      </CellGroup>
-
-      <CellGroup>
-        <Cell label="投诉" arrow></Cell>
-      </CellGroup>
-    </div>
-  </z-paging>
+    </z-paging>
+    <ProfilePop ref="profileRef"></ProfilePop>
+  </div>
 </template>
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
+import ProfilePop from '@/pages/chat/components/ProfilePop.vue';
 import Cell from '@/pages/chat/components/Cell.vue';
 import CellGroup from '@/pages/chat/components/CellGroup.vue';
 import ChatObject from '@/pages/chat/components/ChatObject.vue';
@@ -129,7 +138,7 @@ const props = defineProps({
     default: 0,
   },
 });
-
+const profileRef = ref();
 const userAgent = navigator.userAgent;
 const totalCount = ref(0);
 const title = ref(props.title);
@@ -187,8 +196,10 @@ const navToLogs = () => {
 };
 const navToProfile = (item: any) => {
   console.log('navToProfile', item);
-  
   navTo({ url: `/pages/chat/profiles/profile?id=${item.id}&vid=${props.id}` });
+};
+const showProfile = (item: any) => {
+  profileRef.value?.show(item);
 };
 
 const onRefresh = () => {

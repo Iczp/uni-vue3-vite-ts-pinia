@@ -1,50 +1,54 @@
 <template>
-  <z-paging
-    ref="pagingRef"
-    v-model="messageList"
-    use-chat-record-mode
-    safe-area-inset-bottom
-    bottom-bg-color="#f8f8f8"
-    @query="queryList"
-    @onRefresh="onRefresh"
-    @keyboardHeightChange="keyboardHeightChange"
-    @hidedKeyboard="hidedKeyboard"
-  >
-    <template #top>
-      <AppNavBar :title="title" :isBack="true" :isMore="true" :border="true">
-        <div class="flex flex-1 items-center flex-col justify-center gap-2">
-          <div class="text-16 flex flex-row items-center gap-4 max-w-[64%]">
-            <span class="text-ellipsis">{{ title }}</span>
-            <i v-if="isImmersed" class="text-14 text-gray-400 i-ic:baseline-notifications-off"></i>
+  <div>
+    <z-paging
+      ref="pagingRef"
+      v-model="messageList"
+      use-chat-record-mode
+      safe-area-inset-bottom
+      bottom-bg-color="#f8f8f8"
+      @query="queryList"
+      @onRefresh="onRefresh"
+      @keyboardHeightChange="keyboardHeightChange"
+      @hidedKeyboard="hidedKeyboard"
+    >
+      <template #top>
+        <AppNavBar :title="title" :isBack="true" :isMore="true" :border="true">
+          <div class="flex flex-1 items-center flex-col justify-center gap-2">
+            <div class="text-16 flex flex-row items-center gap-4 max-w-[64%]">
+              <span class="text-ellipsis">{{ title }}</span>
+              <i
+                v-if="isImmersed"
+                class="text-14 text-gray-400 i-ic:baseline-notifications-off"
+              ></i>
+            </div>
+            <div
+              v-if="sessionUnit?.sessionUnitCount && destination?.objectType == ObjectTypes.Room"
+              class="text-10 text-sky-500"
+            >
+              共有 {{ sessionUnit?.sessionUnitCount }} 人
+            </div>
           </div>
-          <div
-            v-if="sessionUnit?.sessionUnitCount && destination?.objectType == ObjectTypes.Room"
-            class="text-10 text-sky-500"
-          >
-            共有 {{ sessionUnit?.sessionUnitCount }} 人
-          </div>
-        </div>
 
-        <template #right>
-          <div class="text-20 flex flex-row gap-8">
-            <div v-if="isShopkeeperOrWaiter" class="text-20 i-ic:round-electrical-services"></div>
-            <div class="text-20 i-ic:round-more-horiz" @click="onMoreClick"></div>
-          </div>
-        </template>
-      </AppNavBar>
-    </template>
+          <template #right>
+            <div class="text-20 flex flex-row gap-8">
+              <div v-if="isShopkeeperOrWaiter" class="text-20 i-ic:round-electrical-services"></div>
+              <div class="text-20 i-ic:round-more-horiz" @click="onMoreClick"></div>
+            </div>
+          </template>
+        </AppNavBar>
+      </template>
 
-    <template #empty="{ isLoadFailed }">
-      <div class="text-12 text-gray-400">没有消息({{ isLoadFailed }})</div>
-    </template>
+      <template #empty="{ isLoadFailed }">
+        <div class="text-12 text-gray-400">没有消息({{ isLoadFailed }})</div>
+      </template>
 
-    <template #loading>
-      <view style="transform: scaleY(-1);">
-        <div class="flex flex-center text-gray-400 w-full top-160 fixed text-12">加载中...</div>
-      </view>
-    </template>
+      <template #loading>
+        <view style="transform: scaleY(-1);">
+          <div class="flex flex-center text-gray-400 w-full top-160 fixed text-12">加载中...</div>
+        </view>
+      </template>
 
-    <!-- <template v-if="messageList.length==0" #loadingMoreLoading>
+      <!-- <template v-if="messageList.length==0" #loadingMoreLoading>
       <view style="transform: scaleY(-1);">
         <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">更多加载中...</div>
       </view>
@@ -55,33 +59,41 @@
       </view>
     </template> -->
 
-    <div class="flex flex-col gap-8">
-      <!-- for循环渲染聊天记录列表 -->
-      <view v-for="(item, index) in messageList" :key="index" style="position: relative;">
-        <!-- 如果要给聊天item添加长按的popup，请在popup标签上写style="transform: scaleY(-1);"，注意style="transform: scaleY(-1);"不要写在最外层，否则可能导致popup被其他聊天item盖住 -->
-        <!-- <view class="popup" style="transform: scaleY(-1);">popUp</view> -->
+      <div class="flex flex-col gap-8">
+        <!-- for循环渲染聊天记录列表 -->
+        <view v-for="(item, index) in messageList" :key="index" style="position: relative;">
+          <!-- 如果要给聊天item添加长按的popup，请在popup标签上写style="transform: scaleY(-1);"，注意style="transform: scaleY(-1);"不要写在最外层，否则可能导致popup被其他聊天item盖住 -->
+          <!-- <view class="popup" style="transform: scaleY(-1);">popUp</view> -->
 
-        <!-- style="transform: scaleY(-1)"必须写，否则会导致列表倒置 -->
-        <!-- 注意不要直接在chat-item组件标签上设置style，因为在微信小程序中是无效的，请包一层view -->
-        <view style="transform: scaleY(-1);">
-          <MessageItem :item="item" :index="index" :senderId="sessionUnitId"></MessageItem>
+          <!-- style="transform: scaleY(-1)"必须写，否则会导致列表倒置 -->
+          <!-- 注意不要直接在chat-item组件标签上设置style，因为在微信小程序中是无效的，请包一层view -->
+          <view style="transform: scaleY(-1);">
+            <MessageItem :item="item" :index="index" :senderId="sessionUnitId" @profile="showProfile"></MessageItem>
+          </view>
         </view>
-      </view>
 
-      <Divider text="美好生活从这里开始" v-if="isEof" style="transform: scaleY(-1);" class="mb-12"/>
-    </div>
+        <Divider
+          text="美好生活从这里开始"
+          v-if="isEof"
+          style="transform: scaleY(-1);"
+          class="mb-12"
+        />
+      </div>
 
-    <!-- <MessageViewer :sessionUnitId="id" class="flex-1"></MessageViewer> -->
-    <template #bottom>
-      <div>{{ pageStyle }}/{{ windowHeight }}</div>
-      <ChatInput :enabled="isInputEnabled" />
-    </template>
-  </z-paging>
+      <!-- <MessageViewer :sessionUnitId="id" class="flex-1"></MessageViewer> -->
+      <template #bottom>
+        <div>{{ pageStyle }}/{{ windowHeight }}</div>
+        <ChatInput :enabled="isInputEnabled" />
+      </template>
+    </z-paging>
+    <ProfilePop ref="profileRef"></ProfilePop>
+  </div>
 </template>
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
 import MessageItem from '@/pages/chat/components/MessageItem.vue';
+import ProfilePop from '@/pages/chat/components/ProfilePop.vue';
 import NavBtn from '@/pages/chat/components/nav-btn.vue';
 import Divider from '@/pages/chat/components/Divider.vue';
 import { getMessageList } from '@/api/chatApi';
@@ -177,6 +189,10 @@ const setMinMessageId = (id: number | null | undefined, force: boolean = false) 
     minMessageId.value = id;
     console.log('setMinMessageId', id);
   }
+};
+const profileRef = ref();
+const showProfile = (item: any) => {
+  profileRef.value?.show(item);
 };
 
 const minMessageId = ref<number | null>();
