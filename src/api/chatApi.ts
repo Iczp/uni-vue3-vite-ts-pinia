@@ -94,7 +94,7 @@ export const getChatObjectItem = (data: { id: number }) =>
     method: 'GET',
     data: null,
   });
-  export const getChatObjectDetail = (data: { id: number }) =>
+export const getChatObjectDetail = (data: { id: number }) =>
   chatRequest<Chat.BadgeDto[]>({
     url: `/api/chat/chat-object/${data.id}/detail`,
     method: 'GET',
@@ -119,13 +119,24 @@ export const getSessionUnitItemDetail = ({ id }: { id: string }) =>
     method: 'GET',
   });
 
-export const getMembers = (data: Chat.DestinationListInput) => {
-  const id = data.id || '';
+export const getMembers = (params: Chat.DestinationListInput) => {
+  const id = params.id || '';
+  const data = { ...params };
   delete data.id;
-  return chatRequest<Chat.PagedResult<Chat.ChatObjectDto>>({
+
+  return chatRequest<Chat.PagedResult<Chat.SessionUnitDto>>({
     url: `/api/chat/session-unit/${id}/members`,
     method: 'GET',
     data,
+  });
+};
+
+export const getMember = (data: Chat.GetDestinationInput) => {
+  // delete data.id;
+  return chatRequest<Chat.SessionUnitMemberDto>({
+    url: `/api/chat/session-unit/${data.id}/destination/${data.destinationId}`,
+    method: 'GET',
+    // data,
   });
 };
 

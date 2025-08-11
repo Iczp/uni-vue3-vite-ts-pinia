@@ -19,8 +19,8 @@
           @click="emit('profile', sender)"
         ></Avatar>
         <div class="message-body flex flex-col flex-1 gap-4">
-          <div v-if="isShowSenderName" class="sender-name-container text-12 px-12">
-            <div class="sender-name">{{ senderName }} {{ item.id }}</div>
+          <div v-if="isShowSenderName" class="sender-name-container max-w-120 text-12 px-12">
+            <div class="sender-name text-ellipsis">{{ senderName }} {{ item.id }}</div>
           </div>
           <div class="message-content text-14">
             <MsgText :item="item" :reverse="isSelf"></MsgText>

@@ -31,7 +31,7 @@
               :size="48"
               :vertical="true"
               class="flex w-[20%] flex-center"
-              @click="showProfile(item)"
+              @click="showMemberPop(item)"
             />
 
             <div class="flex w-[20%] justify-center">
@@ -103,7 +103,7 @@
         </CellGroup>
       </div>
     </z-paging>
-    <MemberPop ref="profileRef"></MemberPop>
+    <MemberPop ref="profileRef" :id="id"></MemberPop>
   </div>
 </template>
 
@@ -138,7 +138,7 @@ const props = defineProps({
     default: 0,
   },
 });
-const profileRef = ref();
+const profileRef = ref<InstanceType<typeof MemberPop>>();
 const userAgent = navigator.userAgent;
 const totalCount = ref(0);
 const title = ref(props.title);
@@ -153,7 +153,7 @@ const isShopkeeperOrWaiter = computed(() =>
 );
 const isPending = ref(false);
 const pagingRef = ref();
-const dataList = ref<Chat.ChatObjectDto[]>([]);
+const dataList = ref<Chat.SessionUnitMemberDto[]>([]);
 
 const skeletonCount = ref(Math.min(13, Number(props.count)));
 
@@ -198,7 +198,7 @@ const navToProfile = (item: any) => {
   console.log('navToProfile', item);
   navTo({ url: `/pages/chat/profiles/profile?id=${item.id}&vid=${props.id}` });
 };
-const showProfile = (item: any) => {
+const showMemberPop = (item: any) => {
   profileRef.value?.show(item);
 };
 

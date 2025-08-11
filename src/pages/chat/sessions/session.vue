@@ -14,7 +14,7 @@
       <template #top>
         <AppNavBar :title="title" :isBack="true" :isMore="true" :border="true">
           <div class="flex flex-1 items-center flex-col justify-center gap-2">
-            <div class="text-16 flex flex-row items-center gap-4 max-w-[64%]">
+            <div class="text-16 flex flex-row items-center gap-4 max-w-240px">
               <span class="text-ellipsis">{{ title }}</span>
               <i
                 v-if="isImmersed"
@@ -86,7 +86,7 @@
         <ChatInput :enabled="isInputEnabled" />
       </template>
     </z-paging>
-    <MemberPop ref="profileRef" :id="sessionUnitId"></MemberPop>
+    <MemberPop ref="profileRef" :id="id"></MemberPop>
   </div>
 </template>
 
@@ -190,7 +190,7 @@ const setMinMessageId = (id: number | null | undefined, force: boolean = false) 
     console.log('setMinMessageId', id);
   }
 };
-const profileRef = ref();
+const profileRef = ref<InstanceType<typeof MemberPop>>();
 const showProfile = (item: any) => {
   profileRef.value?.show(item);
 };

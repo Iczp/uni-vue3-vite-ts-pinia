@@ -85,6 +85,7 @@ import { useSessionUnitDetail } from '@/hooks/useSessionUnitDetail';
 import { navTo, navToChat } from '@/utils/nav';
 
 import { ObjectTypes } from '@/utils/enums';
+import { getMember } from '@/api/chatApi';
 
 const props = defineProps({
   // 会话单元ID
@@ -116,6 +117,17 @@ const isShowDetail = computed(
 const show = (item: any) => {
   isVisible.value = true;
   senderSessionUnit.value = item;
+  if (item.id != props.id) {
+    loadMember(item.id);
+  }
+};
+
+const loadMember = (destinationId: string) => {
+  getMember({ id: props.id, destinationId })
+    .then(res => {
+      
+    })
+    .catch(err => {});
 };
 
 const isFriendship = computed(() => senderSessionUnit.value?.isFriendship);

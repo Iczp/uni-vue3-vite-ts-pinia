@@ -30,7 +30,7 @@
                 账号: {{ chatStore.current?.code }}
               </div>
               <div class="text-ellipsis text-14 text-dark-100">
-                地区: {{ chatStore.current?.code }}
+                地区: {{ chatStore.current?.area || '-' }}
               </div>
             </div>
           </div>

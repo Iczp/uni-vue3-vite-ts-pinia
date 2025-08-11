@@ -1,8 +1,18 @@
 <template>
-  <div class="flex flex-center p-12 text-12 w-full text-gray">
-    <div class="divider-text">美好生活从这里开始</div>
+  <div class="flex flex-center p-12 text-12 text-gray">
+    <slot>
+      <div class="divider-text">{{ text }}</div>
+    </slot>
   </div>
 </template>
+<script lang="ts" setup>
+const props = defineProps({
+  text: {
+    type: String,
+    default: '·',
+  },
+});
+</script>
 <style lang="scss" scoped>
 .divider-text {
   display: flex;

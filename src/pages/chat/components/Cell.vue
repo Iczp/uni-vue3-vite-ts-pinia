@@ -5,7 +5,10 @@
     :disabled="disabled"
   >
     <slot name="label">
-      <div class="cell-label flex flex-row gap-8 items-center max-w-[50%] text-gray-600" :class="labelClass">
+      <div
+        class="cell-label flex flex-row gap-8 items-center max-w-[50%] text-gray-600"
+        :class="labelClass"
+      >
         <slot name="icon">
           <i v-if="icon" class="text-16" :class="icon"></i>
         </slot>
@@ -30,13 +33,13 @@ import 'dayjs/locale/zh-cn'; // import locale
 dayjs.locale('zh-cn');
 const props = defineProps({
   label: {
-    type: [Number, String, null, undefined],
+    type: [Number, String, null],
   },
   labelClass: {
     type: String,
   },
   value: {
-    type: [Number, String, null, undefined],
+    type: [Number, String, null],
     default: '',
   },
   icon: {

@@ -41,7 +41,7 @@
           </div>
         </template>
       </Cell>
-      <Cell icon="i-ic:round-settings" label="设置" arrow></Cell>
+
       <Cell v-if="owner?.description">
         <template #label>
           <div class="lh-relaxed my-8 line-clamp-2 overflow-hidden text-gray break-words">
@@ -57,6 +57,29 @@
           <Badge class="gray" :count="10" :max="99"></Badge>
         </template>
       </Cell>
+    </CellGroup>
+
+    <CellGroup>
+      <Cell label="所在的群" :value="destination?.name" arrow></Cell>
+      <Cell label="群内名称" :value="setting?.memberName || '-'"></Cell>
+    </CellGroup>
+
+    <CellGroup>
+      <Cell label="账号类型" :value="sessionUnit?.ownerObjectType"></Cell>
+      <Cell label="加入方式" :value="setting?.joinWay"></Cell>
+      <Cell
+        v-if="sessionUnit?.creationTime"
+        label="加入时间"
+        :value="sessionUnit?.creationTime"
+        format="YYYY-MM-DD hh:mm:ss"
+      ></Cell>
+      <Cell
+        v-if="setting?.lastSendTime"
+        label="最后发言时间"
+        :value="setting?.lastSendTime"
+        format="YYYY-MM-DD hh:mm:ss"
+        empty="从未发言"
+      ></Cell>
     </CellGroup>
   </z-paging>
 </template>
@@ -83,7 +106,7 @@ const props = defineProps({
     default: '用户信息',
   },
 });
-const { sessionUnit, owner, destination, isPending } = useSessionUnitDetail({
+const { sessionUnit, owner, destination, isPending, setting } = useSessionUnitDetail({
   sessionUnitId: props.id!,
   auto: false,
 });

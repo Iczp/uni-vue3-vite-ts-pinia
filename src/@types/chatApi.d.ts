@@ -233,4 +233,13 @@ declare namespace Chat {
     maxMessageId?: number | null;
     [key: string]: any; // 允许任意额外的属性
   }
+
+
+  export interface GetDestinationInput {
+    id: string;
+    destinationId?: string;
+    [key: string]: any; // 允许任意额外的属性
+  }
 }
+
+
