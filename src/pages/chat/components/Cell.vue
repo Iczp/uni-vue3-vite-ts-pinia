@@ -5,7 +5,7 @@
     :disabled="disabled"
   >
     <slot name="label">
-      <div class="cell-label flex flex-row gap-8 items-center max-w-[50%] text-gray-600">
+      <div class="cell-label flex flex-row gap-8 items-center max-w-[50%] text-gray-600" :class="labelClass">
         <slot name="icon">
           <i v-if="icon" class="text-16" :class="icon"></i>
         </slot>
@@ -13,10 +13,10 @@
       </div>
     </slot>
     <slot>
-      <div class="cell-value flex flex-row gap-4 items-center max-w-[45%]">
+      <div class="cell-value flex flex-row gap-4 items-center max-w-[45%]" :class="valueClass">
         <slot name="value">
           <i v-if="valueIcon" :class="valueIcon"></i>
-          <span class="text-ellipsis">{{ value }}</span>
+          <span class="text-ellipsis">{{ valueDisplay }}</span>
         </slot>
         <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
       </div>
@@ -25,9 +25,15 @@
 </template>
 
 <script setup>
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn'; // import locale
+dayjs.locale('zh-cn');
 const props = defineProps({
   label: {
     type: [Number, String, null, undefined],
+  },
+  labelClass: {
+    type: String,
   },
   value: {
     type: [Number, String, null, undefined],
@@ -37,6 +43,9 @@ const props = defineProps({
     type: String,
   },
   valueIcon: {
+    type: String,
+  },
+  valueClass: {
     type: String,
   },
   arrow: {
@@ -55,6 +64,21 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+
+  format: {
+    type: String,
+  },
+  empty: {
+    type: String,
+    default: '',
+  },
+});
+
+const valueDisplay = computed(() => {
+  if (props.format && props.value !== undefined && props.value !== null) {
+    return dayjs(props.value).format(props.format);
+  }
+  return props.value || props.empty;
 });
 </script>
 

@@ -10,6 +10,9 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 // 引入 uView UI
 import uView from './uni_modules/vk-uview-ui';
 
+// 1. 导入你的指令
+import ripple from './directives/ripple';
+
 // import { i18n } from './i18n';
 
 export function createApp() {
@@ -20,6 +23,9 @@ export function createApp() {
   app.use(VueVirtualScroller);
   // i18n
   // app.use(i18n)
+
+  // 注册指令，并命名为 'ripple'
+  app.directive('ripple', ripple);
 
   app.config.globalProperties.$createElement = h;
   return {

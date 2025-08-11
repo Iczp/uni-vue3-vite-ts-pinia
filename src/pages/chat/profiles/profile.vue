@@ -42,6 +42,13 @@
         </template>
       </Cell>
       <Cell icon="i-ic:round-settings" label="设置" arrow></Cell>
+      <Cell v-if="owner?.description">
+        <template #label>
+          <div class="lh-relaxed my-8 line-clamp-2 overflow-hidden text-gray break-words">
+            {{ owner?.description }}
+          </div>
+        </template>
+      </Cell>
     </CellGroup>
 
     <CellGroup>
@@ -78,6 +85,7 @@ const props = defineProps({
 });
 const { sessionUnit, owner, destination, isPending } = useSessionUnitDetail({
   sessionUnitId: props.id!,
+  auto: false,
 });
 
 const isSkeleton = computed(() => !sessionUnit.value);
@@ -137,6 +145,7 @@ const loadData = () => {
   if (chatStore.current?.id) {
     getSessionUnitItemDetail({ id: props.id! })
       .then(res => {
+        sessionUnit.value = res;
         chatObject.value = res.owner;
         pagingRef.value?.complete(true);
       })

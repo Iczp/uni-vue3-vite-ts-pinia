@@ -3,7 +3,6 @@
     ref="itemRef"
     class="message-item flex flex-col w-full gap-8"
     :class="{ reverse: isSelf, selected: isSelected, selector: isSelector }"
-    @click="isSelector = !isSelector"
   >
     <slot name="header"></slot>
     <div class="flex flex-center text-gray-300 text-12 h-24">2022-22-22</div>
@@ -13,7 +12,12 @@
         <checkbox :checked="isSelected" />
       </div>
       <div class="message-layout flex flex-1 flex-row gap-4">
-        <Avatar :item="sender" :size="40" class="text-20"></Avatar>
+        <Avatar
+          :item="sender?.owner"
+          :size="40"
+          class="text-20"
+          @click="emit('profile', sender)"
+        ></Avatar>
         <div class="message-body flex flex-col flex-1 gap-4">
           <div v-if="isShowSenderName" class="sender-name-container text-12 px-12">
             <div class="sender-name">{{ senderName }} {{ item.id }}</div>
@@ -37,7 +41,7 @@ import MsgText from './MsgText.vue';
 
 const itemRef = ref<HTMLDivElement | null>(null);
 // const targetIsVisible = useElementVisibility(itemRef);
-
+const emit = defineEmits(['profile']);
 const props = defineProps({
   // sessionUnitId
   isSelector: {
@@ -63,7 +67,7 @@ const props = defineProps({
 });
 
 const isSelected = ref(false);
-const sender = computed(() => props.item?.senderSessionUnit?.owner);
+const sender = computed(() => props.item?.senderSessionUnit);
 const senderName = computed(() => props.item?.senderName);
 const isSelf = computed(() => props.item?.senderSessionUnit?.id === props.senderId);
 const isShowSenderName = computed(() => !isSelf.value);

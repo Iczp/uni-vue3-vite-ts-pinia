@@ -86,7 +86,7 @@
         <ChatInput :enabled="isInputEnabled" />
       </template>
     </z-paging>
-    <ProfilePop ref="profileRef"></ProfilePop>
+    <ProfilePop ref="profileRef" :id="sessionUnitId"></ProfilePop>
   </div>
 </template>
 

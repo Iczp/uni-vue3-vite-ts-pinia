@@ -76,7 +76,7 @@ export const jsonParse = (json: string) => {
   }
 };
 
-export const navToChat = (args: { [key: string]: any }) => {
+export const navToChat = (args: { id: string; title?: string | null; [key: string]: any }) => {
   var url = toUrl('/pages/chat/sessions/session', args);
   return navToWebview(
     url,

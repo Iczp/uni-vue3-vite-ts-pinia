@@ -205,6 +205,9 @@ declare namespace Chat {
     LastModificationTime?: string | null;
     sessionUnitCount?: number | null;
     localTime?: Date | String | null; // 本地时间
+    friendshipSessionUnitId?: string | null;
+    friendshipName?: string | null;
+    isFriendship?: boolean;
     [key: string]: any; // 允许任意额外的属性
   }
 

@@ -67,6 +67,7 @@
     "@vant/use": "^1.6.0",
     "@vueuse/core": "^13.5.0",
     "@vueuse/shared": "^13.5.0",
+    "dayjs": "^1.11.13",
     "html2canvas": "^1.4.1",
     "mitt": "^3.0.1",
     "pinia": "2.0.33",

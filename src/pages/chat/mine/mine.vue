@@ -22,7 +22,7 @@
           <div class="py-12 flex flex-row gap-12">
             <Avatar :size="48" :item="chatStore.current" />
             <div class="max-w-240 flex flex-col gap-8">
-              <div class="flex items-center text-ellipsis text-16 font-bold ">
+              <div class="flex items-center text-ellipsis text-16 font-bold">
                 <span>{{ chatStore.current?.name || '-' }}</span>
                 <Gender :gender="chatStore.current?.gender" class="ml-4"></Gender>
               </div>
@@ -36,7 +36,7 @@
           </div>
         </template>
       </Cell>
-      <Cell icon="i-ic:round-settings" label="设置" arrow></Cell>
+      <Cell icon="i-ic:round-edit" label="编辑" arrow></Cell>
     </CellGroup>
 
     <CellGroup>
@@ -56,6 +56,11 @@
       <Cell icon="i-ic:round-favorite" label="特别关注" arrow>
         <template #value>
           <Badge class="gray" :count="12" :max="99"></Badge>
+        </template>
+      </Cell>
+      <Cell icon="i-ic:round-favorite-border" label="关注我的" arrow>
+        <template #value>
+          <Badge class="gray" :count="9"></Badge>
         </template>
       </Cell>
     </CellGroup>
