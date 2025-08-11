@@ -210,6 +210,12 @@ declare namespace Chat {
     isFriendship?: boolean;
     [key: string]: any; // 允许任意额外的属性
   }
+  export interface SessionUnitMemberDto extends SessionUnitDto {
+    friendshipSessionUnitId?: string | null;
+    friendshipName?: string | null;
+    isFriendship?: boolean;
+    [key: string]: any; // 允许任意额外的属性
+  }
 
   interface MessageListInput extends GetListInput {
     sessionUnitId?: string | null;

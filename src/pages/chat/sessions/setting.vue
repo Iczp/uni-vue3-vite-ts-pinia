@@ -103,13 +103,13 @@
         </CellGroup>
       </div>
     </z-paging>
-    <ProfilePop ref="profileRef"></ProfilePop>
+    <MemberPop ref="profileRef"></MemberPop>
   </div>
 </template>
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
-import ProfilePop from '@/pages/chat/components/ProfilePop.vue';
+import MemberPop from '@/pages/chat/components/MemberPop.vue';
 import Cell from '@/pages/chat/components/Cell.vue';
 import CellGroup from '@/pages/chat/components/CellGroup.vue';
 import ChatObject from '@/pages/chat/components/ChatObject.vue';

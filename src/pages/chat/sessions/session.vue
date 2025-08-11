@@ -86,14 +86,14 @@
         <ChatInput :enabled="isInputEnabled" />
       </template>
     </z-paging>
-    <ProfilePop ref="profileRef" :id="sessionUnitId"></ProfilePop>
+    <MemberPop ref="profileRef" :id="sessionUnitId"></MemberPop>
   </div>
 </template>
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
 import MessageItem from '@/pages/chat/components/MessageItem.vue';
-import ProfilePop from '@/pages/chat/components/ProfilePop.vue';
+import MemberPop from '@/pages/chat/components/MemberPop.vue';
 import NavBtn from '@/pages/chat/components/nav-btn.vue';
 import Divider from '@/pages/chat/components/Divider.vue';
 import { getMessageList } from '@/api/chatApi';

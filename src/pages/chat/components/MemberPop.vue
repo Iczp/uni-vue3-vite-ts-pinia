@@ -96,7 +96,7 @@ const props = defineProps({
 
 const isSkeleton = computed(() => !senderSessionUnit.value);
 
-const senderSessionUnit = ref<Chat.SessionUnitDto>();
+const senderSessionUnit = ref<Chat.SessionUnitMemberDto>();
 
 // const { sessionUnit } = useSessionUnitDetail({
 //   sessionUnitId: props.id,
