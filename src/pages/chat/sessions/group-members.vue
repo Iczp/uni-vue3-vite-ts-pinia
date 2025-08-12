@@ -45,33 +45,46 @@
     <!--  -->
 
     <template #cell="{ item, index }">
-      <!-- <div class="max-w-[25%]"> -->
-      <ChatObject
-        class="px-12 py-6"
-        :size="48"
-        :item="item.owner"
-        :index="index"
-        :active="true"
-        @click="showMemberPop(item)"
-        :arrow="true"
-      >
-        <template #title-right></template>
-        <template #desc>
-          <div class="flex">
-            <span class="text-ellipsis text-gray text-12">
-              加入时间:
-              <Date :value="item.creationTime" empty="-"></Date>
-            </span>
-          </div>
-        </template>
-      </ChatObject>
-      <!-- </div> -->
+      <div class="flex flex-row items-center active">
+        <!-- <div v-if="isSelector" class="ml-12">
+          <CheckBox v-model="item.checked" />
+        </div> -->
+        <ChatObject
+          class="px-12 py-6 flex-1"
+          :size="48"
+          :item="item.owner"
+          :index="index"
+          :active="!isSelector"
+          @click="showMemberPop(item)"
+          :arrow="true"
+        >
+          <template #title-right></template>
+          <template #desc>
+            <div class="flex">
+              <span class="text-ellipsis text-gray text-12">
+                加入时间:
+                <Date :value="item.creationTime" empty="-"></Date>
+              </span>
+            </div>
+          </template>
+          <template #footer>
+            <CheckBox @click.stop v-model="item.checked" />
+          </template>
+        </ChatObject>
+      </div>
     </template>
 
     <template v-if="isSelector" #bottom>
-      <div class="flex flex-row p-12 gap-12 bg-white border-before">
-        <u-button class="flex flex-1">移出成员</u-button>
-        <u-button class="flex flex-1">设置角色</u-button>
+      <div class="flex flex-row justify-between justify-center p-12 gap-12 bg-white border-before">
+        <div class="flex items-center text-gray">
+          当前选择中
+          <span class="font-bold text-dark-50 px-4">{{ selectedCount }}</span>
+          人
+        </div>
+        <div class="flex flex-row gap-12">
+          <u-button class="flex flex-1">移出成员</u-button>
+          <u-button class="flex flex-1">设置角色</u-button>
+        </div>
       </div>
     </template>
   </z-paging>
@@ -81,6 +94,7 @@
 import { getMembers } from '@/api/chatApi';
 import { usePaging } from '@/hooks/usePaging';
 import ChatObject from '@/pages/chat/components/ChatObject.vue';
+import CheckBox from '@/components/CheckBox.vue';
 import SessionUnitSkeleton from '@/pages/chat/components/SessionUnitSkeleton.vue';
 import Date from '@/pages/chat/components/Date.vue';
 import MemberPop from '@/pages/chat/components/MemberPop.vue';
@@ -102,10 +116,17 @@ const { pagingRef, dataList, queryList, isPending, isEof, query, reload, totalCo
       maxResultCount: 20,
     },
     service: getMembers,
-    // format: (res, input) => {
-    //   return res;
-    // },
+    format: (res, input) => {
+      res.items.map(x => {
+        x.checked = false;
+      });
+      return res;
+    },
   });
+
+const selectedCount = computed(() => {
+  return dataList.value.filter(x => x.checked).length;
+});
 
 const onMemberClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onMemberClick', item, index);
@@ -119,7 +140,12 @@ const loadingMoreClick = () => {
 };
 
 const onMore = () => {
-  isSelector.value = true;
+  isSelector.value = !isSelector.value;
+  if(isSelector.value){
+    dataList.value.map(x=>{
+      x.checked = false;
+    })
+  }
   console.log('onMore');
 };
 

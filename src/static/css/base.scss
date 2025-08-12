@@ -113,3 +113,6 @@ checkbox {
 .border-after::after {
   bottom: 0;
 }
+.active:active {
+  background-color: #e4e4e4;
+}

@@ -3,6 +3,9 @@
     class="chat-object flex gap-8 flex-shrink-0 gap-12 items-center"
     :class="{ 'flex-col justify-center': vertical, 'flex-row': !vertical, border, active }"
   >
+    <slot name="header">
+      
+    </slot>
     <slot name="icon">
       <Avatar :size="size" :item="item" />
     </slot>
@@ -33,7 +36,7 @@
         </slot>
       </div>
     </slot>
-    <slot name="actions">
+    <slot name="footer">
       <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
     </slot>
   </div>

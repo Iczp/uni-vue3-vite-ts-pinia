@@ -17,6 +17,11 @@
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
                   <span class="ml-8" v-else>{{ owner?.code || '-' }}</span>
                 </div>
+                <div v-if="setting?.memberName" class="text-ellipsis text-14 text-dark-50 h-24">
+                  <span class="text-gray">群昵称:</span>
+                  <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
+                  <span class="ml-8" v-else>{{ setting?.memberName || '-' }}</span>
+                </div>
                 <div v-if="owner?.area" class="text-ellipsis text-14 text-dark-100 h-24">
                   <span class="text-gray">地区:</span>
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
@@ -54,7 +59,7 @@
 
       <CellGroup v-if="isShowDetail">
         <Cell label="账号类型" :value="senderSessionUnit?.ownerObjectType"></Cell>
-        <Cell label="加入方式" :value="senderSessionUnit?.setting?.joinWay"></Cell>
+        <Cell label="加入方式" :value="setting?.joinWay"></Cell>
         <Cell
           v-if="senderSessionUnit?.creationTime"
           label="加入时间"
@@ -62,9 +67,9 @@
           format="YYYY-MM-DD hh:mm:ss"
         ></Cell>
         <Cell
-          v-if="senderSessionUnit?.setting?.lastSendTime"
+          v-if="setting?.lastSendTime"
           label="最后发言时间"
-          :value="senderSessionUnit?.setting?.lastSendTime"
+          :value="setting?.lastSendTime"
           format="YYYY-MM-DD hh:mm:ss"
           empty="从未发言"
         ></Cell>
@@ -99,7 +104,7 @@ const props = defineProps({
 const isSkeleton = computed(() => !senderSessionUnit.value);
 
 const senderSessionUnit = ref<Chat.SessionUnitMemberDto>();
-
+const setting = computed(() => senderSessionUnit.value?.setting);
 // const { sessionUnit } = useSessionUnitDetail({
 //   sessionUnitId: props.id,
 //   auto: false,
