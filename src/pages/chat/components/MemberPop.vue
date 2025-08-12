@@ -41,14 +41,15 @@
             </div>
           </template>
         </Cell>
-        <Cell v-if="!isMe" label="查看详情" @click="navToProfile(senderSessionUnit)" arrow></Cell>
-        <Cell v-if="owner?.description" :arrow="!isMe">
+
+        <Cell v-if="owner?.description" :arrow="false">
           <template #label>
             <div class="lh-relaxed my-8 line-clamp-2 overflow-hidden text-gray break-words">
               {{ owner?.description }}
             </div>
           </template>
         </Cell>
+        <Cell v-if="!isMe" label="查看详情" @click="navToProfile(senderSessionUnit)" arrow></Cell>
       </CellGroup>
 
       <CellGroup v-if="isShowDetail">
@@ -124,9 +125,7 @@ const show = (item: any) => {
 
 const loadMember = (destinationId: string) => {
   getMember({ id: props.id, destinationId })
-    .then(res => {
-      
-    })
+    .then(res => {})
     .catch(err => {});
 };
 

@@ -27,7 +27,11 @@
           <!-- <div class="i-ic:baseline-settings"></div>
           <div class="i-ic:outline-ios-share"></div>
           <div class="i-ic:sharp-share"></div> -->
-          <div v-if="isMore" class="text-20 i-ic:round-more-horiz"></div>
+          <div
+            v-if="isMore"
+            class="text-20 i-ic:round-more-horiz"
+            @click="$emit('more', $event)"
+          ></div>
         </div>
       </slot>
     </div>

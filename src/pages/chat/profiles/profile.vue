@@ -59,13 +59,13 @@
       </Cell>
     </CellGroup>
 
-    <CellGroup>
+    <CellGroup v-if="destinationObjectType == ObjectTypes.Room">
       <Cell label="所在的群" :value="destination?.name" arrow></Cell>
       <Cell label="群内名称" :value="setting?.memberName || '-'"></Cell>
     </CellGroup>
 
     <CellGroup>
-      <Cell label="账号类型" :value="sessionUnit?.ownerObjectType"></Cell>
+      <Cell label="账号类型" :value="objectTypeDescriptions[destinationObjectType!]"></Cell>
       <Cell label="加入方式" :value="setting?.joinWay"></Cell>
       <Cell
         v-if="sessionUnit?.creationTime"
@@ -96,6 +96,7 @@ import { useChatStore } from '@/store/chatStore';
 import { userHeader } from '@/api/userHeader';
 import { getChatObjectDetail, getSessionUnitItemDetail } from '@/api/chatApi';
 import { useSessionUnitDetail } from '@/hooks/useSessionUnitDetail';
+import { objectTypeDescriptions, ObjectTypes } from '@/utils/enums';
 
 const props = defineProps({
   id: {
@@ -106,10 +107,11 @@ const props = defineProps({
     default: '用户信息',
   },
 });
-const { sessionUnit, owner, destination, isPending, setting } = useSessionUnitDetail({
-  sessionUnitId: props.id!,
-  auto: false,
-});
+const { sessionUnit, owner, destination, isPending, setting, destinationObjectType } =
+  useSessionUnitDetail({
+    sessionUnitId: props.id!,
+    auto: false,
+  });
 
 const isSkeleton = computed(() => !sessionUnit.value);
 

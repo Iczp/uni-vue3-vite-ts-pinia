@@ -8,7 +8,21 @@
     :default-page-size="query.maxResultCount!"
   >
     <template #top>
-      <AppNavBar :title="title" :isBack="true" :isMore="false" :border="true"></AppNavBar>
+      <AppNavBar
+        :title="title"
+        :isBack="true"
+        :isMore="true"
+        :border="false"
+        @more="onMore"
+      ></AppNavBar>
+      <div class="sticky top-0 z-9 p-12 pt-0 border-after">
+        <u-search
+          placeholder="搜索成员"
+          v-model="keyword"
+          @search="onSearch"
+          @custom="onSearch"
+        ></u-search>
+      </div>
     </template>
 
     <template #loading>
@@ -54,8 +68,11 @@
       <!-- </div> -->
     </template>
 
-    <template #bottom>
-      <div>完成</div>
+    <template v-if="isSelector" #bottom>
+      <div class="flex flex-row p-12 gap-12 bg-white border-before">
+        <u-button class="flex flex-1">移出成员</u-button>
+        <u-button class="flex flex-1">设置角色</u-button>
+      </div>
     </template>
   </z-paging>
   <MemberPop ref="profileRef" :id="id"></MemberPop>
@@ -75,6 +92,8 @@ const props = defineProps({
   id: String,
 });
 
+const keyword = ref('');
+const isSelector = ref(false);
 const { pagingRef, dataList, queryList, isPending, isEof, query, reload, totalCount } =
   usePaging<Chat.SessionUnitMemberDto>({
     input: {
@@ -97,6 +116,16 @@ const showMemberPop = (item: any) => {
 const loadingMoreClick = () => {
   console.log('loadingMoreClick');
   pagingRef.value?.doLoadMore('click');
+};
+
+const onMore = () => {
+  isSelector.value = true;
+  console.log('onMore');
+};
+
+const onSearch = () => {
+  query.value!.keyword = keyword.value;
+  reload();
 };
 </script>
 <style lang="scss" scoped></style>

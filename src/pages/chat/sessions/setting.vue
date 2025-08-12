@@ -49,7 +49,7 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-center">
+          <div class="flex flex-center py-12">
             <span class="text-sky-500 text-12" @click="navToGroupMembers">
               查看更多({{ totalCount }})
             </span>
