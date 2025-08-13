@@ -1,26 +1,7 @@
 <template>
   <div class="page">
-    <view class="flex flex-col line-after z-999">
-      <AppNavBar title="" :isBack="true" :border="false">
-        <template #left>
-          <CurrentChatObject />
-        </template>
-      </AppNavBar>
-      <!-- <view class="h-48 px-12 flex items-center justify-between">
-        <u-search
-          :placeholder="`搜索(${dataList.length}/${totalCount}) max:${maxTicks}, min:${minTicks}`"
-          :focus="false"
-          :animation="false"
-          @search="onSearch"
-          @custom="onSearch"
-          v-model="query.keyword"
-        ></u-search>
-      </view> -->
-    </view>
-
     <z-paging
       ref="pagingRef"
-      class="z-paging"
       :use-virtual-list="true"
       v-model="dataList"
       data-key="id"
@@ -31,11 +12,13 @@
       :auto="true"
       :default-page-size="query.maxResultCount!"
     >
-      <!-- <template #top>
-        <div @click="fetchLatest">
-          totalCount:{{ totalCount }}, maxTicks:{{ maxTicks }}, minTicks:{{ minTicks }}
-        </div>
-      </template> -->
+      <template #top>
+        <AppNavBar title="" :isBack="true" :border="true">
+          <template #left>
+            <CurrentChatObject />
+          </template>
+        </AppNavBar>
+      </template>
       <!-- <template #bottom>
         <div class="flex flex-center h-48 text-12 text-gray-500">
           共有
@@ -80,6 +63,17 @@
         <SessionUnit :item="item" :index="index" @click="onSessionUnitClick(item, index)" />
       </template>
     </z-paging>
+
+    <!-- 弹出层 -->
+    <u-popup v-model="isPopVisible" mode="bottom" :mask="true" :maskClosable="true">
+      <view class="h-120px flex justify-center items-center bg-white">
+        <scroll-view scroll-x="true" class="popup-scroll-view">
+          <view class="popup-content">
+            <view class="popup-text">出淤泥而不染，濯清涟而不妖</view>
+          </view>
+        </scroll-view>
+      </view>
+    </u-popup>
   </div>
 </template>
 
@@ -100,7 +94,7 @@ import { jsonParse } from '@/utils/object';
 const userStore = useUser();
 const authStore = useAuth();
 const chatStore = useChatStore();
-
+const isPopVisible = ref(false);
 const setMaxTicks = (id: number | null | undefined, force: boolean = false) => {
   if (force || Number(id) > (maxTicks.value || 0)) {
     maxTicks.value = id;
@@ -301,6 +295,10 @@ const onSessionUnitClick = (item: Chat.SessionUnitDto, index: number) => {
   // pagingRef.value?.reload(true);
 };
 
+const onCurrentChatObjectClick = () => {
+  console.log('onCurrentChatObjectClick');
+  isPopVisible.value = true;
+};
 const onSearch = () => {
   console.log('搜索关键字:', query.value.keyword);
 };

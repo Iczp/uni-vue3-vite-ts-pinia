@@ -1,5 +1,8 @@
 <template>
-  <div class="current-chat-object flex flex-row items-center gap-4 position-relative">
+  <div
+    class="current-chat-object flex flex-row items-center gap-4 position-relative"
+    @click="showPopup"
+  >
     <div class="badge absolute" @click="increment">{{ count }}</div>
     <u-avatar :src="current.thumbnail" :size="40"></u-avatar>
     <span class="text-15 font-bold text-ellipsis max-w-88">{{ current.name }}</span>
@@ -19,6 +22,9 @@ const store = useChatStore();
 const isMany = computed(() => store.chatObjects.length > 1);
 const current = computed(() => store.current);
 
+const showPopup = () => {
+  uni.$emit('showPopup@chat-index', true);
+};
 const count = ref(8);
 const increment = () => {
   count.value++;

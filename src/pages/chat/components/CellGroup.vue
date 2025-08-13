@@ -40,6 +40,4 @@ const props = defineProps({
 .cell-group:first-child {
   margin-top: 0;
 }
-.cell-group-list {
-}
 </style>

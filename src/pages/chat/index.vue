@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <nav-btn @click="show = true"></nav-btn>
+    <nav-btn @click="onNavBtnClick"></nav-btn>
     <!-- {{ erpUserId }} -->
     <swiper class="swiper-container" :current="activeIndex" @change="onSwiperChange">
       <swiper-item v-for="(tab, index) in tabs" :key="index">
@@ -80,15 +80,15 @@ console.log('chatObjectId:', chatObjectId);
 console.log('erpUserId:', erpUserId);
 console.log('token:', token);
 
-store
-  .getChatObjects()
-  .then(res => {
-    console.log('getChatObjects:', res);
-  })
-  .catch(err => {
-    console.error('Error fetching chat objects:', err);
-  });
 uni.$on('refresh@chat-index', () => {
+  store
+    .getChatObjects()
+    .then(res => {
+      console.log('getChatObjects:', res);
+    })
+    .catch(err => {
+      console.error('Error fetching chat objects:', err);
+    });
   store
     .getBadges()
     .then(res => {
@@ -102,6 +102,21 @@ uni.$on('refresh@chat-index', () => {
 uni.$emit('refresh@chat-index');
 
 const show = ref(false);
+
+const showPopup = e => {
+  console.log('showPopup', e);
+  show.value = true;
+};
+
+const onNavBtnClick = e => {
+  console.log('NavBtn clicked', e);
+  if (e.type == 1) {
+    showPopup(e);
+    return;
+  }
+};
+
+uni.$on('showPopup@chat-index', showPopup);
 
 const isPopVisible = ref(false);
 // Tab栏配置

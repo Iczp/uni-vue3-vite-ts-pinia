@@ -1,16 +1,14 @@
 <template>
   <div class="nav-btn" :theme="theme">
-    <div
-      class="btn-item"
-      v-for="(item, index) in items"
-      :key="index"
-      @click="$emit('click', item, index)"
-    >
+    <div class="btn-item" v-for="(item, index) in items" :key="index" @click="onClick(item, index)">
       <i :class="item.icon"></i>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
+import { navigateBack } from '@/commons/bridge';
+
+const emit = defineEmits(['click']);
 const props = defineProps({
   theme: {
     type: String,
@@ -19,19 +17,45 @@ const props = defineProps({
   btns: {
     type: Object as () => Record<string, string>,
     default: () => ({
-      // plus: 'i-ic:baseline-plus',
-      more: 'i-ic:outline-more-horiz',
+      plus: 'i-ic:baseline-plus',
+      // more: 'i-ic:outline-more-horiz',
       // moreVert: 'i-ic:outline-more-vert',
       // expand: 'i-ic:baseline-expand-more',
-      album: 'i-ic:outline-album',
+      close: 'i-ic:outline-album',
     }),
   },
 });
 
-const items = Object.values(props.btns).map((icon, type) => ({
-  type,
+const items = Object.entries(props.btns).map(([type, icon], index) => ({
+  index,
   icon,
+  type,
 }));
+const onClose = () => {
+  uni.showModal({
+    // title: '确定要退出吗？',
+    content: '确定要退出吗？',
+    confirmText: '退出',
+    cancelText: '取消',
+    success(res) {
+      if (res.confirm) {
+        navigateBack().catch(() => {
+          uni.navigateBack();
+        });
+      }
+    },
+    fail() {
+      uni.navigateBack();
+    },
+  });
+};
+const onClick = (item: any, index: number) => {
+  console.log(item, index);
+  emit('click', item, index);
+  if (item.type === 'close') {
+    onClose();
+  }
+};
 </script>
 <style lang="scss" scoped>
 .nav-btn {
