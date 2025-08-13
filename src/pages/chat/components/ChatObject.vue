@@ -4,7 +4,7 @@
     :class="{ 'flex-col justify-center': vertical, 'flex-row': !vertical, border, active }"
   >
     <slot name="header">
-      
+
     </slot>
     <slot name="icon">
       <Avatar :size="size" :item="item" />
@@ -36,9 +36,8 @@
         </slot>
       </div>
     </slot>
-    <slot name="footer">
-      <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
-    </slot>
+    <slot name="actions"></slot>
+    <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
   </div>
 </template>
 <script lang="ts" setup>
@@ -96,7 +95,7 @@ const labelValue = computed(() => {
 .border {
   position: relative;
 }
-.border::after {
+:where(.border)::after {
   position: absolute;
   left: 136rpx;
   right: 0;

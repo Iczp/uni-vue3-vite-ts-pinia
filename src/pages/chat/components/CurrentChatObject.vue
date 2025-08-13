@@ -5,7 +5,7 @@
   >
     <div class="badge absolute" @click="increment">{{ count }}</div>
     <u-avatar :src="current.thumbnail" :size="40"></u-avatar>
-    <span class="text-15 font-bold text-ellipsis max-w-88">{{ current.name }}</span>
+    <span class="text-15 font-bold text-ellipsis max-w-120">{{ current.name }}</span>
     <i v-if="isMany" class="i-ic:round-keyboard-arrow-down"></i>
   </div>
 </template>

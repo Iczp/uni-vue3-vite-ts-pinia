@@ -66,7 +66,7 @@
     </CellGroup>
 
     <CellGroup>
-      <Cell icon="i-ic:round-touch-app" label="版本" arrow>
+      <Cell icon="i-ic:round-touch-app" label="版本" help="请升级" :disabled="true" arrow>
         <template #value>
           <div class="bg-gray-100 rounded-24px px-12 py-2 text-dark-100">新版本 v1.0.1</div>
         </template>

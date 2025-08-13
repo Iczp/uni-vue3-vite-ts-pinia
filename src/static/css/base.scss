@@ -113,6 +113,6 @@ checkbox {
 .border-after::after {
   bottom: 0;
 }
-.active:active {
+:where(.active:not([disabled='true'])):active {
   background-color: #e4e4e4;
 }

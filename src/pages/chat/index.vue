@@ -37,17 +37,19 @@
       </view>
     </u-popup>
     <!-- 弹出层 -->
-    <u-popup v-model="show" mode="left" width="40%">
+    <ChatObjectPop />
+    <!-- <u-popup v-model="show" mode="left" width="40%">
       <div v-for="item in store.chatObjects" :key="item.id">
         <u-avatar :src="item.thumbnail" :size="36"></u-avatar>
         <span class="text-14 font-bold text-ellipsis max-w-88">{{ item.name }}</span>
       </div>
-    </u-popup>
+    </u-popup> -->
   </view>
 </template>
 
 <script setup>
 import NavBtn from '@/pages/chat/components/nav-btn.vue';
+import ChatObjectPop from '@/pages/chat/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';
 const store = useChatStore();
 

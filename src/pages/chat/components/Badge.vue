@@ -55,6 +55,7 @@ const visible = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   box-sizing: border-box;
   padding: 2rpx 10rpx;
   border: 1px solid white;

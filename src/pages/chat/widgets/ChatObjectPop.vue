@@ -1,0 +1,119 @@
+<template>
+  <u-popup v-model="isVisible" mode="left" :closeable="false" width="60%">
+    <z-paging>
+      <template #top>
+        <AppNavBar title="" :isBack="false" :border="false">
+          <template #right>
+            <div class="i-ic:round-close text-20" @click="isVisible = false"></div>
+          </template>
+        </AppNavBar>
+      </template>
+
+      <div class="text-12 text-gray px-12 py-8">切换聊天</div>
+      <div class="flex flex-col border-before border-after">
+        <div
+          v-for="(item, index) in store.chatObjects"
+          :key="item.id"
+          @click="onChangeChat(item, index)"
+          class="active"
+        >
+          <ChatObject
+            class="px-12 py-6 flex-1 after:left-60"
+            :class="{ current: index == store.currentIndex }"
+            :size="36"
+            :item="item"
+            :arrow="false"
+            :border="index != store.chatObjects.length - 1"
+          >
+            <template #title>
+              <div class="max-w-100 inline-block text-ellipsis">
+                <span class="text-14">{{ item.name }}</span>
+              </div>
+            </template>
+            <template #actions>
+              <div class="flex flex-row gap-4 items-center">
+                <Badge :count="index" />
+                <div
+                  v-if="index == store.currentIndex"
+                  class="i-ic:round-check-circle text-green-500 text-16 cursor-default"
+                ></div>
+                <div v-else class="text-gray-400 i-ic:round-arrow-forward-ios"></div>
+              </div>
+            </template>
+          </ChatObject>
+        </div>
+      </div>
+
+      <CellGroup label="快捷">
+        <Cell label="扫一扫" :arrow="true"></Cell>
+        <Cell label="新建群聊" :arrow="true"></Cell>
+        <Cell label="反馈" help="如有Bug,请反馈给我们" :arrow="true"></Cell>
+      </CellGroup>
+
+      <!-- <div v-for="value in 100" class="flex p-12">
+        {{ value }}
+      </div> -->
+      <template #bottom>
+        <footer class="flex flex-center w-full border-before h-56">
+          <div class="text-gray text-12">v1.0</div>
+        </footer>
+      </template>
+    </z-paging>
+  </u-popup>
+</template>
+
+<script lang="ts" setup>
+import { useChatStore } from '@/store/chatStore';
+
+import ChatObject from '@/pages/chat/components/ChatObject.vue';
+import Badge from '@/pages/chat/components/Badge.vue';
+import Cell from '@/pages/chat/components/Cell.vue';
+import CellGroup from '@/pages/chat/components/CellGroup.vue';
+const props = defineProps({
+  label: {
+    type: [String, null],
+  },
+  icon: {
+    type: String,
+  },
+  valueIcon: {
+    type: String,
+  },
+  arrow: {
+    type: Boolean,
+    default: false,
+  },
+});
+const isVisible = ref(false);
+const store = useChatStore();
+const onChangeChat = (item: any, index: number) => {
+  console.log('onChangeChat', item, index);
+  if (store.currentIndex == index) {
+    uni.showToast({ title: '已经是当前会话', icon: 'none' });
+    return;
+  }
+  store.setCurrentIndex(index);
+  isVisible.value = false;
+};
+const show = () => {
+  isVisible.value = !isVisible.value;
+};
+const close = () => {
+  isVisible.value = false;
+};
+
+uni.$on('showPopup@chat-index', show);
+
+defineExpose({
+  show,
+  close,
+  isVisible,
+});
+</script>
+
+<style lang="scss" scoped>
+.current {
+  background-color: rgb(241, 241, 241);
+  font-weight: bold;
+}
+</style>

@@ -1,18 +1,18 @@
 <template>
   <div
-    class="cell flex flex-row justify-between items-center gap-12 px-12 box-border text-dark-500"
+    class="cell flex flex-row justify-between gap-12 p-12 text-dark-500"
     :class="{ active: !!active }"
     :disabled="disabled"
   >
     <slot name="label">
-      <div
-        class="cell-label flex flex-row gap-8 items-center max-w-[50%] text-gray-600"
-        :class="labelClass"
-      >
+      <div class="cell-label flex flex-row gap-8 items-center text-gray-600" :class="labelClass">
         <slot name="icon">
           <i v-if="icon" class="text-16" :class="icon"></i>
         </slot>
-        <span class="text-ellipsis">{{ label }}</span>
+        <div class="flex flex-col gap-4">
+          <span class="text-ellipsis">{{ label }}</span>
+          <span v-if="help" class="text-ellipsis text-12 text-gray">{{ help }}</span>
+        </div>
       </div>
     </slot>
     <slot>
@@ -24,6 +24,8 @@
         <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
       </div>
     </slot>
+
+    <!-- <div>ddd</div> -->
   </div>
 </template>
 
@@ -34,6 +36,9 @@ dayjs.locale('zh-cn');
 const props = defineProps({
   label: {
     type: [Number, String, null],
+  },
+  help: {
+    type: String,
   },
   labelClass: {
     type: String,
@@ -86,13 +91,14 @@ const valueDisplay = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.cell {
+:where(.cell) {
   position: relative;
-  min-height: 96rpx;
+  min-height: 48rpx;
   background-color: #fff;
 }
-.cell[disabled='true'] {
+:where(.cell[disabled='true']) {
   color: #ccc;
+  .text-gray,
   .cell-label {
     color: #ccc;
   }

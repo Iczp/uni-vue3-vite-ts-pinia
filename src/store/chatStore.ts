@@ -5,10 +5,11 @@ export const useChatStore = defineStore({
   id: 'chat-object',
   state: () => {
     const chatObjectsJson = uni.getStorageSync('chatObjects');
+    const currentIndex = Number(uni.getStorageSync('chatObjects-currentIndex') || 0);
     // console.log('chatObjectsJson', chatObjectsJson);
     const chatObjects = jsonParse<Chat.ChatObjectDto[]>(chatObjectsJson) || [];
     return {
-      currentIndex: 0,
+      currentIndex,
       chatObjects,
       badges: [],
     } as {
@@ -26,6 +27,10 @@ export const useChatStore = defineStore({
     },
   },
   actions: {
+    setCurrentIndex(index: number) {
+      this.currentIndex = index;
+      uni.setStorageSync('chatObjects-currentIndex', index);
+    },
     async getChatObjects() {
       const res = await getChatObjectByCurrentUser({});
       this.chatObjects = res.items;
