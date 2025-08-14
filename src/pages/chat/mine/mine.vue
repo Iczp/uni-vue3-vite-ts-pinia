@@ -35,6 +35,9 @@
             </div>
           </div>
         </template>
+        <template #value>
+          <div class="i-ic:round-edit" @click="onEdit"></div>
+        </template>
       </Cell>
       <Cell icon="i-ic:round-edit" label="编辑" arrow></Cell>
     </CellGroup>
@@ -100,6 +103,7 @@ import { useAuth } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';
 import { userHeader } from '@/api/userHeader';
 import { getChatObjectDetail } from '@/api/chatApi';
+import { navTo } from '@/utils/nav';
 
 const chatStore = useChatStore();
 
@@ -158,6 +162,9 @@ const onScroll = e => {
   // console.log("滚动事件", e);
   opacity.value = Math.min(e.detail.scrollTop / 400, 1);
   // console.log("滚动透明度", opacity.value);
+};
+const onEdit = () => {
+  navTo({ url: '/pages/chat/mine/edit', query: { id: chatStore.current?.id } });
 };
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作

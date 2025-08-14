@@ -49,7 +49,7 @@
 
         <Cell v-if="owner?.description" :arrow="false">
           <template #label>
-            <div class="lh-relaxed my-8 line-clamp-2 overflow-hidden text-gray break-words">
+            <div class="lh-relaxed line-clamp-2 overflow-hidden text-gray break-words">
               {{ owner?.description }}
             </div>
           </template>
