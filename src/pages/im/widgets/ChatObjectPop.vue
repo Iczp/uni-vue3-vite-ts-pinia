@@ -18,7 +18,7 @@
           class="active"
         >
           <ChatObject
-            class="px-12 py-6 flex-1 after:left-60"
+            class="px-12 py-8 flex-1 after:left-56"
             :class="{ current: index == store.currentIndex }"
             :size="36"
             :item="item"
@@ -30,6 +30,13 @@
                 <span class="text-14">{{ item.name }}</span>
               </div>
             </template>
+            <!-- <template #desc>
+              <div class="max-w-100 inline-block text-ellipsis">
+                <span class="text-10 text-gray font-normal">
+                  {{ objectTypeDescriptions[item.objectType] }}
+                </span>
+              </div>
+            </template> -->
             <template #actions>
               <div class="flex flex-row gap-4 items-center">
                 <Badge :count="index" />
@@ -69,6 +76,7 @@ import ChatObject from '@/pages/im/components/ChatObject.vue';
 import Badge from '@/pages/im/components/Badge.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
+import { objectTypeDescriptions } from '@/utils/enums';
 const props = defineProps({
   label: {
     type: [String, null],

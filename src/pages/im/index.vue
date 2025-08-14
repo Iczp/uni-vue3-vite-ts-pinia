@@ -48,6 +48,7 @@
 </template>
 
 <script setup>
+import { useObjectPicker } from '@/hooks/usePicker';
 import NavBtn from '@/pages/im/components/nav-btn.vue';
 import ChatObjectPop from '@/pages/im/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';
@@ -112,6 +113,16 @@ const showPopup = e => {
 
 const onNavBtnClick = e => {
   console.log('NavBtn clicked', e);
+
+  useObjectPicker({
+    selected: [],
+    max: 12,
+    multi: true,
+    disabled: [],
+    title: '选择联系人',
+  }).then(res => {
+    console.log('useObjectPicker', res);
+  });
   if (e.type == 1) {
     showPopup(e);
     return;

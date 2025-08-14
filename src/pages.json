@@ -1,12 +1,5 @@
 {
   "pages": [
-      {
-      "path": "pages/im/index",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "chat"
-      }
-    },
     {
       "name": "index",
       "path": "pages/index/index",
@@ -44,8 +37,21 @@
         "navigationBarTitleText": "pdf"
       }
     },
-
-
+    //im
+    {
+      "path": "pages/im/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "chat"
+      }
+    },
+    {
+      "path": "pages/im/pickers/object-picker",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "object picker"
+      }
+    },
     {
       "path": "pages/im/profiles/profile",
       "style": {
