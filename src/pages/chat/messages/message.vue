@@ -223,10 +223,20 @@ const fetchLatest = async () => {
     updateDatalist(res.items);
     setMaxTicks(getMaxTicks(res.items));
     setMinTicks(getMinTicks(res.items));
+    storageMessage(
+      dataList.value.slice(0, Math.min(query.value.maxResultCount!, dataList.value.length)),
+    );
     // return;
   } else {
     // uni.showToast({ title: '没有新消息', icon: 'none' });
   }
+};
+
+const storageMessage = (items: any[] = []) => {
+  uni.setStorage({
+    key: `message-list-${query.value.ownerId}`,
+    data: JSON.stringify(items),
+  });
 };
 // const totalCount = ref(0);
 const fetchHistory = async () => {
@@ -237,10 +247,7 @@ const fetchHistory = async () => {
     const res = await getSessionUnitList(query.value);
     if (query.value.maxTicks == null) {
       totalCount.value = res.totalCount;
-      uni.setStorage({
-        key: `message-list-${query.value.ownerId}`,
-        data: JSON.stringify(res.items),
-      });
+      storageMessage(res.items);
     }
     setMaxTicks(getMaxTicks(res.items));
     setMinTicks(getMinTicks(res.items));
