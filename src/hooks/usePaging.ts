@@ -1,3 +1,5 @@
+import ZPaging from '@/uni_modules/z-paging/components/z-paging.vue';
+
 interface PagingOptions<TDto> {
   url?: string; // 请求地址
   method?: string; // 请求方法
@@ -33,9 +35,8 @@ export function usePaging<TDto>(
     service: defaultService,
   },
 ) {
-
   console.log('usePaging options', options);
-  const pagingRef = ref();
+  const pagingRef = ref<InstanceType<typeof ZPaging>>();
   const isPending = ref(false);
   const isEof = ref(false);
   const totalCount = ref(0);

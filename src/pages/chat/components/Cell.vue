@@ -21,7 +21,7 @@
           <i v-if="valueIcon" :class="valueIcon"></i>
           <span class="text-ellipsis">{{ valueDisplay }}</span>
         </slot>
-        <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios"></i>
+        <i v-if="arrow" class="text-gray-400 i-ic:round-arrow-forward-ios flex flex-shrink-0"></i>
       </div>
     </slot>
 
@@ -44,7 +44,7 @@ const props = defineProps({
     type: String,
   },
   value: {
-    type: [Number, String, null],
+    type: [Number, Date, String, null],
     default: '',
   },
   icon: {

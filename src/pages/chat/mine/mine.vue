@@ -3,7 +3,7 @@
     ref="pagingRef"
     :refresher-only="true"
     @scroll="onScroll"
-    @refresh="onRefresh"
+    @onRefresh="onRefresh"
     :auto="false"
   >
     <template #top>
@@ -19,13 +19,14 @@
     <CellGroup>
       <Cell class="before-none" :arrow="false">
         <template #label>
-          <div class="py-12 flex flex-row gap-12">
+          <div class="py-12 flex flex-row gap-12" @click="changeChat">
             <Avatar :size="48" :item="chatStore.current" />
             <div class="max-w-240 flex flex-col gap-8">
               <div class="flex items-center text-ellipsis text-16 font-bold">
                 <span>{{ chatStore.current?.name || '-' }}</span>
                 <Gender :gender="chatStore.current?.gender" class="ml-4"></Gender>
               </div>
+              <div class="text-ellipsis text-14 text-dark-50">ID: {{ chatStore.current?.id }}</div>
               <div class="text-ellipsis text-14 text-dark-50">
                 账号: {{ chatStore.current?.code }}
               </div>
@@ -76,8 +77,17 @@
       </Cell>
     </CellGroup>
     <CellGroup>
-      <Cell icon="i-ic:round-lock-person" label="Login" @click="login" arrow></Cell>
-      <Cell icon="i-ic:round-token" label="RefreshToken" @click="refreshToken" arrow></Cell>
+      <Cell icon="i-ic:round-lock-person" label="登录" help="Login" @click="login" arrow></Cell>
+      <Cell
+        icon="i-ic:round-token"
+        label="刷新Token"
+        help="RefreshToken"
+        @click="refreshToken"
+        format="MM-DD HH:mm:ss"
+        :value="authStore.token?.creation_time"
+        class=""
+        arrow
+      ></Cell>
     </CellGroup>
 
     <!-- <div>
@@ -114,6 +124,9 @@ const authStore = useAuth();
 const env = ref(import.meta.env);
 const pagingRef = ref();
 
+const changeChat = () => {
+  uni.$emit('showPopup@chat-index');
+};
 const onRefresh = () => {
   loadData();
   console.log('刷新');

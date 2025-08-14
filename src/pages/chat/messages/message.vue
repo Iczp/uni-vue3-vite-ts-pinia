@@ -34,7 +34,7 @@
       </template>
 
       <template #empty="{ isLoadFailed }">
-        <div class="text-12 text-gray-400">没有消息({{ isLoadFailed }})</div>
+        <div class="text-12 text-gray-400">没有好友</div>
       </template>
 
       <template #loading>
@@ -269,14 +269,18 @@ const queryList = async (pageNo: number, pageSize: number) => {
     await fetchHistory();
   }
 };
-
+const idList = [13, 14, 5862, 5866, 5869, 5885];
 watch(
-  () => chatStore.current,
+  () => chatStore.currentIndex,
   v => {
     console.log('#watch current', v);
-    if (v) {
-      query.value.ownerId = 13; //v.id;
-    }
+    query.value.ownerId = idList[v];
+    maxTicks.value = null;
+    minTicks.value = null;
+    query.value.keyword = '';
+    query.value.skipCount = 0;
+    dataList.value = [];
+    pagingRef.value?.reload();
   },
   { immediate: true },
 );
@@ -307,6 +311,7 @@ const onRefresh = () => {
   uni.$emit('refresh@chat-index');
   fetchLatest();
   console.log('刷新');
+  // pagingRef.value?.reload(true);
 };
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
