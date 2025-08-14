@@ -85,11 +85,11 @@
 </template>
 
 <script lang="ts" setup>
-import CellGroup from '@/pages/chat/components/CellGroup.vue';
-import Cell from '@/pages/chat/components/Cell.vue';
-import Badge from '@/pages/chat/components/Badge.vue';
-import Avatar from '@/pages/chat/components/Avatar.vue';
-import Gender from '@/pages/chat/components/Gender.vue';
+import CellGroup from '@/pages/im/components/CellGroup.vue';
+import Cell from '@/pages/im/components/Cell.vue';
+import Badge from '@/pages/im/components/Badge.vue';
+import Avatar from '@/pages/im/components/Avatar.vue';
+import Gender from '@/pages/im/components/Gender.vue';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';

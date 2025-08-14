@@ -15,7 +15,7 @@ const list = ref([
   {
     icon: 'chat',
     text: '聊天',
-    pagePath: '/pages/chat/chat',
+    pagePath: '/pages/im/chat',
   },
   {
     icon: 'selector',

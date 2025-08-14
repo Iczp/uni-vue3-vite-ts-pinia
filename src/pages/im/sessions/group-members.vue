@@ -93,12 +93,12 @@
 <script lang="ts" setup>
 import { getMembers } from '@/api/chatApi';
 import { usePaging } from '@/hooks/usePaging';
-import ChatObject from '@/pages/chat/components/ChatObject.vue';
+import ChatObject from '@/pages/im/components/ChatObject.vue';
 import CheckBox from '@/components/CheckBox.vue';
-import SessionUnitSkeleton from '@/pages/chat/components/SessionUnitSkeleton.vue';
-import Date from '@/pages/chat/components/Date.vue';
-import MemberPop from '@/pages/chat/components/MemberPop.vue';
-import Divider from '@/pages/chat/components/Divider.vue';
+import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
+import Date from '@/pages/im/components/Date.vue';
+import MemberPop from '@/pages/im/components/MemberPop.vue';
+import Divider from '@/pages/im/components/Divider.vue';
 const title = computed(() => `成员列表`);
 const name = ref('555');
 const profileRef = ref<InstanceType<typeof MemberPop>>();

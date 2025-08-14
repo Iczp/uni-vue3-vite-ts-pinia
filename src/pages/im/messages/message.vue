@@ -83,9 +83,9 @@ import { usePaging } from '@/hooks/usePaging';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { getSessionUnitList } from '@/api/chatApi';
-import CurrentChatObject from '@/pages/chat/components/CurrentChatObject.vue';
-import SessionUnit from '@/pages/chat/components/SessionUnit.vue';
-import SessionUnitSkeleton from '@/pages/chat/components/SessionUnitSkeleton.vue';
+import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
+import SessionUnit from '@/pages/im/components/SessionUnit.vue';
+import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 import { useChatStore } from '@/store/chatStore';
 import { updateSortedList } from '@/utils/list';
 import { navToChat } from '@/utils/nav';
@@ -244,7 +244,7 @@ const fetchHistory = async () => {
   isPending.value = true;
   try {
     console.warn('fetchHistory', query.value);
-    const res = await getSessionUnitList(query.value);
+    const res = await getSessionUnitList(query.value);/im/
     if (query.value.maxTicks == null) {
       totalCount.value = res.totalCount;
       storageMessage(res.items);

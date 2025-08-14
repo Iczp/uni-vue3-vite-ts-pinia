@@ -22,8 +22,8 @@
 </template>
 <script lang="ts" setup>
 import html2canvas from 'html2canvas';
-import QrCode from '@/pages/chat/components/QrCode.vue';
-import Avatar from '@/pages/chat/components/Avatar.vue';
+import QrCode from '@/pages/im/components/QrCode.vue';
+import Avatar from '@/pages/im/components/Avatar.vue';
 
 import env from '@/config/env';
 import { chat_base_url } from '@/config';

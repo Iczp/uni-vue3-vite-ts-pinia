@@ -48,8 +48,8 @@
 </template>
 
 <script setup>
-import NavBtn from '@/pages/chat/components/nav-btn.vue';
-import ChatObjectPop from '@/pages/chat/widgets/ChatObjectPop.vue';
+import NavBtn from '@/pages/im/components/nav-btn.vue';
+import ChatObjectPop from '@/pages/im/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';
 const store = useChatStore();
 
@@ -127,31 +127,31 @@ const tabs = ref([
     text: '消息',
     icon: 'i-ic:round-message',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '/pages/chat/message.vue',
+    path: '/pages/im/message.vue',
     isLazy: false,
     badge: store.totalBadges,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/messages/message.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/im/messages/message.vue'))),
   },
   {
     text: '通讯录',
     icon: 'i-ic:baseline-switch-account',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '/pages/chat/contacts/contacts.vue',
+    path: '/pages/im/contacts/contacts.vue',
     isLazy: false,
     badge: 0,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/contacts/contacts.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/im/contacts/contacts.vue'))),
   },
   {
     text: '我的',
     icon: 'i-ic:round-person',
     selectedIcon: '/static/tabs/home-active.png',
-    path: '@/pages/chat/mine/mine.vue',
+    path: '@/pages/im/mine/mine.vue',
     isLazy: false,
     badge: 0,
     isDot: false,
-    component: markRaw(defineAsyncComponent(() => import('@/pages/chat/mine/mine.vue'))),
+    component: markRaw(defineAsyncComponent(() => import('@/pages/im/mine/mine.vue'))),
   },
 ]);
 

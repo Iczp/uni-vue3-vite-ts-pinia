@@ -103,11 +103,11 @@
 </template>
 
 <script lang="ts" setup>
-import CellGroup from '@/pages/chat/components/CellGroup.vue';
-import Cell from '@/pages/chat/components/Cell.vue';
-import Badge from '@/pages/chat/components/Badge.vue';
-import Avatar from '@/pages/chat/components/Avatar.vue';
-import Gender from '@/pages/chat/components/Gender.vue';
+import CellGroup from '@/pages/im/components/CellGroup.vue';
+import Cell from '@/pages/im/components/Cell.vue';
+import Badge from '@/pages/im/components/Badge.vue';
+import Avatar from '@/pages/im/components/Avatar.vue';
+import Gender from '@/pages/im/components/Gender.vue';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';
@@ -177,7 +177,7 @@ const onScroll = e => {
   // console.log("滚动透明度", opacity.value);
 };
 const onEdit = () => {
-  navTo({ url: '/pages/chat/mine/edit', query: { id: chatStore.current?.id } });
+  navTo({ url: '/pages/im/mine/edit', query: { id: chatStore.current?.id } });
 };
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作

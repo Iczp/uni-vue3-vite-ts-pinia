@@ -109,10 +109,10 @@
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
-import MemberPop from '@/pages/chat/components/MemberPop.vue';
-import Cell from '@/pages/chat/components/Cell.vue';
-import CellGroup from '@/pages/chat/components/CellGroup.vue';
-import ChatObject from '@/pages/chat/components/ChatObject.vue';
+import MemberPop from '@/pages/im/components/MemberPop.vue';
+import Cell from '@/pages/im/components/Cell.vue';
+import CellGroup from '@/pages/im/components/CellGroup.vue';
+import ChatObject from '@/pages/im/components/ChatObject.vue';
 import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
@@ -177,26 +177,26 @@ const onScroll = e => {
 };
 
 const navToGroupName = () => {
-  navTo({ url: '/pages/chat/sessions/group-name', query: { id: props.id } });
+  navTo({ url: '/pages/im/sessions/group-name', query: { id: props.id } });
 };
 const navToGroupManage = () => {
-  navTo({ url: '/pages/chat/sessions/group-manage', query: { id: props.id } });
+  navTo({ url: '/pages/im/sessions/group-manage', query: { id: props.id } });
 };
 const navToRemark = () => {
-  navTo({ url: '/pages/chat/sessions/remark', query: { id: props.id } });
+  navTo({ url: '/pages/im/sessions/remark', query: { id: props.id } });
 };
 const navToGroupMembers = () => {
-  navTo({ url: `/pages/chat/sessions/group-members?id=${props.id}` });
+  navTo({ url: `/pages/im/sessions/group-members?id=${props.id}` });
 };
 const navToGroupQrcode = () => {
-  navTo({ url: `/pages/chat/sessions/group-qrcode?id=${props.id}` });
+  navTo({ url: `/pages/im/sessions/group-qrcode?id=${props.id}` });
 };
 const navToLogs = () => {
-  navTo({ url: `/pages/chat/sessions/logs?id=${props.id}` });
+  navTo({ url: `/pages/im/sessions/logs?id=${props.id}` });
 };
 const navToProfile = (item: any) => {
   console.log('navToProfile', item);
-  navTo({ url: `/pages/chat/profiles/profile?id=${item.id}&vid=${props.id}` });
+  navTo({ url: `/pages/im/profiles/profile?id=${item.id}&vid=${props.id}` });
 };
 const showMemberPop = (item: any) => {
   profileRef.value?.show(item);

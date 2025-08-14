@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
 import { useChatStore } from '@/store/chatStore';
-import Badge from '@/pages/chat/components/Badge.vue';
+import Badge from '@/pages/im/components/Badge.vue';
 const props = defineProps({
   theme: {
     type: String,

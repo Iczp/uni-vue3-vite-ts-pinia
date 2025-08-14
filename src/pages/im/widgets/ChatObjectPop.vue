@@ -65,10 +65,10 @@
 <script lang="ts" setup>
 import { useChatStore } from '@/store/chatStore';
 
-import ChatObject from '@/pages/chat/components/ChatObject.vue';
-import Badge from '@/pages/chat/components/Badge.vue';
-import Cell from '@/pages/chat/components/Cell.vue';
-import CellGroup from '@/pages/chat/components/CellGroup.vue';
+import ChatObject from '@/pages/im/components/ChatObject.vue';
+import Badge from '@/pages/im/components/Badge.vue';
+import Cell from '@/pages/im/components/Cell.vue';
+import CellGroup from '@/pages/im/components/CellGroup.vue';
 const props = defineProps({
   label: {
     type: [String, null],

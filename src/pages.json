@@ -1,5 +1,12 @@
 {
   "pages": [
+      {
+      "path": "pages/im/index",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "chat"
+      }
+    },
     {
       "name": "index",
       "path": "pages/index/index",
@@ -38,78 +45,72 @@
       }
     },
 
+
     {
-      "path": "pages/chat/index",
-      "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "chat"
-      }
-    },
-    {
-      "path": "pages/chat/profiles/profile",
+      "path": "pages/im/profiles/profile",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "profile"
       }
     },
     {
-      "path": "pages/chat/sessions/session",
+      "path": "pages/im/sessions/session",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "session"
       }
     },
     {
-      "path": "pages/chat/sessions/setting",
+      "path": "pages/im/sessions/setting",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "聊天设置"
       }
     },
     {
-      "path": "pages/chat/sessions/group-name",
+      "path": "pages/im/sessions/group-name",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "修改群名称"
       }
     },
     {
-      "path": "pages/chat/sessions/remark",
+      "path": "pages/im/sessions/remark",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "备注"
       }
     },
     {
-      "path": "pages/chat/sessions/logs",
+      "path": "pages/im/sessions/logs",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "聊天记录"
       }
     },
     {
-      "path": "pages/chat/sessions/group-members",
+      "path": "pages/im/sessions/group-members",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "群成员"
       }
     },
     {
-      "path": "pages/chat/sessions/group-manage",
+      "path": "pages/im/sessions/group-manage",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "管理"
       }
     },
     {
-      "path": "pages/chat/sessions/group-qrcode",
+      "path": "pages/im/sessions/group-qrcode",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "群二维码"
       }
     },
     {
-      "path": "pages/chat/bouncing-scroll-demo",
+      "path": "pages/im/bouncing-scroll-demo",
       "style": {
         "navigationStyle": "custom",
         "navigationBarTitleText": "bouncing scroll demo"

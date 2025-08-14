@@ -92,12 +92,12 @@
 
 <script lang="ts" setup>
 // import MessageViewer from './components/MessageViewer.vue';
-import MessageItem from '@/pages/chat/components/MessageItem.vue';
-import MemberPop from '@/pages/chat/components/MemberPop.vue';
-import NavBtn from '@/pages/chat/components/nav-btn.vue';
-import Divider from '@/pages/chat/components/Divider.vue';
+import MessageItem from '@/pages/im/components/MessageItem.vue';
+import MemberPop from '@/pages/im/components/MemberPop.vue';
+import NavBtn from '@/pages/im/components/nav-btn.vue';
+import Divider from '@/pages/im/components/Divider.vue';
 import { getMessageList } from '@/api/chatApi';
-import ChatInput from '@/pages/chat/components/ChatInput.vue';
+import ChatInput from '@/pages/im/components/ChatInput.vue';
 import { getSessionUnitItemDetail } from '@/api/chatApi';
 import { ObjectTypes } from '@/utils/enums';
 import { navToSetting } from '@/utils/nav';

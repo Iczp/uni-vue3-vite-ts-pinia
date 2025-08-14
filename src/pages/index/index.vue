@@ -110,7 +110,7 @@ function goTest() {
 }
 
 const onChat = () => {
-  navToWebview('/pages/chat/index');
+  navToWebview('/pages/im/index');
 };
 function goScan() {
   navTo({

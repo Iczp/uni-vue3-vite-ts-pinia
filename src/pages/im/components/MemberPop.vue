@@ -83,10 +83,10 @@
   </u-popup>
 </template>
 <script lang="ts" setup>
-import Avatar from '@/pages/chat/components/Avatar.vue';
-import Gender from '@/pages/chat/components/Gender.vue';
-import CellGroup from '@/pages/chat/components/CellGroup.vue';
-import Cell from '@/pages/chat/components/Cell.vue';
+import Avatar from '@/pages/im/components/Avatar.vue';
+import Gender from '@/pages/im/components/Gender.vue';
+import CellGroup from '@/pages/im/components/CellGroup.vue';
+import Cell from '@/pages/im/components/Cell.vue';
 import { useSessionUnitDetail } from '@/hooks/useSessionUnitDetail';
 import { navTo, navToChat } from '@/utils/nav';
 
@@ -155,7 +155,7 @@ const onSend = () => {
 const navToProfile = (item: any) => {
   console.log('navToProfile', item);
   isVisible.value = false;
-  navTo({ url: `/pages/chat/profiles/profile?id=${item.id}&vid=${props.id}` });
+  navTo({ url: `/pages/im/profiles/profile?id=${item.id}&vid=${props.id}` });
 };
 
 defineExpose({
