@@ -1,5 +1,6 @@
 import { useAuth } from '@/store/auth';
 import { version } from '../../package.json';
+import { toUrl } from '@/utils/nav';
 
 export const formatPostData = (data: any) => {
   // 使用 Object.fromEntries 将键值对数组转换为对象
@@ -131,6 +132,35 @@ export const getMembers = (params: Chat.DestinationListInput) => {
   });
 };
 
+export const getContacts = (data: Chat.GetContactsInput) => {
+  let url = `/api/chat/contacts`;
+
+  const objectTypes = data.objectTypes || [];
+
+  console.log('getContacts objectTypes', objectTypes);
+
+  const params = { ...data };
+
+  const q = objectTypes.map(o => encodeURIComponent(o)).join(`&objectTypes=`);
+
+  delete params.objectTypes;
+  if (q.length > 0) {
+    url += `?objectTypes=${q}`;
+  }
+
+  const uri = toUrl(url, params);
+
+  console.log('getContacts url', uri);
+
+  url = uri;
+
+  return chatRequest<Chat.PagedResult<Chat.SessionUnitDto>>({
+    url,
+    method: 'GET',
+    // data: params,
+  });
+};
+
 export const getMember = (data: Chat.GetDestinationInput) => {
   // delete data.id;
   return chatRequest<Chat.SessionUnitMemberDto>({
@@ -144,5 +174,13 @@ export const getMessageList = (data?: Chat.MessageListInput) =>
   chatRequest<Chat.PagedResult<Chat.MessageDto>>({
     url: '/api/chat/message',
     method: 'GET',
+    data,
+  });
+
+
+  export const createGroup = (data?: Chat.CreateGroupInput) =>
+  chatRequest<Chat.PagedResult<Chat.MessageDto>>({
+    url: '/api/chat/room',
+    method: 'POST',
     data,
   });

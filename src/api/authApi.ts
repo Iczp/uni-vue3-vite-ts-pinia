@@ -98,7 +98,7 @@ export const isExpired = (token: AuthApi.TokenDto | null | undefined) => {
   const now = new Date().getTime(); // 当前时间的毫秒表示
   const tokenDuration = Number(expires_in) * 1000; // 有效期转换为毫秒
   const expired = now - createTicks > tokenDuration; // 判断是否过期
-  console.warn('isExpired', expired, now, createTicks, tokenDuration, token);
+  // console.warn('isExpired', expired, now, createTicks, tokenDuration, token);
   return expired;
 };
 

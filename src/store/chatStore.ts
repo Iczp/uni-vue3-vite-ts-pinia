@@ -25,6 +25,21 @@ export const useChatStore = defineStore({
     totalBadges: state => {
       return state.badges.reduce((total, item) => total + (item.badge || 0), 0);
     },
+    otherBadges: state => {
+      const currentId = state.chatObjects[state.currentIndex].id;
+      return state.badges
+        .filter(x => x.chatObjectId != currentId)
+        .reduce((total, item) => total + (item.badge || 0), 0);
+    },
+    items: state => {
+      const currentId = state.chatObjects[state.currentIndex].id;
+      return state.chatObjects.map(x => ({
+        owner: x,
+        object:state.badges.find(d => d.chatObjectId == x.id),
+        badge: state.badges.find(d => d.chatObjectId == x.id)?.badge || 0,
+        isCurrent: x.id == currentId,
+      }));
+    },
   },
   actions: {
     setCurrentIndex(index: number) {

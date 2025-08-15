@@ -37,6 +37,7 @@
             <div class="flex w-[20%] justify-center">
               <div
                 class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
+                @click="onPlus"
               >
                 <i class="i-ic:round-plus text-24 text-gray-400"></i>
               </div>
@@ -118,6 +119,7 @@ import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
 import { navTo } from '@/utils/nav';
+import { useObjectPicker } from '@/hooks/usePicker';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -197,6 +199,17 @@ const navToLogs = () => {
 const navToProfile = (item: any) => {
   console.log('navToProfile', item);
   navTo({ url: `/pages/im/profiles/profile?id=${item.id}&vid=${props.id}` });
+};
+
+const onPlus = () => {
+  dataList.value.map(x => x.owner?.id);
+  useObjectPicker({
+    title: '邀请成员加入群聊',
+    selected: [],
+    disabled: dataList.value.map(x => x.owner?.id),
+  }).then(res => {
+    console.log('res', res);
+  });
 };
 const showMemberPop = (item: any) => {
   profileRef.value?.show(item);

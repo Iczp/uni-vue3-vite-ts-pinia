@@ -5,7 +5,7 @@ interface PagingOptions<TDto> {
   method?: string; // 请求方法
   pageSize?: number; // 每页条数
   input?: Chat.GetListInput;
-  service?: (queryInput: Chat.GetListInput) => Promise<Chat.PagedResult<TDto>>; // 分页请求服务函数
+  service?: <T extends Chat.GetListInput>(queryInput: T) => Promise<Chat.PagedResult<TDto>>; // 分页请求服务函数
   format?: (
     res: Chat.PagedResult<TDto>,
     queryInput?: Chat.GetListInput,
@@ -13,7 +13,7 @@ interface PagingOptions<TDto> {
   [key: string]: any;
 }
 
-const defaultService = (queryInput: Chat.GetListInput): Promise<Chat.PagedResult<any>> => {
+const defaultService = <T extends Chat.GetListInput,TDto>(queryInput: T): Promise<Chat.PagedResult<TDto>> => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve({
@@ -22,7 +22,7 @@ const defaultService = (queryInput: Chat.GetListInput): Promise<Chat.PagedResult
           title: `第${
             Math.floor((queryInput.skipCount || 0) / (queryInput.maxResultCount || 20)) + 1
           }页数据 - ${index + 1}`,
-        })),
+        })) as unknown as TDto[],
         totalCount: 100, // 模拟总条数
       });
     }, 300);
@@ -75,7 +75,7 @@ export function usePaging<TDto>(
         if (items.length > 0) {
           pagingRef.value.completeByKey(items, 'id');
         } else {
-          pagingRef.value.complete(false); // 完成分页请求
+          pagingRef.value.complete(true); // 完成分页请求
         }
       })
       .catch(error => {

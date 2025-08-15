@@ -46,6 +46,13 @@
       }
     },
     {
+      "path": "pages/im/plus/create-group",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "chat"
+      }
+    },
+    {
       "path": "pages/im/pickers/object-picker",
       "style": {
         "navigationStyle": "custom",

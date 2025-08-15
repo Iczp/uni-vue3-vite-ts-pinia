@@ -3,15 +3,26 @@
     class="current-chat-object flex flex-row items-center gap-4 position-relative"
     @click="showPopup"
   >
-    <div class="badge absolute" @click="increment">{{ count }}</div>
-    <u-avatar :src="current.thumbnail" :size="40"></u-avatar>
-    <span class="text-15 font-bold text-ellipsis max-w-120">{{ current.name }}</span>
-    <i v-if="isMany" class="i-ic:round-keyboard-arrow-down"></i>
+    <ChatObject :size="28" :border="false" :item="current">
+      <template #title>
+        <div class="text-15 font-bold text-ellipsis max-w-120">{{ current.name }}{{ store.otherBadges }}</div>
+      </template>
+      <template v-if="isMany" #actions>
+        <i v-if="isMany" class="i-ic:round-keyboard-arrow-down"></i>
+      </template>
+    </ChatObject>
+    <Badge :count="store.otherBadges" class="absolute"></Badge>
+    <!-- <div class="badge absolute" @click="increment">{{ count }}</div> -->
+
+    <!-- <u-avatar :src="current.thumbnail" :size="40"></u-avatar> -->
+
+    <!-- <i v-if="isMany" class="i-ic:round-keyboard-arrow-down"></i> -->
   </div>
 </template>
 <script lang="ts" setup>
 import { useChatStore } from '@/store/chatStore';
 import Badge from '@/pages/im/components/Badge.vue';
+import ChatObject from '@/pages/im/components/ChatObject.vue';
 const props = defineProps({
   theme: {
     type: String,

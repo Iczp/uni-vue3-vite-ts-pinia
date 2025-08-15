@@ -234,12 +234,25 @@ declare namespace Chat {
     [key: string]: any; // 允许任意额外的属性
   }
 
-
   export interface GetDestinationInput {
     id: string;
     destinationId?: string;
     [key: string]: any; // 允许任意额外的属性
   }
+
+  export interface GetContactsInput {
+    ownerId?: string;
+    objectTypes?: number[];
+    [key: string]: any; // 允许任意额外的属性
+  }
+
+  export interface CreateGroupInput {
+    name: string;
+    code: string;
+    ownerId: number;
+    type: number;
+    description: string;
+    chatObjectIdList: number[];
+    [key: string]: any; // 允许任意额外的属性
+  }
 }
-
-

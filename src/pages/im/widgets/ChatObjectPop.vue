@@ -1,5 +1,5 @@
 <template>
-  <u-popup v-model="isVisible" mode="left" :closeable="false" width="60%">
+  <u-popup v-model="isVisible" mode="left" :duration="duration" :closeable="false" width="60%">
     <z-paging>
       <template #top>
         <AppNavBar title="" :isBack="false" :border="false">
@@ -12,22 +12,22 @@
       <div class="text-12 text-gray px-12 py-8">切换聊天</div>
       <div class="flex flex-col border-before border-after">
         <div
-          v-for="(item, index) in store.chatObjects"
-          :key="item.id"
+          v-for="(item, index) in store.items"
+          :key="item.owner.id"
           @click="onChangeChat(item, index)"
           class="active"
         >
           <ChatObject
             class="px-12 py-8 flex-1 after:left-56"
-            :class="{ current: index == store.currentIndex }"
+            :class="{ current: item.isCurrent }"
             :size="36"
-            :item="item"
+            :item="item.owner"
             :arrow="false"
             :border="index != store.chatObjects.length - 1"
           >
             <template #title>
               <div class="max-w-100 inline-block text-ellipsis">
-                <span class="text-14">{{ item.name }}</span>
+                <span class="text-14">{{ item.owner.name }}</span>
               </div>
             </template>
             <!-- <template #desc>
@@ -39,9 +39,9 @@
             </template> -->
             <template #actions>
               <div class="flex flex-row gap-4 items-center">
-                <Badge :count="index" />
+                <Badge :count="item.badge" :class="{ gray: item.isCurrent }" />
                 <div
-                  v-if="index == store.currentIndex"
+                  v-if="item.isCurrent"
                   class="i-ic:round-check-circle text-green-500 text-16 cursor-default"
                 ></div>
                 <div v-else class="text-gray-400 i-ic:round-arrow-forward-ios"></div>
@@ -53,7 +53,7 @@
 
       <CellGroup label="快捷">
         <Cell label="扫一扫" :arrow="true"></Cell>
-        <Cell label="新建群聊" :arrow="true"></Cell>
+        <Cell label="新建群聊" :arrow="true" @click="navToCreateGroup"></Cell>
         <Cell label="反馈" help="如有Bug,请反馈给我们" :arrow="true"></Cell>
       </CellGroup>
 
@@ -77,6 +77,7 @@ import Badge from '@/pages/im/components/Badge.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import { objectTypeDescriptions } from '@/utils/enums';
+import { navTo } from '@/utils/nav';
 const props = defineProps({
   label: {
     type: [String, null],
@@ -93,6 +94,7 @@ const props = defineProps({
   },
 });
 const isVisible = ref(false);
+const duration = ref(250);
 const store = useChatStore();
 const onChangeChat = (item: any, index: number) => {
   console.log('onChangeChat', item, index);
@@ -103,8 +105,14 @@ const onChangeChat = (item: any, index: number) => {
   store.setCurrentIndex(index);
   isVisible.value = false;
 };
+const navToCreateGroup = () => {
+  navTo({ url: `/pages/im/plus/create-group`, query: {} });
+  isVisible.value = false;
+  duration.value = 0;
+};
 const show = () => {
   isVisible.value = !isVisible.value;
+  duration.value = 250;
 };
 const close = () => {
   isVisible.value = false;

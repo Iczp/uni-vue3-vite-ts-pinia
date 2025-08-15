@@ -4,10 +4,43 @@ import { isHtml5Plus } from '@/utils/platform';
 import { parseUrl } from '@/utils/shared';
 
 export interface PickerParams {
-  url: string;
+  url?: string;
   multiple?: boolean;
+  [keyof: string]: any;
 }
-export const usePicker = (url, params: PickerParams) =>
+export interface PickerResult {
+  selectedItems?: Array<any>;
+  success?: boolean;
+  [keyof: string]: any;
+}
+export interface IdDto {
+  id: string | number;
+}
+
+export const usePicker1 = () => {
+  const selectedItems = ref<IdDto[]>([]);
+
+  const disabledItems = ref<IdDto[]>([]);
+
+  const isMultiple = ref(false);
+
+  const max = ref(0);
+
+  const isSelected = (item: IdDto) => selectedItems.value.some(x => x.id === item.id);
+
+  const isDisabled = (item: IdDto) => disabledItems.value.some(x => x.id === item.id);
+
+  const selectItem = (item: IdDto) => {
+    if (disabledItems.value.find(x => item.id === x.id)) {
+      return;
+    }
+    selectedItems.value = [...selectedItems.value, item];
+  };
+
+  return { selectedItems, disabledItems, isMultiple, max, isSelected, isDisabled, selectItem };
+};
+
+export const usePicker = (url: string, params: PickerParams): Promise<PickerResult> =>
   new Promise((resolve, reject) => {
     const event = `picker-${new Date().getTime()}`;
     uni.$once(event, e => {
@@ -15,14 +48,14 @@ export const usePicker = (url, params: PickerParams) =>
 
       if (!isHtml5Plus) {
         resolve(e);
-        uni.showToast({ icon: 'none', title: `payload:${JSON.stringify(e)}` });
+        // uni.showToast({ icon: 'none', title: `payload:${JSON.stringify(e)}` });
         return;
       }
 
       var obj = JSON.parse(e);
       const { event: removeEvent, args, action } = obj;
       const [localEvent, payload] = args;
-      uni.showToast({ icon: 'none', title: `payload:${JSON.stringify(payload)}` });
+      // uni.showToast({ icon: 'none', title: `payload:${JSON.stringify(payload)}` });
       resolve(payload);
     });
 

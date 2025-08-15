@@ -21,8 +21,11 @@
         :class="{ active: activeIndex === index }"
         @click="switchTab(index)"
       >
-        <i class="tab-icon text-28" :class="tab.icon"></i>
-        <text class="tab-text">{{ tab.text }}</text>
+        <div class="flex flex-col relative flex-center">
+          <i class="tab-icon text-28" :class="tab.icon"></i>
+          <text class="tab-text">{{ tab.text }}</text>
+          <Badge :count="tab.badge?.()" :absolute="true" class="absolute"></Badge>
+        </div>
       </div>
     </div>
 
@@ -49,9 +52,11 @@
 
 <script setup>
 import { useObjectPicker } from '@/hooks/usePicker';
-import NavBtn from '@/pages/im/components/nav-btn.vue';
+
 import ChatObjectPop from '@/pages/im/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';
+import NavBtn from '@/pages/im/components/nav-btn.vue';
+import Badge from '@/pages/im/components/Badge.vue';
 const store = useChatStore();
 
 const props = defineProps({
@@ -114,15 +119,6 @@ const showPopup = e => {
 const onNavBtnClick = e => {
   console.log('NavBtn clicked', e);
 
-  useObjectPicker({
-    selected: [],
-    max: 12,
-    multi: true,
-    disabled: [],
-    title: '选择联系人',
-  }).then(res => {
-    console.log('useObjectPicker', res);
-  });
   if (e.type == 1) {
     showPopup(e);
     return;
@@ -140,7 +136,7 @@ const tabs = ref([
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/im/message.vue',
     isLazy: false,
-    badge: store.totalBadges,
+    badge: () => store.totalBadges,
     isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/messages/message.vue'))),
   },
@@ -150,7 +146,7 @@ const tabs = ref([
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/im/contacts/contacts.vue',
     isLazy: false,
-    badge: 0,
+    badge: () => 0,
     isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/contacts/contacts.vue'))),
   },
@@ -159,9 +155,9 @@ const tabs = ref([
     icon: 'i-ic:round-person',
     selectedIcon: '/static/tabs/home-active.png',
     path: '@/pages/im/mine/mine.vue',
-    isLazy: false,
-    badge: 0,
-    isDot: false,
+    isLazy: true,
+    badge: () => 0,
+    isDot: true,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/mine/mine.vue'))),
   },
 ]);
@@ -231,14 +227,14 @@ page {
   height: 100%;
 }
 .custom-tabbar {
-  --tab-bar-border-height: 112rpx;
+  --tab-bar-border-height: 120rpx;
   display: flex;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 999;
   // position: fixed;
-  align-items: center;
+  // align-items: center;
   height: var(--tab-bar-border-height);
   background-color: #fff;
   box-shadow: 0 -1px 5rpx rgba(0, 0, 0, 0.1);

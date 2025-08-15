@@ -50,7 +50,7 @@
       </template>
 
       <template #loadingMoreNoMore>
-        <view class="flex flex-center h-48 text-12 text-gray-500">
+        <view class="flex flex-center h-48 text-12 text-gray-500 absolute bottom-0 w-full">
           共有
           <span class="font-bold mx-2">{{ dataList.length }}</span>
           好友
@@ -281,7 +281,7 @@ watch(
   () => chatStore.currentIndex,
   v => {
     console.log('#watch current', v);
-    query.value.ownerId = idList[v];
+    query.value.ownerId = chatStore.current.id,//idList[v];
     maxTicks.value = null;
     minTicks.value = null;
     query.value.keyword = '';
