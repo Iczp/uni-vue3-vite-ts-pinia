@@ -17,7 +17,7 @@ export interface IdDto {
   id: string | number;
 }
 
-export const usePicker1 = () => {
+export const usePicker = () => {
   const selectedItems = ref<IdDto[]>([]);
 
   const disabledItems = ref<IdDto[]>([]);
@@ -40,7 +40,7 @@ export const usePicker1 = () => {
   return { selectedItems, disabledItems, isMultiple, max, isSelected, isDisabled, selectItem };
 };
 
-export const usePicker = (url: string, params: PickerParams): Promise<PickerResult> =>
+export const openPicker = (url: string, params: PickerParams): Promise<PickerResult> =>
   new Promise((resolve, reject) => {
     const event = `picker-${new Date().getTime()}`;
     uni.$once(event, e => {
@@ -84,8 +84,8 @@ export const usePicker = (url: string, params: PickerParams): Promise<PickerResu
     }
   });
 
-export const useObjectPicker = (params: PickerParams) =>
-  usePicker('/pages/im/pickers/object-picker', params);
+export const openObjectPicker = (params: PickerParams) =>
+  openPicker('/pages/im/pickers/object-picker', params);
 
 export const invoke = ({ event, payload }: { event: string; payload: any }) => {
   if (!event) {

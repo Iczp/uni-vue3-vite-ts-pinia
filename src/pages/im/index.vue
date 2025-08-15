@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { useObjectPicker } from '@/hooks/usePicker';
+import { openObjectPicker } from '@/hooks/usePicker';
 
 import ChatObjectPop from '@/pages/im/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';

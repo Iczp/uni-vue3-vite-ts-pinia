@@ -119,7 +119,7 @@ import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
 import { navTo } from '@/utils/nav';
-import { useObjectPicker } from '@/hooks/usePicker';
+import { openObjectPicker } from '@/hooks/usePicker';
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -203,7 +203,7 @@ const navToProfile = (item: any) => {
 
 const onPlus = () => {
   dataList.value.map(x => x.owner?.id);
-  useObjectPicker({
+  openObjectPicker({
     title: '邀请成员加入群聊',
     selected: [],
     disabled: dataList.value.map(x => x.owner?.id),

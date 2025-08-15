@@ -31,7 +31,7 @@ import CellGroup from '@/pages/im/components/CellGroup.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 
 import { useChatStore } from '@/store/chatStore';
-import { useObjectPicker } from '@/hooks/usePicker';
+import { openObjectPicker } from '@/hooks/usePicker';
 import { createGroup } from '@/api/chatApi';
 
 const chatStore = useChatStore();
@@ -47,14 +47,14 @@ const onScroll = e => {
 };
 
 const createByFriends = () => {
-  useObjectPicker({
+  openObjectPicker({
     selected: [],
     max: 12,
     multi: true,
     disabled: [],
     title: '选择联系人',
   }).then(res => {
-    console.log('useObjectPicker', res);
+    console.log('openObjectPicker', res);
     const chatObjectIdList = res?.selectedItems?.map(x => Number(x.destination.id)) || [];
     const names = res?.selectedItems?.map(x => x.destination.name) || [];
     const name = `群(${names.join(',')})`;
