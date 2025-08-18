@@ -45,7 +45,11 @@
     <!--  -->
 
     <template #cell="{ item, index }">
-      <div class="flex flex-row items-center active">
+      <div
+        class="flex flex-row items-center"
+        :class="{ active: !isDisabled(item.destination) }"
+        @click="toggleChecked(item.destination)"
+      >
         <!-- <div v-if="isSelector" class="ml-12">
           <CheckBox v-model="item.checked" />
         </div> -->
@@ -54,21 +58,26 @@
           :size="48"
           :item="item.destination"
           :index="index"
-          :active="!isSelector"
           @click="showMemberPop(item)"
           :arrow="false"
         >
-          <template #title-right></template>
-          <template #desc>
+          <!-- <template #desc>
             <div class="flex">
               <span class="text-ellipsis text-gray text-12">
-                加入时间:
-                <Date :value="item.creationTime" empty="-"></Date>
+                --
+
               </span>
             </div>
-          </template>
+          </template> -->
           <template #actions>
-            <CheckBox @click.stop v-model="item.checked" />
+            <!-- <u-checkbox v-model="item.checked" :name="item.name">{{ item.name }}</u-checkbox> -->
+            <CheckBox
+              :checked="isChecked(item.destination)"
+              :disabled="isDisabled(item.destination)"
+            />
+            <!-- {{ isChecked(item.destination) }}
+            {{ isDisabled(item.destination) }}
+            {{ item?.destination?.id }} -->
           </template>
         </ChatObject>
       </div>
@@ -80,6 +89,8 @@
           当前选择中
           <span class="font-bold text-dark-50 px-4">{{ selectedCount }}</span>
           人
+
+          <div class="i-ic:round-keyboard-arrow-down"></div>
         </div>
         <div class="flex flex-row gap-12">
           <u-button type="primary" class="flex flex-1" @click="onClick">确定</u-button>
@@ -102,6 +113,7 @@ import Divider from '@/pages/im/components/Divider.vue';
 import { invoke } from '@/hooks/usePicker';
 import UButton from '@/uni_modules/vk-uview-ui/components/u-button/u-button.vue';
 import { useChatStore } from '@/store/chatStore';
+import { usePicker } from '@/hooks/usePicker1';
 
 const props = defineProps({
   title: {
@@ -116,6 +128,14 @@ const props = defineProps({
     type: [String, Number],
     default: '',
   },
+  disabled: {
+    type: String,
+    default: '[]',
+  },
+  selected: {
+    type: String,
+    default: '[]',
+  },
 });
 
 const req = ref();
@@ -125,12 +145,11 @@ onLoad(e => {
 });
 
 const onClick = () => {
-  const selectedItems = dataList.value.filter(x => x.checked);
-  if (selectedItems.length == 0) {
+  if (selectedCount.value == 0) {
     uni.showToast({ title: '请选择成员', icon: 'none' });
     return;
   }
-
+  const selectedItems = getSelectItems();
   invoke({
     event: props.event,
     payload: {
@@ -163,9 +182,42 @@ const { pagingRef, dataList, queryList, isPending, isEof, query, reload, totalCo
     },
   });
 
-const selectedCount = computed(() => {
-  return dataList.value.filter(x => x.checked).length;
+const {
+  selectable,
+  isMultiple,
+  isChecked,
+  toggleChecked,
+  selectedList,
+  disabledList,
+  isDisabled,
+  maxCount,
+  picker: pickerRef,
+  getSelectItems,
+  selectedCount,
+} = usePicker({
+  picker: {
+    // selectedItems: JSON.parse(props.selected || '[]').map(x => ({
+    //   id: Number(x.id),
+    // })),
+    isMultiple: true,
+    maxCount: 10,
+  },
 });
+
+selectedList.value = JSON.parse(decodeURIComponent(props.selected) || '[]').map(x => ({
+  id: Number(x),
+}));
+
+disabledList.value = JSON.parse(decodeURIComponent(props.disabled) || '[]').map(x => ({
+  id: Number(x),
+}));
+
+console.log(
+  'selectedList',
+  selectedList.value,
+  decodeURIComponent(props.selected),
+  decodeURIComponent(props.disabled),
+);
 
 const onMemberClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onMemberClick', item, index);
@@ -193,6 +245,4 @@ const onSearch = () => {
   reload();
 };
 </script>
-<style lang="scss" scoped></style>
-
 <style lang="scss" scoped></style>

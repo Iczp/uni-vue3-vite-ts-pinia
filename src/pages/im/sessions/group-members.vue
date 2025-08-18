@@ -26,7 +26,7 @@
     </template>
 
     <template #loading>
-      <SessionUnitSkeleton :count="10" />
+      <SessionUnitSkeleton :count="skeletonCount" />
       <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
     </template>
 
@@ -54,11 +54,18 @@
           :size="48"
           :item="item.owner"
           :index="index"
+          :isCreator="item.setting.isCreator"
           :active="!isSelector"
           @click="showMemberPop(item)"
           :arrow="true"
         >
-          <template #title-right></template>
+          <template #title-left>
+            <div class="flex flex-row flex-center gap-8">
+              <div class="text-ellipsis text-15 max-w-160">{{ item.owner.name }}</div>
+              <!-- <TagCreator v-if="item.setting.isCreator">群主</TagCreator> -->
+            </div>
+          </template>
+
           <template #desc>
             <div class="flex">
               <span class="text-ellipsis text-gray text-12">
@@ -97,6 +104,7 @@ import ChatObject from '@/pages/im/components/ChatObject.vue';
 import CheckBox from '@/components/CheckBox.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 import Date from '@/pages/im/components/Date.vue';
+import TagCreator from '@/pages/im/components/TagCreator.vue';
 import MemberPop from '@/pages/im/components/MemberPop.vue';
 import Divider from '@/pages/im/components/Divider.vue';
 const title = computed(() => `成员列表`);
@@ -104,8 +112,12 @@ const name = ref('555');
 const profileRef = ref<InstanceType<typeof MemberPop>>();
 const props = defineProps({
   id: String,
+  count: {
+    type: [Number, String],
+    default: 10,
+  },
 });
-
+const skeletonCount = ref(Math.min(10, Number(props.count)));
 const keyword = ref('');
 const isSelector = ref(false);
 const { pagingRef, dataList, queryList, isPending, isEof, query, reload, totalCount } =
@@ -114,6 +126,7 @@ const { pagingRef, dataList, queryList, isPending, isEof, query, reload, totalCo
       id: props.id,
       keyword: '',
       maxResultCount: 20,
+      sorting: 'setting.isCreator desc,creationTime asc',
     },
     service: getMembers,
     format: (res, input) => {
@@ -141,10 +154,10 @@ const loadingMoreClick = () => {
 
 const onMore = () => {
   isSelector.value = !isSelector.value;
-  if(isSelector.value){
-    dataList.value.map(x=>{
+  if (isSelector.value) {
+    dataList.value.map(x => {
       x.checked = false;
-    })
+    });
   }
   console.log('onMore');
 };

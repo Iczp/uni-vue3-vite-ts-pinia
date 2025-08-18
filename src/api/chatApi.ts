@@ -177,10 +177,17 @@ export const getMessageList = (data?: Chat.MessageListInput) =>
     data,
   });
 
-
-  export const createGroup = (data?: Chat.CreateGroupInput) =>
+export const createGroup = (data?: Chat.CreateGroupInput) =>
   chatRequest<Chat.PagedResult<Chat.MessageDto>>({
     url: '/api/chat/room',
+    method: 'POST',
+    data,
+  });
+
+// POST /api/chat/room/invite 邀请加入群聊
+export const invite = (data?: Chat.InviteInput) =>
+  chatRequest<Chat.PagedResult<Chat.SessionUnitDto>>({
+    url: '/api/chat/room/invite',
     method: 'POST',
     data,
   });

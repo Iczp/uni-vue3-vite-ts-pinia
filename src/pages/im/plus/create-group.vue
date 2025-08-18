@@ -55,8 +55,8 @@ const createByFriends = () => {
     title: '选择联系人',
   }).then(res => {
     console.log('openObjectPicker', res);
-    const chatObjectIdList = res?.selectedItems?.map(x => Number(x.destination.id)) || [];
-    const names = res?.selectedItems?.map(x => x.destination.name) || [];
+    const chatObjectIdList = res?.selectedItems?.map(x => Number(x.id)) || [];
+    const names = res?.selectedItems?.map(x => x.name) || [];
     const name = `群(${names.join(',')})`;
     uni.showLoading({ title: '正在创建群...', mask: true });
     console.log('chatObjectIdList', chatObjectIdList);
@@ -72,6 +72,7 @@ const createByFriends = () => {
       .then(() => {
         uni.hideLoading();
         uni.showToast({ title: '创建成功', icon: 'success' });
+        uni.navigateBack();
       })
       .catch(err => {
         uni.hideLoading();

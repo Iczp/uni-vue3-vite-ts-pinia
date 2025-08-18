@@ -1,4 +1,5 @@
 import { $emit, $once, navigateBack } from '@/commons/bridge';
+import value from '@/uni_modules/vk-uview-ui/components/u-text/value';
 import { navTo } from '@/utils/nav';
 import { isHtml5Plus } from '@/utils/platform';
 import { parseUrl } from '@/utils/shared';
@@ -17,6 +18,7 @@ export interface IdDto {
   id: string | number;
 }
 
+type PFN = (value: IdDto, item: IdDto) => boolean;
 export const usePicker = () => {
   const selectedItems = ref<IdDto[]>([]);
 
@@ -26,18 +28,19 @@ export const usePicker = () => {
 
   const max = ref(0);
 
-  const isSelected = (item: IdDto) => selectedItems.value.some(x => x.id === item.id);
+  const isSelected = (item: IdDto, predicate: PFN = (x, v) => x.id == v.id) =>
+    selectedItems.value.some(x => predicate(x, item));
 
   const isDisabled = (item: IdDto) => disabledItems.value.some(x => x.id === item.id);
 
-  const selectItem = (item: IdDto) => {
+  const onSelectItem = (item: IdDto) => {
     if (disabledItems.value.find(x => item.id === x.id)) {
       return;
     }
     selectedItems.value = [...selectedItems.value, item];
   };
 
-  return { selectedItems, disabledItems, isMultiple, max, isSelected, isDisabled, selectItem };
+  return { selectedItems, disabledItems, isMultiple, max, isSelected, isDisabled, onSelectItem };
 };
 
 export const openPicker = (url: string, params: PickerParams): Promise<PickerResult> =>

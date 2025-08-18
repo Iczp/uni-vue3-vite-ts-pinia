@@ -5,7 +5,7 @@
         <Cell class="before-none" :arrow="false" v-ripple="'rgba(0, 0, 0, 0.3)'">
           <template #label>
             <div class="py-12 flex flex-row gap-12">
-              <Avatar :size="56" :item="owner" />
+              <Avatar :size="56" :isCreator="isCreator" :item="owner" />
               <div class="max-w-240 flex flex-col gap-8 justify-center lh-relaxed">
                 <div class="flex items-center text-ellipsis text-16 font-bold h-28">
                   <span v-if="isSkeleton" class="skeleton inline-flex h-20 w-56"></span>
@@ -85,6 +85,7 @@
 <script lang="ts" setup>
 import Avatar from '@/pages/im/components/Avatar.vue';
 import Gender from '@/pages/im/components/Gender.vue';
+
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 import { useSessionUnitDetail } from '@/hooks/useSessionUnitDetail';
@@ -105,6 +106,7 @@ const isSkeleton = computed(() => !senderSessionUnit.value);
 
 const senderSessionUnit = ref<Chat.SessionUnitMemberDto>();
 const setting = computed(() => senderSessionUnit.value?.setting);
+const isCreator = computed(() => setting.value?.isCreator);
 // const { sessionUnit } = useSessionUnitDetail({
 //   sessionUnitId: props.id,
 //   auto: false,

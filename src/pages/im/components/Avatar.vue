@@ -1,39 +1,48 @@
 <template>
-  <div class="avatar-container text-20" :style="containerCss">
-    <div v-if="!isSkeleton" class="online-status">
-      <div class="status-dot status-1"></div>
-    </div>
-    <!-- {{ item }} -->
+  <div class="avatar-wrapper relative flex" :style="containerCss">
+    <TagCreator
+      v-if="!isSkeleton && isCreator"
+      class="absolute left-[50%] bottom-0 translate-[-50%,50%] z-9"
+    />
+    <div class="avatar-container text-20 w-full h-full flex-shrink-0">
+      <div v-if="!isSkeleton && item?.serviceStatus === 1" class="online-status">
+        <div class="status-dot status-1"></div>
+      </div>
 
-    <div v-if="isSkeleton" class="w-full h-full skeleton flex flex-center rounded-full">
-      <i class="text-24 text-gray-200 i-ic:baseline-person"></i>
+      <!-- {{ item }} -->
+
+      <div v-if="isSkeleton" class="w-full h-full skeleton flex flex-center rounded-full">
+        <i class="text-24 text-gray-200 i-ic:baseline-person"></i>
+      </div>
+
+      <image
+        v-else-if="imgSrc"
+        :width="size"
+        :height="size"
+        :art="src"
+        :src="imgSrc"
+        class="avatar-image fade-in"
+        :class="{ loaded: isImgLoaded }"
+        @load="onImgLoad"
+      ></image>
+      <block v-else>
+        <i v-if="objectType == ObjectTypes.Room" class="i-ic:baseline-group"></i>
+        <i v-else-if="objectType == ObjectTypes.Robot" class="i-ic:round-smart-toy"></i>
+        <i v-else-if="objectType == ObjectTypes.Subscription" class="i-ic:outline-spa"></i>
+        <i v-else-if="objectType == ObjectTypes.Official" class="i-ic:round-spa"></i>
+        <i v-else-if="objectType == ObjectTypes.ShopKeeper" class="i-ic:round-shopify"></i>
+        <i v-else-if="objectType == ObjectTypes.ShopWaiter" class="i-ic:round-shopify"></i>
+        <i v-else-if="objectType == ObjectTypes.Square" class="i-ic:round-chat"></i>
+        <i v-else-if="objectType == ObjectTypes.Anonymous" class="i-ic:round-person-outline"></i>
+        <i v-else-if="objectType == ObjectTypes.Personal" class="i-ic:baseline-person"></i>
+        <i v-else class="i-ic:baseline-person"></i>
+      </block>
     </div>
-    <image
-      v-else-if="imgSrc"
-      :width="size"
-      :height="size"
-      :art="src"
-      :src="imgSrc"
-      class="avatar-image fade-in"
-      :class="{ loaded: isImgLoaded }"
-      @load="onImgLoad"
-    ></image>
-    <block v-else>
-      <i v-if="objectType == ObjectTypes.Room" class="i-ic:baseline-group"></i>
-      <i v-else-if="objectType == ObjectTypes.Robot" class="i-ic:round-smart-toy"></i>
-      <i v-else-if="objectType == ObjectTypes.Subscription" class="i-ic:outline-spa"></i>
-      <i v-else-if="objectType == ObjectTypes.Official" class="i-ic:round-spa"></i>
-      <i v-else-if="objectType == ObjectTypes.ShopKeeper" class="i-ic:round-shopify"></i>
-      <i v-else-if="objectType == ObjectTypes.ShopWaiter" class="i-ic:round-shopify"></i>
-      <i v-else-if="objectType == ObjectTypes.Square" class="i-ic:round-chat"></i>
-      <i v-else-if="objectType == ObjectTypes.Anonymous" class="i-ic:round-person-outline"></i>
-      <i v-else-if="objectType == ObjectTypes.Personal" class="i-ic:baseline-person"></i>
-      <i v-else class="i-ic:baseline-person"></i>
-    </block>
   </div>
 </template>
 <script lang="ts" setup>
 import { ObjectTypes } from '@/utils/enums';
+import TagCreator from './TagCreator.vue';
 // import { ObjectTypes } from '@/@types/chatApi.d.ts';
 const props = defineProps({
   size: {
@@ -50,6 +59,10 @@ const props = defineProps({
   },
   item: {
     type: Object as () => Chat.ChatObjectDto | undefined,
+  },
+  isCreator: {
+    type: Boolean,
+    default: false,
   },
 });
 

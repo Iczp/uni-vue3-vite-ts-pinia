@@ -29,12 +29,15 @@
               :key="item.id"
               :item="item.owner"
               :size="48"
+              :isCreator="item.setting?.isCreator"
               :vertical="true"
               class="flex w-[20%] flex-center"
               @click="showMemberPop(item)"
-            />
+            >
+              <!-- <template #icon>55</template> -->
+            </ChatObject>
 
-            <div class="flex w-[20%] justify-center">
+            <div v-if="isBtnPlus" class="flex w-[20%] justify-center">
               <div
                 class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
                 @click="onPlus"
@@ -42,7 +45,7 @@
                 <i class="i-ic:round-plus text-24 text-gray-400"></i>
               </div>
             </div>
-            <div class="flex w-[20%] justify-center">
+            <div v-if="isBtnMinus" class="flex w-[20%] justify-center">
               <div
                 class="border-1 border-dashed border-gray-200 rounded-full w-48 h-48 flex flex-center"
               >
@@ -114,7 +117,7 @@ import MemberPop from '@/pages/im/components/MemberPop.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import ChatObject from '@/pages/im/components/ChatObject.vue';
-import { getMembers, getSessionUnitItem, getSessionUnitItemDetail } from '@/api/chatApi';
+import { getMembers, getSessionUnitItem, getSessionUnitItemDetail, invite } from '@/api/chatApi';
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
@@ -145,8 +148,11 @@ const userAgent = navigator.userAgent;
 const totalCount = ref(0);
 const title = ref(props.title);
 const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
+
 const setting = computed(() => sessionUnit.value?.setting);
+const isCreator = computed(() => setting.value?.isCreator || false);
 const destination = computed(() => sessionUnit.value?.destination);
+const ownerId = computed(() => sessionUnit.value?.ownerId);
 const isInputEnabled = computed(() => setting.value?.isInputEnabled || false);
 const isShopkeeperOrWaiter = computed(() =>
   [ObjectTypes.ShopKeeper, ObjectTypes.ShopWaiter].includes(
@@ -164,6 +170,15 @@ const groupName = ref('');
 const isImmersed = ref(false);
 const isToping = ref(false);
 const isRemind = ref(false);
+
+const isBtnPlus = computed(() =>
+  [ObjectTypes.Room, ObjectTypes.Personal, ObjectTypes.ShopKeeper, ObjectTypes.ShopWaiter].includes(
+    destinationObjectType.value,
+  ),
+);
+const isBtnMinus = computed(
+  () => [ObjectTypes.Room].includes(destinationObjectType.value) && isCreator.value,
+);
 
 const destinationObjectType = computed(
   () => sessionUnit.value?.destinationObjectType || destination.value?.objectType,
@@ -188,7 +203,11 @@ const navToRemark = () => {
   navTo({ url: '/pages/im/sessions/remark', query: { id: props.id } });
 };
 const navToGroupMembers = () => {
-  navTo({ url: `/pages/im/sessions/group-members?id=${props.id}` });
+  if (totalCount.value == 0) {
+    uni.showToast({ icon: 'none', title: '暂无成员' });
+    return;
+  }
+  navTo({ url: `/pages/im/sessions/group-members?id=${props.id}&count=${totalCount.value}` });
 };
 const navToGroupQrcode = () => {
   navTo({ url: `/pages/im/sessions/group-qrcode?id=${props.id}` });
@@ -201,15 +220,45 @@ const navToProfile = (item: any) => {
   navTo({ url: `/pages/im/profiles/profile?id=${item.id}&vid=${props.id}` });
 };
 
-const onPlus = () => {
-  dataList.value.map(x => x.owner?.id);
+const inviteMember = () => {
   openObjectPicker({
-    title: '邀请成员加入群聊',
+    title: '邀请成员',
+    type: 'group-manage',
+    multi: true,
+    objectType: 'group-manage',
     selected: [],
     disabled: dataList.value.map(x => x.owner?.id),
   }).then(res => {
     console.log('res', res);
+    const memberIdList = res?.selectedItems?.map(x => x.id) || [];
+
+    console.log('memberIdList', memberIdList);
+    uni.showLoading({ title: '邀请中...', mask: true });
+    invite({
+      // sessionUnitId
+      id: props.id,
+      roomId: destination.value?.id,
+
+      memberIdList,
+      inviterId: ownerId.value!,
+    })
+      .then(res => {
+        console.log('invite', res);
+        onRefresh();
+        uni.hideLoading();
+        uni.showToast({ icon: 'success', title: `成功邀请 ${res.length} 人` });
+      })
+      .catch(err => {
+        console.error('invite', err);
+        uni.hideLoading();
+        uni.showToast({ icon: 'none', title: '邀请失败' });
+      });
   });
+};
+const onPlus = () => {
+  if (destinationObjectType.value == ObjectTypes.Room) {
+    inviteMember();
+  }
 };
 const showMemberPop = (item: any) => {
   profileRef.value?.show(item);
@@ -220,7 +269,11 @@ const onRefresh = () => {
   isPending.value = true;
   Promise.all([
     getSessionUnitItem({ id: props.id }),
-    getMembers({ id: props.id, maxResultCount: 13 }),
+    getMembers({
+      id: props.id,
+      maxResultCount: 13,
+      sorting: 'setting.isCreator desc,creationTime asc',
+    }),
   ])
     .then(([sessionUnitRes, destinationListRes]) => {
       console.log('getSessionUnitItem', sessionUnitRes);

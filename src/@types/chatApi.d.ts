@@ -31,6 +31,11 @@ declare namespace Chat {
   //   History = 12, // 聊天历史消息
   // }
 
+  interface IdDto {
+    id: string | number;
+    [key: string]: any; // 允许任意额外的属性
+  }
+
   interface GetListInput {
     skipCount?: number | null;
     maxResultCount?: number | null | undefined;
@@ -255,4 +260,17 @@ declare namespace Chat {
     chatObjectIdList: number[];
     [key: string]: any; // 允许任意额外的属性
   }
+
+  export interface InviteInput {
+    // 群
+    roomId?: number;
+    // 成员列表
+    memberIdList?: number[];
+    // 邀请人id
+    inviterId?: number;
+    // sessionUnitId
+    id?:string;
+    [key: string]: any; // 允许任意额外的属性
+  }
+  //
 }

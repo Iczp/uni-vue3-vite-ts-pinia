@@ -16,6 +16,7 @@
           :item="sender?.owner"
           :size="40"
           class="text-20"
+          :isCreator="sender?.setting?.isCreator"
           @click="emit('profile', sender)"
         ></Avatar>
         <div class="message-body flex flex-col flex-1 gap-4">

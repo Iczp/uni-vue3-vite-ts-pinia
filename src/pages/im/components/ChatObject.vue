@@ -3,11 +3,13 @@
     class="chat-object flex gap-8 flex-shrink-0 gap-12 items-center"
     :class="{ 'flex-col justify-center': vertical, 'flex-row': !vertical, border, active }"
   >
-    <slot name="header">
-
-    </slot>
+    <slot name="header"></slot>
     <slot name="icon">
-      <Avatar :size="size" :item="item" />
+      <Avatar :size="size" :isCreator="isCreator" :item="item" />
+      <!-- <div class="relative">
+        <Avatar :size="size" :item="item" />
+        <TagCreator v-if="isCreator" class="absolute left-[50%] translate-[-50%,-50%] z-9" />
+      </div> -->
     </slot>
 
     <slot>
@@ -42,7 +44,7 @@
 </template>
 <script lang="ts" setup>
 import Avatar from './Avatar.vue';
-
+import TagCreator from './TagCreator.vue';
 const props = defineProps({
   item: {
     type: Object as () => Chat.ChatObjectDto | undefined,
@@ -71,6 +73,10 @@ const props = defineProps({
     default: false,
   },
   arrow: {
+    type: [Boolean],
+    default: false,
+  },
+  isCreator: {
     type: [Boolean],
     default: false,
   },

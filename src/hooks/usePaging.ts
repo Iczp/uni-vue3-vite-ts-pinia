@@ -13,7 +13,9 @@ interface PagingOptions<TDto> {
   [key: string]: any;
 }
 
-const defaultService = <T extends Chat.GetListInput,TDto>(queryInput: T): Promise<Chat.PagedResult<TDto>> => {
+const defaultService = <T extends Chat.GetListInput, TDto>(
+  queryInput: T,
+): Promise<Chat.PagedResult<TDto>> => {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve({
@@ -73,7 +75,9 @@ export function usePaging<TDto>(
         isEof.value = items.length < Number(query.value.maxResultCount);
         // dataList.value = query.value.skipCount == 0 ? items : dataList.value.concat(items);
         if (items.length > 0) {
-          pagingRef.value.completeByKey(items, 'id');
+          setTimeout(() => {
+            pagingRef.value.completeByKey(items, 'id');
+          }, 0);
         } else {
           pagingRef.value.complete(true); // 完成分页请求
         }
