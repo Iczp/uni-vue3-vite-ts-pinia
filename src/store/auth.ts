@@ -1,4 +1,13 @@
-import { fetchToken, getLocalToken, isExpired, refreshToken, authStorageKey } from '@/api/authApi';
+import {
+  fetchToken,
+  getLocalToken,
+  isExpired,
+  refreshToken,
+  authStorageKey,
+  getUserInfo,
+  getLocalUser,
+  setLocalUser,
+} from '@/api/authApi';
 
 export const useAuth = defineStore({
   id: 'auth',
@@ -6,8 +15,10 @@ export const useAuth = defineStore({
     const token = getLocalToken();
     return {
       token,
+      user: getLocalUser(),
     } as {
       token?: Auth.Token | null;
+      user: AuthApi.UserInfo | null;
     };
   },
   getters: {
@@ -33,6 +44,17 @@ export const useAuth = defineStore({
       this.setToken(token);
       return token;
     },
+    async getUserInfo(force: boolean = false) {
+      // const erpHeader = {};
+      if (this.user && !force) {
+        return this.user;
+      }
+      const user = await getUserInfo(this.authorization);
+      this.user = user;
+      setLocalUser(user);
+      return user;
+    },
+
     async refreshToken() {
       if (!this.token) {
         throw new Error('token is null');

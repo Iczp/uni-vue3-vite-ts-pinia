@@ -60,8 +60,10 @@
       <CellGroup label="账号">
         <Cell
           icon="i-ic:round-account-circle"
-          :label="account"
+          
+          :label="auth.user?.given_name"
           :arrow="true"
+          :help="auth.user?.email"
           @click="navToAccount"
         ></Cell>
       </CellGroup>
@@ -87,6 +89,7 @@ import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import { objectTypeDescriptions } from '@/utils/enums';
 import { navTo } from '@/utils/nav';
+import { useAuth } from '@/store/auth';
 const props = defineProps({
   label: {
     type: [String, null],
@@ -105,6 +108,10 @@ const props = defineProps({
 const isVisible = ref(false);
 const duration = ref(250);
 const store = useChatStore();
+const auth = useAuth();
+
+auth.getUserInfo();
+
 const onChangeChat = (item: any, index: number) => {
   console.log('onChangeChat', item, index);
   if (store.currentIndex == index) {
@@ -120,7 +127,9 @@ const navToCreateGroup = () => {
   duration.value = 0;
 };
 
-const account = ref('1000@intry.cn');
+const account = computed(() =>
+  auth.user ? `${auth.user?.given_name}(${auth.user?.email})` : '未登录',
+);
 
 const navToAccount = () => {
   navTo({ url: `/pages/account/profile`, query: {} });
