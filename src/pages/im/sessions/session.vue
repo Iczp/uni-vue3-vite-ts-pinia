@@ -22,10 +22,10 @@
               ></i>
             </div>
             <div
-              v-if="sessionUnit?.sessionUnitCount && destination?.objectType == ObjectTypes.Room"
+              v-if="memberCount > 0 && destination?.objectType == ObjectTypes.Room"
               class="text-10 text-sky-500"
             >
-              共有 {{ sessionUnit?.sessionUnitCount }} 人
+              共有 {{ memberCount }} 人
             </div>
           </div>
 
@@ -68,7 +68,12 @@
           <!-- style="transform: scaleY(-1)"必须写，否则会导致列表倒置 -->
           <!-- 注意不要直接在chat-item组件标签上设置style，因为在微信小程序中是无效的，请包一层view -->
           <view style="transform: scaleY(-1);">
-            <MessageItem :item="item" :index="index" :senderId="sessionUnitId" @profile="showProfile"></MessageItem>
+            <MessageItem
+              :item="item"
+              :index="index"
+              :senderId="sessionUnitId"
+              @profile="showProfile"
+            ></MessageItem>
           </view>
         </view>
 
@@ -140,6 +145,8 @@ console.log(windowHeight);
 const pageStyle = reactive({
   // height: `${windowHeight}px`,
 });
+
+const memberCount = computed(() => Number(sessionUnit.value?.sessionUnitCount || 0) - 1);
 
 const onMoreClick = () => {
   console.log('onMoreClick');

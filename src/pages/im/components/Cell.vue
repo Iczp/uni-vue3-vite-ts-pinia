@@ -16,7 +16,7 @@
       </div>
     </slot>
     <slot>
-      <div class="cell-value flex flex-row gap-4 items-center max-w-[45%]" :class="valueClass">
+      <div class="cell-value flex flex-row gap-4 items-center max-w-[45%] " :class="valueClass">
         <slot name="value">
           <i v-if="valueIcon" :class="valueIcon"></i>
           <span class="text-ellipsis">{{ valueDisplay }}</span>

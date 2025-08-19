@@ -1,7 +1,7 @@
 <template>
-  <div class="cell-group text-gray-500">
+  <div class="cell-group text-gray-400 ">
     <slot v-if="label" name="label">
-      <div class="cell-label flex flex-row gap-8 items-center h-32 items-center px-12">
+      <div class="cell-label flex flex-row gap-8 items-center py-8 items-center px-12 text-12">
         <i v-if="icon" :class="icon"></i>
         <span>{{ label }}</span>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <u-popup v-model="isVisible" mode="left" :duration="duration" :closeable="false" width="60%">
-    <z-paging>
+    <z-paging class="bg-gray-50">
       <template #top>
         <AppNavBar title="" :isBack="false" :border="false">
           <template #right>
@@ -57,6 +57,15 @@
         <Cell label="反馈" help="如有Bug,请反馈给我们" :arrow="true"></Cell>
       </CellGroup>
 
+      <CellGroup label="账号">
+        <Cell
+          icon="i-ic:round-account-circle"
+          :label="account"
+          :arrow="true"
+          @click="navToAccount"
+        ></Cell>
+      </CellGroup>
+
       <!-- <div v-for="value in 100" class="flex p-12">
         {{ value }}
       </div> -->
@@ -107,6 +116,14 @@ const onChangeChat = (item: any, index: number) => {
 };
 const navToCreateGroup = () => {
   navTo({ url: `/pages/im/plus/create-group`, query: {} });
+  isVisible.value = false;
+  duration.value = 0;
+};
+
+const account = ref('1000@intry.cn');
+
+const navToAccount = () => {
+  navTo({ url: `/pages/account/profile`, query: {} });
   isVisible.value = false;
   duration.value = 0;
 };

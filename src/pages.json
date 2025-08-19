@@ -37,6 +37,20 @@
         "navigationBarTitleText": "pdf"
       }
     },
+    {
+      "path": "pages/account/login",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "login"
+      }
+    },
+    {
+      "path": "pages/account/profile",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "profile"
+      }
+    },
     //im
     {
       "path": "pages/im/index",

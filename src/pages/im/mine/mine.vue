@@ -70,35 +70,13 @@
     </CellGroup>
 
     <CellGroup>
-      <Cell icon="i-ic:round-touch-app" label="版本" help="请升级" :disabled="true" arrow>
-        <template #value>
-          <div class="bg-gray-100 rounded-24px px-12 py-2 text-dark-100">新版本 v1.0.1</div>
-        </template>
-      </Cell>
-    </CellGroup>
-    <CellGroup>
-      <Cell icon="i-ic:round-lock-person" label="登录" help="Login" @click="login" arrow></Cell>
       <Cell
-        icon="i-ic:round-token"
-        label="刷新Token"
-        help="RefreshToken"
-        @click="refreshToken"
-        format="MM-DD HH:mm:ss"
-        :value="authStore.token?.creation_time"
-        class=""
-        arrow
+        icon="i-ic:round-account-circle"
+        label="账号"
+        :arrow="true"
+        @click="navToAccount"
       ></Cell>
     </CellGroup>
-
-    <!-- <div>
-      <h3>authStore:</h3>
-      <scroll-view scroll>
-        <pre>{{ authStore.token }}</pre>
-      </scroll-view>
-    </div> -->
-    <template #loadingMoreNoMore>
-      <view style="background-color: red;">这是完全自定义的没有更多数据view</view>
-    </template>
   </z-paging>
 </template>
 
@@ -111,7 +89,6 @@ import Gender from '@/pages/im/components/Gender.vue';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';
-import { userHeader } from '@/api/userHeader';
 import { getChatObjectDetail } from '@/api/chatApi';
 import { navTo } from '@/utils/nav';
 
@@ -131,32 +108,6 @@ const onRefresh = () => {
   loadData();
   console.log('刷新');
 };
-const login = () => {
-  authStore
-    .fetchToken(userHeader)
-    .then(res => {
-      uni.showToast({
-        title: '登录成功',
-        icon: 'success',
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      uni.showToast({
-        title: `${err.data?.error || '登录失败'}${err.data?.error_description}`,
-        icon: 'none',
-      });
-    });
-};
-const refreshToken = () => {
-  authStore.refreshToken().then(res => {
-    uni.showToast({
-      title: '刷新成功',
-      icon: 'success',
-    });
-  });
-};
-
 const opacity = ref(0);
 
 const loadData = () => {
@@ -178,6 +129,9 @@ const onScroll = e => {
 };
 const onEdit = () => {
   navTo({ url: '/pages/im/mine/edit', query: { id: chatStore.current?.id } });
+};
+const navToAccount = () => {
+  navTo({ url: `/pages/account/profile`, query: {} });
 };
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
