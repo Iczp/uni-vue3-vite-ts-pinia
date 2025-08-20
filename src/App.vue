@@ -21,8 +21,13 @@ onLaunch(() => {
     useBridge();
   }
 });
-onShow(() => {
-  console.log('App Show');
+onShow((e) => {
+  console.log('App Show',e);
+
+  const pages = getCurrentPages();
+  const page = pages[pages.length - 1];
+
+  console.log('App Show', page);
 });
 onHide(() => {
   console.log('App Hide');

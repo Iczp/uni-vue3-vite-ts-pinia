@@ -37,7 +37,14 @@
     </CellGroup>
 
     <CellGroup>
-      <Cell icon="i-ic:round-lock-person" label="登录" help="Login" @click="login" arrow></Cell>
+      <Cell
+        icon="i-ic:round-lock-person"
+        label="登录"
+        help="Login"
+        :disabled="isLoginPending"
+        @click="login"
+        arrow
+      ></Cell>
       <Cell
         icon="i-ic:round-token"
         label="刷新Token"
@@ -46,6 +53,7 @@
         format="MM-DD HH:mm:ss"
         :value="authStore.token?.creation_time"
         class=""
+        :disabled="isRefreshTokening"
         arrow
       ></Cell>
     </CellGroup>
@@ -59,7 +67,7 @@
     </CellGroup>
 
     <CellGroup>
-      <Cell label="退出" :arrow="true"></Cell>
+      <Cell label="退出" :arrow="true" @click="onLogout"></Cell>
     </CellGroup>
   </z-paging>
 </template>
@@ -97,8 +105,10 @@ const onRefresh = () => {
   console.log('刷新');
   pagingRef.value?.complete(true);
 };
-
+const isLoginPending = ref(false);
 const login = () => {
+  if (isLoginPending.value) return;
+  isLoginPending.value = true;
   authStore
     .fetchToken(userHeader)
     .then(res => {
@@ -113,19 +123,47 @@ const login = () => {
         title: `${err.data?.error || '登录失败'}${err.data?.error_description}`,
         icon: 'none',
       });
+    })
+    .finally(() => {
+      isLoginPending.value = false;
     });
 };
+const isRefreshTokening = ref(false);
 const refreshToken = () => {
-  authStore.refreshToken().then(res => {
-    uni.showToast({
-      title: '刷新成功',
-      icon: 'success',
+  if (isRefreshTokening.value) return;
+  isRefreshTokening.value = true;
+  authStore
+    .refreshToken()
+    .then(res => {
+      uni.showToast({
+        title: '刷新成功',
+        icon: 'success',
+      });
+    })
+    .finally(() => {
+      isRefreshTokening.value = false;
     });
-  });
 };
 
 const opacity = ref(0);
 
+const onLogout = () => {
+  uni.showModal({
+    title: '退出登录',
+    content: '确定要退出吗？',
+    success: function (res) {
+      if (res.confirm) {
+        authStore.logout();
+        uni.reLaunch({ url: '/pages/index/index' });
+      } else if (res.cancel) {
+        console.log('用户点击取消');
+      }
+    },
+    fail: function (res) {
+      console.log('接口调用失败的回调函数', res);
+    },
+  });
+};
 const onScroll = e => {
   // console.log("滚动事件", e);
   opacity.value = Math.min(e.detail.scrollTop / 400, 1);

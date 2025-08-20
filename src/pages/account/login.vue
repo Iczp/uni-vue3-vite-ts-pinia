@@ -17,15 +17,16 @@
       ></AppNavBar>
     </template>
 
-    <div class="bg-white mt-64">
-      <u-form :model="form" ref="form1" class="p-12">
-        <u-form-item label="账号" prop="name">
+    <div class="bg-white mt-36">
+      <div class="flex px-24 text-24">登录</div>
+      <u-form :model="form" ref="form1" class="p-24">
+        <u-form-item label="" prop="name">
           <div class="i-ic:round-account-circle text-16 text-gray-400 mr-8"></div>
           <u-input v-model="form.account" placeholder="账号" />
         </u-form-item>
-        <u-form-item label="密码" prop="name">
+        <u-form-item label="" prop="name">
           <div class="i-ic:round-lock text-16 text-gray-400 mr-8"></div>
-          <u-input placeholder="请输入密码" type="password" v-model="form.password" />
+          <u-input placeholder="密码" type="password" v-model="form.password" />
         </u-form-item>
       </u-form>
       <div class="flex flex-row justify-center py-12">

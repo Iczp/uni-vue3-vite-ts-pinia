@@ -70,5 +70,9 @@ export const useAuth = defineStore({
       }
       return this.token;
     },
+    logout() {
+      this.token = null;
+      // uni.removeStorageSync(authStorageKey);
+    },
   },
 });

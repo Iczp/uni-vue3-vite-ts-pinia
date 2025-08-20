@@ -38,7 +38,7 @@ const request = async <T = any>(args: {
           resolve(res.data as T);
         } else {
           console.error('Request failed with status code:', res.statusCode);
-          console.error('Response data:', res.data);
+          // console.error('Response data:', res.data);
           reject(res);
         }
       },

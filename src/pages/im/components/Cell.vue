@@ -3,6 +3,7 @@
     class="cell flex flex-row justify-between gap-12 p-12 text-dark-500"
     :class="{ active: !!active }"
     :disabled="disabled"
+    @click="handleClick"
   >
     <slot name="label">
       <div class="cell-label flex flex-row gap-8 items-center text-gray-600" :class="labelClass">
@@ -33,6 +34,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn'; // import locale
 dayjs.locale('zh-cn');
+const emit = defineEmits(['click']);
 const props = defineProps({
   label: {
     type: [Number, String, null],
@@ -88,6 +90,11 @@ const valueDisplay = computed(() => {
   }
   return props.value || props.empty;
 });
+const handleClick = () => {
+  if (!props.disabled) {
+    emit('click');
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -99,7 +106,8 @@ const valueDisplay = computed(() => {
 :where(.cell[disabled='true']) {
   color: #ccc;
   .text-gray,
-  .cell-label {
+  .cell-label,
+  .cell-value {
     color: #ccc;
   }
 }
