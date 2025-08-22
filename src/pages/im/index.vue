@@ -181,7 +181,7 @@ const reload = () => {
 onLoad(req => {
   // 页面隐藏时可以执行一些清理操作
   console.log('Chat index onLoad', req);
-
+  uni.$off('refresh@chat-index');
   uni.$on('refresh@chat-index', e => {
     console.warn('refresh@chat-index', e);
     reload();
