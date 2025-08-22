@@ -57,8 +57,9 @@ import ChatObjectPop from '@/pages/im/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';
 import NavBtn from '@/pages/im/components/nav-btn.vue';
 import Badge from '@/pages/im/components/Badge.vue';
+import { useAuthPage } from '@/hooks/useAuth';
 const store = useChatStore();
-
+useAuthPage();
 const props = defineProps({
   chatObjectId: {
     type: [String, Number, null],
@@ -70,7 +71,7 @@ const props = defineProps({
   },
   tabIndex: {
     type: [String, Number, undefined],
-    default: 2,
+    default: 0,
   },
   token: {
     type: [String, null, undefined],
@@ -135,7 +136,7 @@ const tabs = ref([
     icon: 'i-ic:round-message',
     selectedIcon: '/static/tabs/home-active.png',
     path: '/pages/im/message.vue',
-    isLazy: false,
+    isLazy: true,
     badge: () => store.totalBadges,
     isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/messages/message.vue'))),
@@ -155,7 +156,7 @@ const tabs = ref([
     icon: 'i-ic:round-person',
     selectedIcon: '/static/tabs/home-active.png',
     path: '@/pages/im/mine/mine.vue',
-    isLazy: true,
+    isLazy: false,
     badge: () => 0,
     isDot: true,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/mine/mine.vue'))),

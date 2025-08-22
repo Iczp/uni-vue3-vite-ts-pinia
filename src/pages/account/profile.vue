@@ -76,7 +76,7 @@
 import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import Badge from '@/pages/im/components/Badge.vue';
-import { useAuth } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
 
 const props = defineProps({
@@ -93,7 +93,7 @@ const title = ref('登录');
 
 const account = ref('account');
 const email = ref('1000@intry.cn');
-const authStore = useAuth();
+const authStore = useAuthStore();
 
 const pagingRef = ref();
 

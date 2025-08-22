@@ -48,18 +48,10 @@
 
 <script lang="ts" setup>
 import Divider from '@/pages/im/components/Divider.vue';
-import Cell from '@/pages/im/components/Cell.vue';
-import Badge from '@/pages/im/components/Badge.vue';
-import Avatar from '@/pages/im/components/Avatar.vue';
-import Gender from '@/pages/im/components/Gender.vue';
-import { useUser } from '@/store/user';
-import { useAuth } from '@/store/auth';
-import { useChatStore } from '@/store/chatStore';
+import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
-import { getChatObjectDetail, getSessionUnitItemDetail } from '@/api/chatApi';
-import { useSessionUnitDetail } from '@/hooks/useSessionUnitDetail';
-import { objectTypeDescriptions, ObjectTypes } from '@/utils/enums';
-
+import { useAuthPage } from '@/hooks/useAuth';
+useAuthPage();
 const props = defineProps({
   id: {
     type: String,
@@ -72,7 +64,7 @@ const props = defineProps({
 
 const title = ref('登录');
 
-const authStore = useAuth();
+const authStore = useAuthStore();
 
 const pagingRef = ref();
 

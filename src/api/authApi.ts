@@ -52,18 +52,17 @@ const request = async <T = any>(args: {
 };
 
 // 使用示例
-export const fetchToken = (header: { [key: string]: any }) => {
-  console.log('fetchLoginToken');
+export const fetchToken = (data: { [key: string]: any }) => {
+  console.log('fetchToken');
   return request<AuthApi.TokenDto>({
     url: `/connect/token`,
     method: 'POST',
-
     data: {
       client_id: import.meta.env.VITE_AUTH_CLIENT_ID,
       client_secret: import.meta.env.VITE_AUTH_CLIENT_SECRET,
       grant_type: import.meta.env.VITE_AUTH_GRANT_TYPE,
       scope: import.meta.env.VITE_AUTH_CLIENT_SCOPE,
-      ...header,
+      ...data,
     },
   });
 };

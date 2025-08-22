@@ -1,4 +1,4 @@
-import { useAuth } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import { version } from '../../package.json';
 import { toUrl } from '@/utils/nav';
 
@@ -29,7 +29,7 @@ const chatRequest = async <T = any>(args: {
       : import.meta.env.VITE_CHAT_BASE_URL + args.url;
     console.log('request url', url);
 
-    const auth = useAuth();
+    const auth = useAuthStore();
     await auth.getOrRefreshToken();
     // console.log('auth.token', auth.token);
     const input = {

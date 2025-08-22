@@ -89,7 +89,7 @@ import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import { objectTypeDescriptions } from '@/utils/enums';
 import { navTo } from '@/utils/nav';
-import { useAuth } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 const props = defineProps({
   label: {
     type: [String, null],
@@ -108,7 +108,7 @@ const props = defineProps({
 const isVisible = ref(false);
 const duration = ref(250);
 const store = useChatStore();
-const auth = useAuth();
+const auth = useAuthStore();
 
 auth.getUserInfo();
 

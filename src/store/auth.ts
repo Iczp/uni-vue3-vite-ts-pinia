@@ -10,7 +10,7 @@ import {
   removeLocalUser,
 } from '@/api/authApi';
 
-export const useAuth = defineStore({
+export const useAuthStore = defineStore({
   id: 'auth',
   state: () => {
     const token = getLocalToken();
@@ -23,6 +23,9 @@ export const useAuth = defineStore({
     };
   },
   getters: {
+    isLogin: state => {
+      return !!state.token;
+    },
     isExpired: state => {
       return isExpired(state.token);
     },

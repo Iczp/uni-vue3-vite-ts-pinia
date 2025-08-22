@@ -3,7 +3,7 @@
 
 import { jsonParse } from '@/utils/object';
 import { getAuth, getSystemInfo } from '.';
-import { useAuth } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import { useUser } from '@/store/user';
 import { isHtml5Plus } from '@/utils/platform';
 
@@ -69,7 +69,7 @@ const runGetAuthInfo = (caller?: string) => {
       const { header, user } = res.result;
       const userStore = useUser();
       userStore.setUserInfo(user);
-      const authStore = useAuth();
+      const authStore = useAuthStore();
       if (!authStore.token || authStore.isExpired) {
         authStore.fetchToken(header);
         return;
@@ -100,7 +100,7 @@ export const appInit = () => {
   }
 };
 
-const appReady = (callback: (caller: string) => void | Promise<any>) => {
+export const appReady = (callback: (caller: string) => void | Promise<any>) => {
   console.log('-------------- appReady --------------');
   document.addEventListener('UniAppJSBridgeReady', () => callback('UniAppJSBridgeReady'));
   // 定义一个轮询函数来检查PlusReady状态

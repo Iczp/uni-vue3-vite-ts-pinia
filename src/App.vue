@@ -2,7 +2,7 @@
 import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
 import { useBridge } from './hooks/bridge';
 import { isHtml5Plus } from './utils/platform';
-
+import { appReady } from './commons/bridge/ready';
 const events = 'connecting,connected,reconnected,reconnecting,close,received'
   .split(',')
   .map(x => `${x}@signalr`);
@@ -20,9 +20,13 @@ onLaunch(() => {
     // 初始化桥接
     useBridge();
   }
+  appReady(() => {
+    console.log('appReady');
+    uni.showToast({ icon: 'none', title: 'appReady5' });
+  });
 });
-onShow((e) => {
-  console.log('App Show',e);
+onShow(e => {
+  console.log('App Show', e);
 
   const pages = getCurrentPages();
   const page = pages[pages.length - 1];

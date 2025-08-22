@@ -82,7 +82,7 @@
 import { onLoad, onUnload } from '@dcloudio/uni-app';
 import { usePaging } from '@/hooks/usePaging';
 import { useUser } from '@/store/user';
-import { useAuth } from '@/store/auth';
+import { useAuthStore } from '@/store/auth';
 import { getSessionUnitList } from '@/api/chatApi';
 
 import { useChatStore } from '@/store/chatStore';
@@ -96,7 +96,7 @@ import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 
 const userStore = useUser();
-const authStore = useAuth();
+const authStore = useAuthStore();
 const chatStore = useChatStore();
 const isPopVisible = ref(false);
 const setMaxTicks = (id: number | null | undefined, force: boolean = false) => {
