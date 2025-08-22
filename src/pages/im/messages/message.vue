@@ -18,6 +18,7 @@
             <CurrentChatObject />
           </template>
         </AppNavBar>
+        <ConnectStatus />
       </template>
       <!-- <template #bottom>
         <div class="flex flex-center h-48 text-12 text-gray-500">
@@ -83,13 +84,16 @@ import { usePaging } from '@/hooks/usePaging';
 import { useUser } from '@/store/user';
 import { useAuth } from '@/store/auth';
 import { getSessionUnitList } from '@/api/chatApi';
-import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
-import SessionUnit from '@/pages/im/components/SessionUnit.vue';
-import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
+
 import { useChatStore } from '@/store/chatStore';
 import { updateSortedList } from '@/utils/list';
 import { navToChat } from '@/utils/nav';
 import { jsonParse } from '@/utils/object';
+
+import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
+import SessionUnit from '@/pages/im/components/SessionUnit.vue';
+import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
+import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 
 const userStore = useUser();
 const authStore = useAuth();
@@ -201,34 +205,47 @@ const loadStorage = () => {
     }
   }
 };
-
+const isFetchLatest = ref(false);
 const fetchLatest = async () => {
-  const q = {
-    minTicks: maxTicks.value ? Math.floor(maxTicks.value) + 100 : null,
-    // minTicks: 638894630088401300,
-    maxTicks: null,
-    keyword: '',
-    ownerId: query.value.ownerId,
-    skipCount: 0,
-    // maxResultCount: 1,
-    // maxResultCount: 1,
-    maxResultCount: query.value.maxResultCount,
-    sorting: 'sorting desc,ticks desc',
-  };
-  console.warn('fetchLatest', q);
-  const res = await getSessionUnitList(q);
-  console.log('fetchLatest', res);
-  if (res.items.length > 0) {
-    // res.items[0].badge = '8';
-    updateDatalist(res.items);
-    setMaxTicks(getMaxTicks(res.items));
-    setMinTicks(getMinTicks(res.items));
-    storageMessage(
-      dataList.value.slice(0, Math.min(query.value.maxResultCount!, dataList.value.length)),
-    );
-    // return;
-  } else {
-    // uni.showToast({ title: '没有新消息', icon: 'none' });
+  try {
+    if (isFetchLatest.value) {
+      console.warn('fetchLatest 已经在加载中...');
+      return;
+    }
+    isFetchLatest.value = true;
+    const q = {
+      minTicks: maxTicks.value ? Math.floor(maxTicks.value) + 100 : null,
+      // minTicks: 638894630088401300,
+      maxTicks: null,
+      keyword: '',
+      ownerId: query.value.ownerId,
+      skipCount: 0,
+      // maxResultCount: 1,
+      // maxResultCount: 1,
+      maxResultCount: query.value.maxResultCount,
+      sorting: 'sorting desc,ticks desc',
+    };
+    console.warn('fetchLatest', JSON.stringify(q));
+    const res = await getSessionUnitList(q);
+    isFetchLatest.value = false;
+    console.log('fetchLatest', JSON.stringify(res));
+    if (res.items.length > 0) {
+      // res.items[0].badge = '8';
+      updateDatalist(res.items);
+      setMaxTicks(getMaxTicks(res.items));
+      setMinTicks(getMinTicks(res.items));
+      storageMessage(
+        dataList.value.slice(0, Math.min(query.value.maxResultCount!, dataList.value.length)),
+      );
+      uni.showToast({ title: `成功加载 ${res.items.length} 条消息`, icon: 'none' });
+      // return;
+    } else {
+      console.warn('没有新消息');
+      // uni.showToast({ title: '没有新消息', icon: 'none' });
+    }
+  } catch (err) {
+    console.error('Error fetchLatest:', err);
+    isFetchLatest.value = false;
   }
 };
 
@@ -240,11 +257,16 @@ const storageMessage = (items: any[] = []) => {
 };
 // const totalCount = ref(0);
 const fetchHistory = async () => {
-  query.value.maxTicks = minTicks.value;
-  isPending.value = true;
   try {
+    if (isPending.value) {
+      console.warn('fetchHistory 已经在加载中...');
+      return;
+    }
+    query.value.maxTicks = minTicks.value;
+    isPending.value = true;
     console.warn('fetchHistory', query.value);
-    const res = await getSessionUnitList(query.value);/im/
+    const res = await getSessionUnitList(query.value);
+    /im/;
     if (query.value.maxTicks == null) {
       totalCount.value = res.totalCount;
       storageMessage(res.items);
@@ -281,8 +303,8 @@ watch(
   () => chatStore.currentIndex,
   v => {
     console.log('#watch current', v);
-    query.value.ownerId = chatStore.current.id,//idList[v];
-    maxTicks.value = null;
+    (query.value.ownerId = chatStore.current.id), //idList[v];
+      (maxTicks.value = null);
     minTicks.value = null;
     query.value.keyword = '';
     query.value.skipCount = 0;
@@ -322,8 +344,8 @@ const onRefresh = () => {
 };
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
-  uni.$on('new-message@signalR', e => {
-    console.log('new-message@signalR', e);
+  uni.$on('received@signalr', e => {
+    console.log('received@signalr', e);
     fetchLatest();
   });
 
@@ -336,7 +358,7 @@ onMounted(() => {
 });
 onUnmounted(() => {
   // 组件销毁时可以执行一些清理操作
-  uni.$off('new-message@signalR');
+  // uni.$off('new-message@signalR');
 });
 
 onLoad(() => {

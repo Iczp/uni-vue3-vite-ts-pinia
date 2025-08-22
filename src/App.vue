@@ -3,7 +3,7 @@ import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
 import { useBridge } from './hooks/bridge';
 import { isHtml5Plus } from './utils/platform';
 
-const events = 'connected,reconnected,reconnecting,close,received'
+const events = 'connecting,connected,reconnected,reconnecting,close,received'
   .split(',')
   .map(x => `${x}@signalr`);
 

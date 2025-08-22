@@ -7,6 +7,7 @@ import {
   getUserInfo,
   getLocalUser,
   setLocalUser,
+  removeLocalUser,
 } from '@/api/authApi';
 
 export const useAuth = defineStore({
@@ -72,7 +73,9 @@ export const useAuth = defineStore({
     },
     logout() {
       this.token = null;
-      // uni.removeStorageSync(authStorageKey);
+      uni.removeStorageSync(authStorageKey);
+      this.user = null;
+      removeLocalUser();
     },
   },
 });

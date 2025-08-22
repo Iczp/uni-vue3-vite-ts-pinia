@@ -1,5 +1,5 @@
 <template>
-  <div class="avatar-wrapper relative flex" :style="containerCss">
+  <div class="avatar-wrapper relative flex flex-shrink-0" :style="containerCss">
     <TagCreator
       v-if="!isSkeleton && isCreator"
       class="absolute left-[50%] bottom-0 translate-[-50%,50%] z-9"

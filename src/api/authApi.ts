@@ -83,18 +83,6 @@ export const refreshToken = (refreshToken: string) => {
   });
 };
 
-export const getUserInfo = (authorization: string) => {
-  console.log('getUserInfo');
-  return request<AuthApi.TokenDto>({
-    url: `/connect/userinfo`,
-    method: 'POST',
-    header: {
-      Authorization: authorization, // 将刷新令牌作为 Bearer 令牌传递
-    },
-    data: {},
-  });
-};
-
 export const isExpired = (token: AuthApi.TokenDto | null | undefined) => {
   console.log('isExpired', token);
   if (!token) {
@@ -123,6 +111,18 @@ export const getLocalToken = () => {
   return token;
 };
 
+export const getUserInfo = (authorization: string) => {
+  console.log('getUserInfo');
+  return request<AuthApi.TokenDto>({
+    url: `/connect/userinfo`,
+    method: 'POST',
+    header: {
+      Authorization: authorization, // 将刷新令牌作为 Bearer 令牌传递
+    },
+    data: {},
+  });
+};
+
 export const getLocalUser = () => {
   const storeValue = uni.getStorageSync(authUserStorageKey);
   let user = jsonParse(storeValue);
@@ -131,4 +131,8 @@ export const getLocalUser = () => {
 
 export const setLocalUser = (user: AuthApi.UserInfo) => {
   uni.setStorageSync(authUserStorageKey, JSON.stringify(user));
+};
+
+export const removeLocalUser = () => {
+  uni.removeStorageSync(authUserStorageKey);
 };

@@ -119,6 +119,9 @@ const loadData = () => {
       .catch(err => {
         pagingRef.value?.complete(false);
       });
+  } else {
+    uni.showToast({ icon: 'none', title: '请先登录' });
+    pagingRef.value?.complete(true);
   }
 };
 

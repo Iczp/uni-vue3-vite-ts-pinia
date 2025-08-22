@@ -26,7 +26,7 @@
             :border="index != store.chatObjects.length - 1"
           >
             <template #title>
-              <div class="max-w-100 inline-block text-ellipsis">
+              <div class="max-w-92 inline-block text-ellipsis">
                 <span class="text-14">{{ item.owner.name }}</span>
               </div>
             </template>
@@ -60,7 +60,7 @@
       <CellGroup label="账号">
         <Cell
           icon="i-ic:round-account-circle"
-          
+
           :label="auth.user?.given_name"
           :arrow="true"
           :help="auth.user?.email"
