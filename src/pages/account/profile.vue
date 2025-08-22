@@ -17,8 +17,9 @@
       ></AppNavBar>
     </template>
     <CellGroup>
-      <Cell label="账号" :value="account" :arrow="true"></Cell>
+      <Cell label="名称" :value="account" :arrow="true"></Cell>
       <Cell label="邮箱" :value="email" :arrow="true"></Cell>
+      <Cell label="手机" :value="phone_number" :arrow="true"></Cell>
     </CellGroup>
 
     <CellGroup label="安全">
@@ -78,6 +79,8 @@ import CellGroup from '@/pages/im/components/CellGroup.vue';
 import Badge from '@/pages/im/components/Badge.vue';
 import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
+import { useAuthPage } from '@/hooks/useAuthPage';
+useAuthPage();
 
 const props = defineProps({
   id: {
@@ -90,9 +93,12 @@ const props = defineProps({
 });
 
 const title = ref('登录');
+const user = computed(() => authStore.user);
+const account = computed(() => `${authStore.user?.family_name} ${authStore.user?.given_name}`);
+const email = computed(() => authStore.user?.email);
+const phone_number = computed(() => authStore.user?.phone_number || '未设置');
 
-const account = ref('account');
-const email = ref('1000@intry.cn');
+const phone_number_verified = computed(() => authStore.user?.phone_number_verified);
 const authStore = useAuthStore();
 
 const pagingRef = ref();
@@ -103,7 +109,9 @@ console.log('系统信息', sysInfo);
 
 const onRefresh = () => {
   console.log('刷新');
-  pagingRef.value?.complete(true);
+  authStore.getUserInfo({ force: true }).finally(() => {
+    pagingRef.value?.complete(true);
+  });
 };
 const isLoginPending = ref(false);
 const login = () => {

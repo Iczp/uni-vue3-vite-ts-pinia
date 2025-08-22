@@ -37,6 +37,11 @@ export const useAuthStore = defineStore({
     },
   },
   actions: {
+    async login(data: { [key: string]: any }) {
+      const token = await fetchToken(data);
+      this.setToken(token);
+      return token;
+    },
     setToken(token: Auth.Token) {
       this.token = token;
       this.token.creation_time = new Date();
@@ -48,9 +53,9 @@ export const useAuthStore = defineStore({
       this.setToken(token);
       return token;
     },
-    async getUserInfo(force: boolean = false) {
+    async getUserInfo(args?: { force?: boolean }) {
       // const erpHeader = {};
-      if (this.user && !force) {
+      if (this.user && !args?.force) {
         return this.user;
       }
       const user = await getUserInfo(this.authorization);

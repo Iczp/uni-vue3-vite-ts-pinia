@@ -110,7 +110,7 @@ const duration = ref(250);
 const store = useChatStore();
 const auth = useAuthStore();
 
-auth.getUserInfo();
+auth.getUserInfo({});
 
 const onChangeChat = (item: any, index: number) => {
   console.log('onChangeChat', item, index);

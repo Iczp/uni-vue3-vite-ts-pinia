@@ -15,7 +15,7 @@
       <template #top>
         <AppNavBar title="" :isBack="true" :border="true">
           <template #left>
-            <CurrentChatObject />
+            <CurrentChatObject v-if="authStore.isLogin" />
           </template>
         </AppNavBar>
         <ConnectStatus />
@@ -303,6 +303,9 @@ watch(
   () => chatStore.currentIndex,
   v => {
     console.log('#watch current', v);
+    if (!authStore.isLogin) {
+      return;
+    }
     (query.value.ownerId = chatStore.current.id), //idList[v];
       (maxTicks.value = null);
     minTicks.value = null;
@@ -335,11 +338,28 @@ const onCurrentChatObjectClick = () => {
 const onSearch = () => {
   console.log('搜索关键字:', query.value.keyword);
 };
-
-const onRefresh = () => {
-  uni.$emit('refresh@chat-index');
-  fetchLatest();
+const store = useChatStore();
+const onRefresh = async () => {
+  await fetchLatest();
   console.log('刷新');
+  setTimeout(() => {
+    store
+      .getChatObjects()
+      .then(res => {
+        console.log('getChatObjects:', res);
+      })
+      .catch(err => {
+        console.error('Error fetching chat objects:', err);
+      });
+    store
+      .getBadges()
+      .then(res => {
+        console.log('getBadges:', res);
+      })
+      .catch(err => {
+        console.error('Error fetching badges:', err);
+      });
+  }, 100);
   // pagingRef.value?.reload(true);
 };
 onMounted(() => {
@@ -351,7 +371,6 @@ onMounted(() => {
 
   uni.$on('connected@signalr', e => {
     console.log('signalR connected', e);
-
     fetchLatest();
     uni.showToast({ title: 'SignalR连接成功', icon: 'none' });
   });

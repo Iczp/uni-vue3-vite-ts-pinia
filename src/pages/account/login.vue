@@ -30,7 +30,7 @@
         </u-form-item>
       </u-form>
       <div class="flex flex-row justify-center py-12">
-        <u-button type="primary">登录</u-button>
+        <u-button type="primary" @click="login">登录</u-button>
       </div>
     </div>
 
@@ -50,7 +50,7 @@
 import Divider from '@/pages/im/components/Divider.vue';
 import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
-import { useAuthPage } from '@/hooks/useAuth';
+import { useAuthPage } from '@/hooks/useAuthPage';
 useAuthPage();
 const props = defineProps({
   id: {
@@ -69,8 +69,8 @@ const authStore = useAuthStore();
 const pagingRef = ref();
 
 const form = reactive({
-  account: '',
-  password: '',
+  account: 'admin',
+  password: '1q2w3E*',
   code: '',
   name: '',
 });
@@ -80,12 +80,14 @@ const onRefresh = () => {
 };
 const login = () => {
   authStore
-    .fetchToken(userHeader)
+    .login({
+      username: form.account,
+      password: form.password,
+      grant_type: 'password',
+    })
     .then(res => {
-      uni.showToast({
-        title: '登录成功',
-        icon: 'success',
-      });
+      uni.redirectTo({ url: '/pages/im/index' });
+      uni.showToast({ title: '登录成功', icon: 'success' });
     })
     .catch(err => {
       console.error(err);

@@ -57,7 +57,7 @@ import ChatObjectPop from '@/pages/im/widgets/ChatObjectPop.vue';
 import { useChatStore } from '@/store/chatStore';
 import NavBtn from '@/pages/im/components/nav-btn.vue';
 import Badge from '@/pages/im/components/Badge.vue';
-import { useAuthPage } from '@/hooks/useAuth';
+import { useAuthPage } from '@/hooks/useAuthPage';
 const store = useChatStore();
 useAuthPage();
 const props = defineProps({
@@ -88,27 +88,6 @@ const token = props.token;
 console.log('chatObjectId:', chatObjectId);
 console.log('erpUserId:', erpUserId);
 console.log('token:', token);
-
-uni.$on('refresh@chat-index', () => {
-  store
-    .getChatObjects()
-    .then(res => {
-      console.log('getChatObjects:', res);
-    })
-    .catch(err => {
-      console.error('Error fetching chat objects:', err);
-    });
-  store
-    .getBadges()
-    .then(res => {
-      console.log('getBadges:', res);
-    })
-    .catch(err => {
-      console.error('Error fetching badges:', err);
-    });
-});
-
-uni.$emit('refresh@chat-index');
 
 const show = ref(false);
 
@@ -181,18 +160,46 @@ const onSwiperChange = async e => {
     tab.isLazy = true;
   }
 };
-
+const reload = () => {
+  store
+    .getChatObjects()
+    .then(res => {
+      console.log('getChatObjects:', res);
+    })
+    .catch(err => {
+      console.error('Error fetching chat objects:', err);
+    });
+  store
+    .getBadges()
+    .then(res => {
+      console.log('getBadges:', res);
+    })
+    .catch(err => {
+      console.error('Error fetching badges:', err);
+    });
+};
 onLoad(req => {
   // 页面隐藏时可以执行一些清理操作
   console.log('Chat index onLoad', req);
+
+  uni.$on('refresh@chat-index', e => {
+    console.warn('refresh@chat-index', e);
+    reload();
+  });
+  reload();
+});
+
+onUnload(() => {
+  console.log('Chat index onUnload', req);
+  uni.$off('refresh@chat-index');
 });
 onHide(() => {
   // 页面隐藏时可以执行一些清理操作
   console.log('Chat index page onHide');
 });
-onShow(() => {
+onShow(e => {
   // 页面显示时可以执行一些初始化操作
-  console.log('Chat index page onShow');
+  console.log('Chat index page onShow', e);
 });
 </script>
 <style>
