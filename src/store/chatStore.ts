@@ -5,9 +5,14 @@ export const useChatStore = defineStore({
   id: 'chat-object',
   state: () => {
     const chatObjectsJson = uni.getStorageSync('chatObjects');
-    const currentIndex = Number(uni.getStorageSync('chatObjects-currentIndex') || 0);
-    // console.log('chatObjectsJson', chatObjectsJson);
     const chatObjects = jsonParse<Chat.ChatObjectDto[]>(chatObjectsJson) || [];
+    let currentIndex = Number(uni.getStorageSync('chatObjects-currentIndex') || 0);
+    if (currentIndex >= chatObjects.length) {
+      console.warn('currentIndex >=chatObjects.length', currentIndex, chatObjects.length);
+      currentIndex = 0;
+    }
+    // console.log('chatObjectsJson', chatObjectsJson);
+
     return {
       currentIndex,
       chatObjects,
@@ -20,22 +25,25 @@ export const useChatStore = defineStore({
   },
   getters: {
     current: state => {
-      return state.chatObjects[state.currentIndex];
+      return state.chatObjects[state.currentIndex || 0];
     },
     totalBadges: state => {
       return state.badges.reduce((total, item) => total + (item.badge || 0), 0);
     },
     otherBadges: state => {
-      const currentId = state.chatObjects[state.currentIndex].id;
+      const currentId = state.chatObjects[state.currentIndex]?.id;
       return state.badges
         .filter(x => x.chatObjectId != currentId)
         .reduce((total, item) => total + (item.badge || 0), 0);
     },
     items: state => {
-      const currentId = state.chatObjects[state.currentIndex].id;
+      if (!state.chatObjects[0]?.id) {
+        return [];
+      }
+      const currentId = state.chatObjects[state.currentIndex]?.id;
       return state.chatObjects.map(x => ({
         owner: x,
-        object:state.badges.find(d => d.chatObjectId == x.id),
+        object: state.badges.find(d => d.chatObjectId == x.id),
         badge: state.badges.find(d => d.chatObjectId == x.id)?.badge || 0,
         isCurrent: x.id == currentId,
       }));

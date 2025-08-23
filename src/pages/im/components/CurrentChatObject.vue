@@ -5,7 +5,7 @@
   >
     <ChatObject :size="28" :border="false" :item="current">
       <template #title>
-        <div class="text-15 font-bold text-ellipsis max-w-120">{{ current.name }}</div>
+        <div class="text-15 font-bold text-ellipsis max-w-120">{{ current?.name || '-' }}</div>
       </template>
       <template v-if="isMany" #actions>
         <i v-if="isMany" class="i-ic:round-keyboard-arrow-down"></i>

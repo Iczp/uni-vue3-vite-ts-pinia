@@ -131,7 +131,7 @@ const {
   totalCount,
 } = usePaging<Chat.SessionUnitDto>({
   input: {
-    ownerId: 13,
+    ownerId: null,
     maxResultCount: Math.max(Math.min(Math.floor(fullScreenCount.value * 2), 100), 16),
     keyword: '',
     // minMessageId: null,
@@ -193,8 +193,8 @@ const updateDatalist = (list: Chat.SessionUnitDto[]) => {
   // pagingRef.value?.resetTotalData ();
 };
 
-const loadStorage = () => {
-  const messageListJson = uni.getStorageSync(`message-list-${query.value.ownerId}`);
+const loadStorage = (ownerId: number) => {
+  const messageListJson = uni.getStorageSync(`message-list-${ownerId}`);
   if (messageListJson) {
     const messageList = jsonParse(messageListJson);
     console.log('messageList', messageList);
@@ -235,7 +235,8 @@ const fetchLatest = async () => {
       setMaxTicks(getMaxTicks(res.items));
       setMinTicks(getMinTicks(res.items));
       storageMessage(
-        dataList.value.slice(0, Math.min(query.value.maxResultCount!, dataList.value.length)),
+        q.ownerId,
+        dataList.value.slice(0, Math.min(q.maxResultCount!, dataList.value.length)),
       );
       uni.showToast({ title: `成功加载 ${res.items.length} 条消息`, icon: 'none' });
       // return;
@@ -249,9 +250,9 @@ const fetchLatest = async () => {
   }
 };
 
-const storageMessage = (items: any[] = []) => {
+const storageMessage = (ownerId: number, items: any[] = []) => {
   uni.setStorage({
-    key: `message-list-${query.value.ownerId}`,
+    key: `message-list-${ownerId}`,
     data: JSON.stringify(items),
   });
 };
@@ -266,10 +267,9 @@ const fetchHistory = async () => {
     isPending.value = true;
     console.warn('fetchHistory', query.value);
     const res = await getSessionUnitList(query.value);
-    /im/;
     if (query.value.maxTicks == null) {
       totalCount.value = res.totalCount;
-      storageMessage(res.items);
+      storageMessage(query.value.ownerId, res.items);
     }
     setMaxTicks(getMaxTicks(res.items));
     setMinTicks(getMinTicks(res.items));
@@ -285,10 +285,10 @@ const fetchHistory = async () => {
 
 // fetchLatest();
 const queryList = async (pageNo: number, pageSize: number) => {
-  console.log('queryList', pageNo, pageSize);
+  console.log('queryList', pageNo, pageSize, toRaw(query.value));
   // 下拉刷新时
   if (pageNo == 1) {
-    loadStorage();
+    loadStorage(query.value.ownerId);
   }
   if (pageNo == 1 && dataList.value.length > 0) {
     // await fetchLatest();
@@ -298,16 +298,16 @@ const queryList = async (pageNo: number, pageSize: number) => {
     await fetchHistory();
   }
 };
-const idList = [13, 14, 5862, 5866, 5869, 5885];
+// const idList = [13, 14, 5862, 5866, 5869, 5885];
 watch(
-  () => chatStore.currentIndex,
+  () => chatStore.current,
   v => {
     console.log('#watch current', v);
-    if (!authStore.isLogin) {
+    if (!v || !authStore.isLogin) {
       return;
     }
-    (query.value.ownerId = chatStore.current.id), //idList[v];
-      (maxTicks.value = null);
+    query.value.ownerId = chatStore.current?.id; //idList[v];
+    maxTicks.value = null;
     minTicks.value = null;
     query.value.keyword = '';
     query.value.skipCount = 0;

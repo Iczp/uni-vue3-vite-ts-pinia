@@ -37,7 +37,7 @@ onHide(() => {
   console.log('App Hide');
 });
 onError(err => {
-  console.log('App error', err);
+  console.error('App error', err);
 });
 </script>
 

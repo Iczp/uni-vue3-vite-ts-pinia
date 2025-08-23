@@ -69,7 +69,7 @@ const authStore = useAuthStore();
 const pagingRef = ref();
 
 const form = reactive({
-  account: 'admin',
+  account: 'zhongpei',
   password: '1q2w3E*',
   code: '',
   name: '',

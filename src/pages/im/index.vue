@@ -190,7 +190,7 @@ onLoad(req => {
 });
 
 onUnload(() => {
-  console.log('Chat index onUnload', req);
+  console.log('Chat index onUnload');
   uni.$off('refresh@chat-index');
 });
 onHide(() => {
