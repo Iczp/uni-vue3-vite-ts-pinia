@@ -20,18 +20,18 @@
       <Cell class="before-none" :arrow="false">
         <template #label>
           <div class="py-12 flex flex-row gap-12" @click="changeChat">
-            <Avatar :size="48" :item="chatStore.current" />
+            <Avatar :size="48" :item="owner" />
             <div class="max-w-240 flex flex-col gap-8">
               <div class="flex items-center text-ellipsis text-16 font-bold">
-                <span>{{ chatStore.current?.name || '-' }}</span>
-                <Gender :gender="chatStore.current?.gender" class="ml-4"></Gender>
+                <span>{{ owner?.name || '-' }}</span>
+                <Gender :gender="owner?.gender" class="ml-4"></Gender>
               </div>
-              <div class="text-ellipsis text-14 text-dark-50">ID: {{ chatStore.current?.id }}</div>
+              <div class="text-ellipsis text-14 text-dark-50">ID: {{ owner?.id }}</div>
               <div class="text-ellipsis text-14 text-dark-50">
-                账号: {{ chatStore.current?.code }}
+                账号: {{ owner?.code }}
               </div>
               <div class="text-ellipsis text-14 text-dark-100">
-                地区: {{ chatStore.current?.area || '-' }}
+                地区: {{ owner?.area || '-' }}
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
     <CellGroup>
       <Cell icon="i-ic:round-recycling" label="好友圈" arrow>
         <template #value>
-          <Badge class="gray" :count="10" :max="99"></Badge>
+          <Badge class="gray" :count="10"></Badge>
         </template>
       </Cell>
     </CellGroup>
@@ -54,17 +54,17 @@
     <CellGroup>
       <Cell icon="i-ic:round-star" label="收藏夹" arrow>
         <template #value>
-          <Badge class="gray" :count="10" :max="99"></Badge>
+          <Badge class="gray" :count="favoritedCount"></Badge>
         </template>
       </Cell>
       <Cell icon="i-ic:round-favorite" label="特别关注" arrow>
         <template #value>
-          <Badge class="gray" :count="12" :max="99"></Badge>
+          <Badge class="gray" :count="followingCount"></Badge>
         </template>
       </Cell>
       <Cell icon="i-ic:round-favorite-border" label="关注我的" arrow>
         <template #value>
-          <Badge class="gray" :count="9"></Badge>
+          <Badge class="gray" :count="followerCount"></Badge>
         </template>
       </Cell>
     </CellGroup>
@@ -89,7 +89,7 @@ import Gender from '@/pages/im/components/Gender.vue';
 import { useUser } from '@/store/user';
 import { useAuthStore } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';
-import { getChatObjectDetail } from '@/api/chatApi';
+import { getChatObjectDetail, getChatObjectProfile } from '@/api/chatApi';
 import { navTo } from '@/utils/nav';
 
 const chatStore = useChatStore();
@@ -100,6 +100,13 @@ const authStore = useAuthStore();
 
 const env = ref(import.meta.env);
 const pagingRef = ref();
+
+const chatObjectProfile = ref<Chat.ChatObjectProfileDto>();
+
+const owner = computed(() => chatObjectProfile.value?.owner || chatStore.current);
+const followingCount = computed(() => chatObjectProfile.value?.followingCount);
+const followerCount = computed(() => chatObjectProfile.value?.followerCount);
+const favoritedCount = computed(() => chatObjectProfile.value?.favoritedCount);
 
 const changeChat = () => {
   uni.$emit('showPopup@chat-index');
@@ -112,8 +119,9 @@ const opacity = ref(0);
 
 const loadData = () => {
   if (chatStore.current?.id) {
-    getChatObjectDetail({ id: chatStore.current?.id })
+    getChatObjectProfile({ id: chatStore.current?.id })
       .then(res => {
+        chatObjectProfile.value = res;
         pagingRef.value?.complete(true);
       })
       .catch(err => {
@@ -124,6 +132,15 @@ const loadData = () => {
     pagingRef.value?.complete(true);
   }
 };
+
+watch(
+  () => chatStore.current?.id,
+  (newVal, oldVal) => {
+    if (chatStore.current?.id) {
+      loadData();
+    }
+  },
+);
 
 const onScroll = e => {
   // console.log("滚动事件", e);

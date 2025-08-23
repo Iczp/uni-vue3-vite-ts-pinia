@@ -94,7 +94,9 @@ const props = defineProps({
 
 const title = ref('登录');
 const user = computed(() => authStore.user);
-const account = computed(() => `${authStore.user?.family_name} ${authStore.user?.given_name}`);
+const account = computed(() =>
+  `${authStore.user?.family_name || ''} ${authStore.user?.given_name || ''}`.trim(),
+);
 const email = computed(() => authStore.user?.email);
 const phone_number = computed(() => authStore.user?.phone_number || '未设置');
 

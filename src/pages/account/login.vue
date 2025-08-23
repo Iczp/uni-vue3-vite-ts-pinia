@@ -92,10 +92,36 @@ const login = () => {
     .catch(err => {
       console.error(err);
       uni.showToast({
-        title: `${err.data?.error || '登录失败'}${err.data?.error_description}`,
+        title: `${errCodes[err.data?.error] || '登录失败'}:${
+          errDescriptions[err.data?.error_description] || err.data?.error_description
+        }`,
         icon: 'none',
       });
     });
+};
+const errCodes = {
+  invalid_grant: '登录失败',
+  unsupported_grant_type: '不支持的授权类型',
+  invalid_client: '无效的客户端',
+  invalid_request: '请求无效',
+  unauthorized_client: '未授权的客户端',
+  access_denied: '访问被拒绝',
+  unsupported_response_type: '不支持的响应类型',
+  invalid_scope: '无效的范围',
+  server_error: '服务器错误',
+  temporarily_unavailable: '暂时不可用',
+  insufficient_scope: '范围不足',
+};
+const errDescriptions = {
+  'Invalid username or password!': '账号或密码错误！',
+  'User is not active!': '用户未激活！',
+  'User is locked!': '用户被锁定！',
+  'User is disabled!': '用户已禁用！',
+  'User is deleted!': '用户已被删除！',
+  'User is not found!': '找不到该用户！',
+  'User is not verified!': '用户未验证！',
+  'User is not activated!': '用户未激活！',
+  'User is not logged in!': '用户未登录！',
 };
 
 const opacity = ref(0);

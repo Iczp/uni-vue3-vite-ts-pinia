@@ -206,8 +206,9 @@ const loadStorage = (ownerId: number) => {
   }
 };
 const isFetchLatest = ref(false);
-const fetchLatest = async () => {
+const fetchLatest = async (caller?: string) => {
   try {
+    console.log('fetchLatest caller:', caller);
     if (isFetchLatest.value) {
       console.warn('fetchLatest 已经在加载中...');
       return;
@@ -242,7 +243,7 @@ const fetchLatest = async () => {
       // return;
     } else {
       console.warn('没有新消息');
-      // uni.showToast({ title: '没有新消息', icon: 'none' });
+      uni.showToast({ title: '没有新消息', icon: 'none' });
     }
   } catch (err) {
     console.error('Error fetchLatest:', err);
@@ -292,15 +293,15 @@ const queryList = async (pageNo: number, pageSize: number) => {
   }
   if (pageNo == 1 && dataList.value.length > 0) {
     // await fetchLatest();
-
     pagingRef.value?.complete(dataList.value);
+    console.warn('-----', dataList.value.length);
   } else {
     await fetchHistory();
   }
 };
 // const idList = [13, 14, 5862, 5866, 5869, 5885];
 watch(
-  () => chatStore.current,
+  () => chatStore.current?.id,
   v => {
     console.log('#watch current', v);
     if (!v || !authStore.isLogin) {
@@ -312,7 +313,7 @@ watch(
     query.value.keyword = '';
     query.value.skipCount = 0;
     dataList.value = [];
-    pagingRef.value?.reload();
+    // pagingRef.value?.reload();
   },
   { immediate: true },
 );

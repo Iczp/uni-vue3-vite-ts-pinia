@@ -74,6 +74,14 @@ declare namespace Chat {
     [key: string]: any; // 允许任意额外的属性
   }
 
+  interface ChatObjectProfileDto {
+    owner?: ChatObjectDto;
+    followCount?: number;
+    followerCount?: number;
+    favoritedCount?: number;
+    [key: string]: any; // 允许任意额外的属性
+  }
+
   interface BadgeDto {
     appUserId: string;
     badge: number;
@@ -269,7 +277,7 @@ declare namespace Chat {
     // 邀请人id
     inviterId?: number;
     // sessionUnitId
-    id?:string;
+    id?: string;
     [key: string]: any; // 允许任意额外的属性
   }
   //

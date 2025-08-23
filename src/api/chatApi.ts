@@ -83,21 +83,28 @@ export const getChatObjectByCurrentUser = (data?: Chat.GetListInput) =>
   });
 
 export const getBadgeByCurrentUser = (data?: { isImmersed?: boolean }) =>
-  chatRequest<Chat.BadgeDto[]>({
+  chatRequest<Chat.ChatObjectDto[]>({
     url: '/api/chat/session-unit/badge-by-current-user',
     method: 'GET',
     data,
   });
 
 export const getChatObjectItem = (data: { id: number }) =>
-  chatRequest<Chat.BadgeDto[]>({
+  chatRequest<Chat.ChatObjectDto>({
     url: `/api/chat/chat-object/${data.id}`,
     method: 'GET',
     data: null,
   });
 export const getChatObjectDetail = (data: { id: number }) =>
-  chatRequest<Chat.BadgeDto[]>({
+  chatRequest<Chat.ChatObjectDto[]>({
     url: `/api/chat/chat-object/${data.id}/detail`,
+    method: 'GET',
+    data: null,
+  });
+
+export const getChatObjectProfile = (data: { id: number }) =>
+  chatRequest<Chat.ChatObjectDto>({
+    url: `/api/chat/chat-object/${data.id}/profile`,
     method: 'GET',
     data: null,
   });
