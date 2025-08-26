@@ -62,15 +62,19 @@ declare namespace Chat {
     isEnabled: boolean;
     isDefault: boolean;
     objectType: number;
+    objectTypeDescription?: string | null;
     serviceStatus: number;
+    serviceStatusDescription?: string | null;
     id: number;
     parentId?: number | null;
     name: string;
+    displayName?: string | null;
     depth: number;
     childrenCount: number;
     fullPath: string;
     fullPathName: string;
     verificationMethod?: Number | null;
+    verificationMethodDescription?: string | null;
     [key: string]: any; // 允许任意额外的属性
   }
 

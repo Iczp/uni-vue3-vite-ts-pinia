@@ -6,7 +6,7 @@
           <template #label>
             <div class="py-12 flex flex-row gap-12">
               <Avatar :size="56" :isCreator="isCreator" :item="owner" />
-              <div class="max-w-240 flex flex-col gap-8 justify-center lh-relaxed">
+              <div class="max-w-240 flex flex-col gap-4 justify-center lh-relaxed">
                 <div class="flex items-center text-ellipsis text-16 font-bold h-28">
                   <span v-if="isSkeleton" class="skeleton inline-flex h-20 w-56"></span>
                   <span v-else>{{ owner?.name || '-' }}</span>
@@ -17,6 +17,15 @@
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
                   <span class="ml-8" v-else>{{ owner?.code || '-' }}</span>
                 </div>
+                <div
+                  v-if="owner?.objectTypeDescription"
+                  class="text-ellipsis text-14 text-dark-50 h-24"
+                >
+                  <span class="text-gray">类型:</span>
+                  <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
+                  <span class="ml-8" v-else>{{ owner?.objectTypeDescription || '-' }}</span>
+                </div>
+
                 <div v-if="setting?.memberName" class="text-ellipsis text-14 text-dark-50 h-24">
                   <span class="text-gray">群昵称:</span>
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>

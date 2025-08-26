@@ -27,7 +27,7 @@
           >
             <template #title>
               <div class="max-w-92 inline-block text-ellipsis">
-                <span class="text-14">{{ item.owner.name }}</span>
+                <span class="text-14">{{ item.owner.displayName }}</span>
               </div>
             </template>
             <!-- <template #desc>

@@ -313,7 +313,7 @@ watch(
     query.value.keyword = '';
     query.value.skipCount = 0;
     dataList.value = [];
-    // pagingRef.value?.reload();
+    pagingRef.value?.reload();
   },
   { immediate: true },
 );

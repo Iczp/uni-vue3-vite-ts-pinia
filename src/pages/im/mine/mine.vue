@@ -23,16 +23,15 @@
             <Avatar :size="48" :item="owner" />
             <div class="max-w-240 flex flex-col gap-8">
               <div class="flex items-center text-ellipsis text-16 font-bold">
-                <span>{{ owner?.name || '-' }}</span>
+                <span>{{ owner?.displayName || owner?.name || '-' }}</span>
                 <Gender :gender="owner?.gender" class="ml-4"></Gender>
               </div>
               <div class="text-ellipsis text-14 text-dark-50">ID: {{ owner?.id }}</div>
+              <div class="text-ellipsis text-14 text-dark-50">账号: {{ owner?.code }}</div>
               <div class="text-ellipsis text-14 text-dark-50">
-                账号: {{ owner?.code }}
+                类型: {{ owner?.objectTypeDescription || '-' }}
               </div>
-              <div class="text-ellipsis text-14 text-dark-100">
-                地区: {{ owner?.area || '-' }}
-              </div>
+              <div class="text-ellipsis text-14 text-dark-100">地区: {{ owner?.area || '-' }}</div>
             </div>
           </div>
         </template>
