@@ -3,6 +3,7 @@ import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
 import { useBridge } from './hooks/bridge';
 import { isHtml5Plus } from './utils/platform';
 import { appReady } from './commons/bridge/ready';
+import { getAuth } from './commons/bridge';
 const events = 'connecting,connected,reconnected,reconnecting,close,received'
   .split(',')
   .map(x => `${x}@signalr`);
@@ -20,9 +21,32 @@ onLaunch(() => {
     // 初始化桥接
     useBridge();
   }
+
   appReady(() => {
-    console.log('appReady');
-    uni.showToast({ icon: 'none', title: 'appReady5' });
+    console.log('appReady url:', document.URL);
+
+    // uni.showToast({ icon: 'none', title: 'appReady6' });
+    // const pages = getCurrentPages();
+    // uni.showToast({ icon: 'none', title: `${pages.length}${document.URL}` });
+    // return;
+    // uni.navigateTo({
+    //   url: '/pages/index/index'
+    // });
+    getAuth()
+      .then(res => {
+        var erpHeader = res.result?.header;
+        const token = res.result?.token;
+        // uni.showToast({ icon: 'none', title: `${res.result}` });
+        const erpUser = res.result?.user;
+        if (erpUser) {
+          uni.showToast({ icon: 'none', title: `${erpUser?.name}${erpUser?.userId}` });
+        }
+        console.log('getAuth' + JSON.stringify(res));
+      })
+      .catch(err => {
+        console.error('getAuth error', err);
+        uni.showToast({ icon: 'none', title: `err:${err}` });
+      });
   });
 });
 onShow(e => {

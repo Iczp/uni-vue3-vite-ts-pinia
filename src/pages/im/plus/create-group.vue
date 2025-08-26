@@ -21,7 +21,7 @@
     </CellGroup>
 
     <CellGroup>
-      <Cell label="好友建群" help="通过邀请好友" @click="createByFriends" arrow></Cell>
+      <Cell label="好友建群" help="通过邀请好友" @click="createGroupByFriends" arrow></Cell>
     </CellGroup>
   </z-paging>
 </template>
@@ -46,7 +46,7 @@ const onScroll = e => {
   // console.log("滚动透明度", opacity.value);
 };
 
-const createByFriends = () => {
+const createGroupByFriends = () => {
   openObjectPicker({
     selected: [],
     max: 12,

@@ -61,7 +61,7 @@
         </div>
 
         <CellGroup>
-          <Cell label="类型" :value="destinationObjectType" arrow></Cell>
+          <Cell label="类型" :value="objectTypeDescription" arrow></Cell>
         </CellGroup>
         <!-- destinationObjectType: {{ destinationObjectType }} -->
         <!-- label="群设置" -->
@@ -117,7 +117,13 @@ import MemberPop from '@/pages/im/components/MemberPop.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
 import ChatObject from '@/pages/im/components/ChatObject.vue';
-import { getMembers, getSessionUnitItem, getSessionUnitItemDetail, invite } from '@/api/chatApi';
+import {
+  createGroup,
+  getMembers,
+  getSessionUnitItem,
+  getSessionUnitItemDetail,
+  invite,
+} from '@/api/chatApi';
 import { isHtml5Plus } from '@/utils/platform';
 import { ObjectTypes } from '@/utils/enums';
 import { usePaging } from '@/hooks/usePaging';
@@ -152,6 +158,7 @@ const sessionUnit = ref<Chat.SessionUnitDto | null>(null);
 const setting = computed(() => sessionUnit.value?.setting);
 const isCreator = computed(() => setting.value?.isCreator || false);
 const destination = computed(() => sessionUnit.value?.destination);
+const owner = computed(() => sessionUnit.value?.owner);
 const ownerId = computed(() => sessionUnit.value?.ownerId);
 const isInputEnabled = computed(() => setting.value?.isInputEnabled || false);
 const isShopkeeperOrWaiter = computed(() =>
@@ -183,6 +190,8 @@ const isBtnMinus = computed(
 const destinationObjectType = computed(
   () => sessionUnit.value?.destinationObjectType || destination.value?.objectType,
 );
+
+const objectTypeDescription = computed(() => destination.value?.objectTypeDescription);
 const windowHeight = uni.getSystemInfoSync().windowHeight;
 console.log(windowHeight);
 const pageStyle = reactive({
@@ -255,9 +264,39 @@ const inviteMember = () => {
       });
   });
 };
+
+const doCreateGroup = () => {
+  //--------------------------
+  const list = [owner.value, destination.value];
+  const names = list.map(x => x?.name || '').filter(x => x);
+  uni.showLoading({ title: '正在创建群...', mask: true });
+
+  createGroup({
+    name: `群(${names.join(',')})`,
+    code: '',
+    ownerId: ownerId.value!,
+    type: 0,
+    description: '',
+    chatObjectIdList: list.map(x => x?.id!),
+  })
+    .then(() => {
+      uni.hideLoading();
+      uni.showToast({ title: '创建成功', icon: 'success' });
+      uni.navigateBack();
+    })
+    .catch(err => {
+      uni.hideLoading();
+      uni.showToast({ title: '创建失败', icon: 'none' });
+    })
+    .finally(() => {});
+};
 const onPlus = () => {
   if (destinationObjectType.value == ObjectTypes.Room) {
     inviteMember();
+  } else if (destinationObjectType.value == ObjectTypes.Personal) {
+    doCreateGroup();
+  } else {
+    uni.showToast({ icon: 'none', title: '暂不支持邀请成员' });
   }
 };
 const showMemberPop = (item: any) => {

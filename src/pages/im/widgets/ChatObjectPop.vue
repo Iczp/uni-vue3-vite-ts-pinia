@@ -61,7 +61,7 @@
         <Cell
           icon="i-ic:round-account-circle"
 
-          :label="auth.user?.given_name"
+          :label="auth.user?.preferred_username"
           :arrow="true"
           :help="auth.user?.email"
           @click="navToAccount"

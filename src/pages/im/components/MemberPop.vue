@@ -4,7 +4,7 @@
       <CellGroup>
         <Cell class="before-none" :arrow="false" v-ripple="'rgba(0, 0, 0, 0.3)'">
           <template #label>
-            <div class="py-12 flex flex-row gap-12">
+            <div class="py-12 flex flex-row gap-12 text-12">
               <Avatar :size="56" :isCreator="isCreator" :item="owner" />
               <div class="max-w-240 flex flex-col gap-4 justify-center lh-relaxed">
                 <div class="flex items-center text-ellipsis text-16 font-bold h-28">
@@ -12,26 +12,23 @@
                   <span v-else>{{ owner?.name || '-' }}</span>
                   <Gender v-if="owner?.gender" :gender="owner?.gender" class="ml-4"></Gender>
                 </div>
-                <div v-if="owner?.code" class="text-ellipsis text-14 text-dark-50 h-24">
+                <div v-if="owner?.code" class="text-ellipsis text-12 text-dark-50">
                   <span class="text-gray">账号:</span>
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
                   <span class="ml-8" v-else>{{ owner?.code || '-' }}</span>
                 </div>
-                <div
-                  v-if="owner?.objectTypeDescription"
-                  class="text-ellipsis text-14 text-dark-50 h-24"
-                >
+                <div v-if="owner?.objectTypeDescription" class="text-ellipsis text-12 text-dark-50">
                   <span class="text-gray">类型:</span>
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
                   <span class="ml-8" v-else>{{ owner?.objectTypeDescription || '-' }}</span>
                 </div>
 
-                <div v-if="setting?.memberName" class="text-ellipsis text-14 text-dark-50 h-24">
+                <div v-if="setting?.memberName" class="text-ellipsis text-12 text-dark-50">
                   <span class="text-gray">群昵称:</span>
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
                   <span class="ml-8" v-else>{{ setting?.memberName || '-' }}</span>
                 </div>
-                <div v-if="owner?.area" class="text-ellipsis text-14 text-dark-100 h-24">
+                <div v-if="owner?.area" class="text-ellipsis text-12 text-dark-100">
                   <span class="text-gray">地区:</span>
                   <span v-if="isSkeleton" class="skeleton inline-flex h-16 w-64"></span>
                   <span v-else class="ml-8">{{ owner?.area || '-' }}</span>

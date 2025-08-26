@@ -11,11 +11,15 @@
         </div>
       </div>
       <div class="flex flex-row justify-between gap-8 h-24 items-center text-12">
-        <div class="text-ellipsis max-w-220">
+        <div class="text-ellipsis text-gray-400 max-w-220">
+          <!-- 免打扰时的 未读数 -->
+          <span v-if="isImmersed && badge > 0">[{{ badge }}]</span>
+
           <!-- @我 -->
           <span v-if="remindCount > 0" class="remind">
             {{ Number(remindCount) > 99 ? '99+' : remindCount }}@我
           </span>
+
           <!-- 我关注的 flowing -->
           <span v-if="followingCount > 0" class="following" :title="followingCount.toString()">
             <!-- <HeartFilled /> -->
@@ -25,11 +29,13 @@
           <!-- 发送人信息 -->
           <span v-if="isShowSender" class="sender">{{ displaySenderName }}</span>
 
-          <!--消息预览-->
+          <!--消息类型-->
           <span v-if="preview.contentType" class="message-type" :message-type="item?.messageType">
             {{ preview.contentType }}
           </span>
-          <span class="text-gray-400">{{ preview.contentText }}</span>
+
+          <!-- 消息内容 -->
+          <span>{{ preview.contentText }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
           <div v-if="isToping" class="text-gray-400 i-ic:baseline-star"></div>

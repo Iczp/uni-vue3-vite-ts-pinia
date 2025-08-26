@@ -17,9 +17,15 @@
       ></AppNavBar>
     </template>
     <CellGroup>
-      <Cell label="名称" :value="account" :arrow="true"></Cell>
+      <Cell label="账号" :value="account" :arrow="true"></Cell>
+      <Cell label="名称" :value="name" :arrow="true"></Cell>
       <Cell label="邮箱" :value="email" :arrow="true"></Cell>
       <Cell label="手机" :value="phone_number" :arrow="true"></Cell>
+    </CellGroup>
+
+    <CellGroup  label="角色">
+      <Cell v-for="role in roles" :label="role"  :arrow="true"></Cell>
+
     </CellGroup>
 
     <CellGroup label="安全">
@@ -94,7 +100,11 @@ const props = defineProps({
 
 const title = ref('登录');
 const user = computed(() => authStore.user);
-const account = computed(() =>
+
+const roles = computed(() => authStore.user?.role || []);
+const account = computed(() => `${authStore.user?.preferred_username || ''}`.trim());
+
+const name = computed(() =>
   `${authStore.user?.family_name || ''} ${authStore.user?.given_name || ''}`.trim(),
 );
 const email = computed(() => authStore.user?.email);
