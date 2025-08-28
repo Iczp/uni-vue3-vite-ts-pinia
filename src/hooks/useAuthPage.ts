@@ -25,7 +25,7 @@ export function useAuthPage() {
           query: { to: fullPath },
           redirect: true,
         });
-      }, 5000);
+      }, 0);
     }
   };
 

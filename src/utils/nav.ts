@@ -8,7 +8,7 @@ export const toQueryString = (obj: Object) => {
   for (const p in obj)
     if (obj.hasOwnProperty(p)) {
       let value = obj[p];
-      console.log('value', value, isEmpty(value));
+      // console.log('toQueryString', p, value, isEmpty(value));
       if (typeof value == 'object') {
         value = JSON.stringify(value);
       }
@@ -38,7 +38,9 @@ export const navTo = (params: {
     [key: string]: any;
   };
 }) => {
-  const { url, query, options } = params;
+  console.log('navTo', params);
+  const url = toUrl(params.url, params.query);
+  console.log('navTo url', url);
 
   // if (isHtml5Plus) {
   //   return navToWebview(
@@ -51,10 +53,10 @@ export const navTo = (params: {
   // }
   const goto = params.redirect ? uni.redirectTo : uni.navigateTo;
   goto({
-    url: toUrl(url, query),
-    animationType: options?.animationType || 'pop-in',
+    url,
+    animationType: params?.options?.animationType || 'pop-in',
     fail(err) {
-      console.error(err);
+      console.error('goto', err);
     },
   });
 };

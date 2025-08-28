@@ -243,7 +243,7 @@ const fetchLatest = async (caller?: string) => {
       // return;
     } else {
       console.warn('没有新消息');
-      uni.showToast({ title: '没有新消息', icon: 'none' });
+      // uni.showToast({ title: '没有新消息', icon: 'none' });
     }
   } catch (err) {
     console.error('Error fetchLatest:', err);
@@ -366,6 +366,7 @@ onMounted(() => {
   // 页面加载时可以执行一些初始化操作
   uni.$on('received@signalr', e => {
     console.log('received@signalr', e);
+    uni.showToast({ title: '新消息', icon: 'none' });
     fetchLatest();
   });
 

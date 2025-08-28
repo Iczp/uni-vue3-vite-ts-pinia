@@ -26,23 +26,24 @@ export const navigateToInterceptor = {
       args.url = newUrl;
     }
 
-    if (isHtml5Plus) {
-      console.log('Plus环境使用Webview打开', args.url);
-      uni.showToast({
-        title: `路由拦截器 sbu:${sub} ${args.url}`,
-        icon: 'none',
-        duration: 2000,
-      });
-      await navToWebview(
-        toUrl(args.url, args.query || {}),
-        {},
-        {
-          animationType: 'pop-in',
-        },
-      );
-      // 阻止默认行为，不继续执行后续的路由跳转逻辑
-      return false;
+    if (!isHtml5Plus) {
+      return args; // 继续执行后续的路由跳转逻辑
     }
+    console.log('Plus环境使用Webview打开', args.url);
+    uni.showToast({
+      title: `路由拦截器 sbu:${sub} ${args.url}`,
+      icon: 'none',
+      duration: 2000,
+    });
+    await navToWebview(
+      toUrl(args.url, args.query || {}),
+      {},
+      {
+        animationType: 'pop-in',
+      },
+    );
+    // 阻止默认行为，不继续执行后续的路由跳转逻辑
+    return false;
   },
 };
 
