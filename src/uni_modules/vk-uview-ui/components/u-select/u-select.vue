@@ -36,7 +36,7 @@
 					</view>
 				</view>
 				<view class="u-select__body">
-					<picker-view @change="columnChange" class="u-select__body__picker-view" :value="defaultSelector" @pickstart="pickstart" @pickend="pickend">
+					<picker-view v-if="columnData && columnData.length > 0" @change="columnChange" class="u-select__body__picker-view" :value="defaultSelector" @pickstart="pickstart" @pickend="pickend">
 						<picker-view-column v-if="showColumnCom" v-for="(item, index) in columnData" :key="index">
 							<view class="u-select__body__picker-view__item" v-for="(item1, index1) in item" :key="index1">
 								<view class="u-line-1">{{ item1[labelName] }}</view>
@@ -73,7 +73,7 @@
 	 */
 
 export default {
-  emits: ["update:modelValue", "input", "confirm"],
+  emits: ["update:modelValue", "input", "confirm", "cancel"],
 	props: {
     // 通过双向绑定控制组件的弹出与收起
     value: {
