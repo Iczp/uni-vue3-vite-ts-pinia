@@ -13,7 +13,7 @@
       <div class="flex flex-row justify-between gap-8 h-24 items-center text-12">
         <div class="text-ellipsis text-gray-400 max-w-220">
           <!-- 免打扰时的 未读数 -->
-          <span v-if="isImmersed && badge > 0">[{{ badge }}]</span>
+          <span v-if="isImmersed && badge > 0">[{{ badge }}条]</span>
 
           <!-- @我 -->
           <span v-if="remindCount > 0" class="remind">

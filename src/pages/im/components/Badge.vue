@@ -59,6 +59,7 @@ const visible = computed(() => {
   height: var(--dot-size);
   background-color: #ff4500;
   box-shadow: inset 0 0 0 1px #fbf6f5ce;
+  transition: all 0.3s ease-in-out;
 }
 .badge {
   display: flex;
