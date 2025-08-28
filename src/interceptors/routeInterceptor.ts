@@ -19,7 +19,7 @@ export const navigateToInterceptor = {
 
     const lastPage = getLastPage();
     const sub = lastPage?.['sub'];
-    console.log('路由拦截器 lastPage', sub, lastPage);
+    console.log('路由拦截器 lastPage sub', sub, lastPage);
 
     if (!uri?.query?.sub && sub) {
       const newUrl = toUrl(uri.path, {

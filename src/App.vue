@@ -35,8 +35,8 @@ onLaunch(async () => {
   authStore.setUserId(userId || null);
 
   if (userId) {
-    uni.showToast({ icon: 'none', title: `userId:${userId}` });
-    await wait(5000);
+    uni.showToast({ icon: 'none', title: `userId[${authStore.isLogin}]:${userId}` });
+    // await wait(5000);
   }
 
   console.log('document.URL', document.URL, uri);
@@ -54,6 +54,8 @@ onLaunch(async () => {
     // uni.navigateTo({
     //   url: '/pages/index/index'
     // });
+
+    //loginByErp();
     getAuth()
       .then(res => {
         var erpHeader = res.result?.header;
@@ -63,7 +65,7 @@ onLaunch(async () => {
         if (erpUser) {
           uni.showToast({
             icon: 'none',
-            title: `userId:${userId}-${erpUser?.name}${erpUser?.userId}`,
+            title: `userId[${authStore.isLogin}]:${userId}-${erpUser?.name}${erpUser?.userId}`,
           });
         }
         console.log('getAuth' + JSON.stringify(res));

@@ -23,9 +23,12 @@
       <Cell label="手机" :value="phone_number" :arrow="true"></Cell>
     </CellGroup>
 
-    <CellGroup  label="角色">
-      <Cell v-for="role in roles" :label="role"  :arrow="true"></Cell>
+    <CellGroup label="角色">
+      <Cell v-for="role in roles" :label="role" :arrow="true"></Cell>
+    </CellGroup>
 
+    <CellGroup label="缓存">
+      <Cell :label="`缓存(${storageInfo.keys.length})`" :value="storageInfo.currentSize" :arrow="true"></Cell>
     </CellGroup>
 
     <CellGroup label="安全">
@@ -113,6 +116,8 @@ const phone_number = computed(() => authStore.user?.phone_number || '未设置')
 const phone_number_verified = computed(() => authStore.user?.phone_number_verified);
 const authStore = useAuthStore();
 
+const storageInfo = uni.getStorageInfoSync();
+console.log('storageInfo', storageInfo);
 const pagingRef = ref();
 
 const sysInfo = uni.getSystemInfoSync();
