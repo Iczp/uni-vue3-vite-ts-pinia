@@ -1,16 +1,16 @@
 import { useAuthStore } from '@/store/auth';
 import { navTo } from '@/utils/nav';
-import { parseUrl } from '@/utils/shared';
+import { getLastPage, parseUrl } from '@/utils/shared';
 const loginPageUrl = '/pages/account/login';
 export const ignoredPages = [loginPageUrl];
 export function useAuthPage() {
   const authStore = useAuthStore();
 
   const checkLogin = () => {
-    const pages = getCurrentPages();
-    const page = pages[pages.length - 1];
-    console.log('useAuth page', page);
-    const { fullPath, path } = page?.$vm.$page;
+    console.log('useAuth checkLogin', authStore.isLogin);
+    const lastPage = getLastPage();
+    console.log('useAuth page', lastPage);
+    const { fullPath, path } = lastPage?.$vm.$page;
     console.log('useAuth authStore.isLogin', authStore.isLogin, path, fullPath);
 
     console.log('useAuth parseUrl', parseUrl(fullPath));
@@ -25,15 +25,20 @@ export function useAuthPage() {
           query: { to: fullPath },
           redirect: true,
         });
-      }, 0);
+      }, 5000);
     }
   };
 
   const isLogin = () => authStore.isLogin;
 
+  onLoad(e => {
+    console.log('useAuth Page Load', e);
+    checkLogin();
+  });
+
   onShow(e => {
     console.log('useAuth Page Show', e);
-    checkLogin();
+    // checkLogin();
   });
 
   return {

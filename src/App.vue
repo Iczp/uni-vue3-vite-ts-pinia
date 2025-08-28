@@ -5,11 +5,14 @@ import { isHtml5Plus } from './utils/platform';
 import { appReady } from './commons/bridge/ready';
 import { getAuth } from './commons/bridge';
 import { parseUrl } from './utils/shared';
+import { useAuthStore } from './store/auth';
 const events = 'connecting,connected,reconnected,reconnecting,close,received'
   .split(',')
   .map(x => `${x}@signalr`);
 
-onLaunch(() => {
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+onLaunch(async () => {
   console.log('App Launch');
 
   if (isHtml5Plus) {
@@ -27,9 +30,15 @@ onLaunch(() => {
 
   const userId = uri.query?.sub;
 
+  const authStore = useAuthStore();
+
+  authStore.setUserId(userId || null);
+
   if (userId) {
     uni.showToast({ icon: 'none', title: `userId:${userId}` });
   }
+
+  await wait(5000);
 
   console.log('document.URL', document.URL, uri);
   appReady(() => {
@@ -53,7 +62,10 @@ onLaunch(() => {
         // uni.showToast({ icon: 'none', title: `${res.result}` });
         const erpUser = res.result?.user;
         if (erpUser) {
-          uni.showToast({ icon: 'none', title: `userId:${userId}-${erpUser?.name}${erpUser?.userId}` });
+          uni.showToast({
+            icon: 'none',
+            title: `userId:${userId}-${erpUser?.name}${erpUser?.userId}`,
+          });
         }
         console.log('getAuth' + JSON.stringify(res));
       })

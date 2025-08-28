@@ -83,7 +83,7 @@ export const getChatObjectByCurrentUser = (data?: Chat.GetListInput) =>
   });
 
 export const getBadgeByCurrentUser = (data?: { isImmersed?: boolean }) =>
-  chatRequest<Chat.ChatObjectDto[]>({
+  chatRequest<Chat.BadgeDto[]>({
     url: '/api/chat/session-unit/badge-by-current-user',
     method: 'GET',
     data,

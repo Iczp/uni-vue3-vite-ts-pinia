@@ -1,5 +1,5 @@
 import { jsonParse } from '@/utils/object';
-export const authStorageKey = 'auth-v1.0';
+export const authStorageKey = 'auth-token-v1.0';
 export const authUserStorageKey = 'auth-user-v1.0';
 const authHost = import.meta.env.VITE_AUTH_TOKEN_URL;
 const request = async <T = any>(args: {
@@ -99,15 +99,22 @@ export const isExpired = (token: AuthApi.TokenDto | null | undefined) => {
   return expired;
 };
 
-export const getLocalToken = () => {
-  const storeValue = uni.getStorageSync(authStorageKey);
-  // console.log('getLocalToken', authStorageKey, storeValue);
+export const getTokenStorageKey = (userId?: string | null) => {
+  return authStorageKey + (userId ? `-${userId}` : '');
+};
+
+export const getLocalToken = (userId: string | null) => {
+  const storeValue = uni.getStorageSync(getTokenStorageKey(userId));
   let token = jsonParse(storeValue);
-  // if (isExpired(token)) {
-  //   // uni.removeStorageSync(authStorageKey);
-  //   return null;
-  // }
   return token;
+};
+
+export const setLocalToken = (token: AuthApi.TokenDto, userId?: string | null) => {
+  uni.setStorageSync(getTokenStorageKey(userId), token);
+};
+
+export const removeLocalToken = (userId?: string) => {
+  uni.removeStorageSync(getTokenStorageKey(userId));
 };
 
 export const getUserInfo = (authorization: string) => {
@@ -122,16 +129,19 @@ export const getUserInfo = (authorization: string) => {
   });
 };
 
-export const getLocalUser = () => {
-  const storeValue = uni.getStorageSync(authUserStorageKey);
+const getUserStorageKey = (userId?: string | null) => {
+  return authUserStorageKey + (userId ? `-${userId}` : '');
+};
+export const getLocalUser = (userId?: string) => {
+  const storeValue = uni.getStorageSync(getUserStorageKey(userId));
   let user = jsonParse(storeValue);
   return user;
 };
 
 export const setLocalUser = (user: AuthApi.UserInfo) => {
-  uni.setStorageSync(authUserStorageKey, JSON.stringify(user));
+  uni.setStorageSync(getUserStorageKey(user?.sub), JSON.stringify(user));
 };
 
-export const removeLocalUser = () => {
-  uni.removeStorageSync(authUserStorageKey);
+export const removeLocalUser = (userId?: string | null) => {
+  uni.removeStorageSync(getUserStorageKey(userId));
 };

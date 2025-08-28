@@ -8,18 +8,20 @@ import {
   getLocalUser,
   setLocalUser,
   removeLocalUser,
+  setLocalToken,
 } from '@/api/authApi';
 
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => {
-    const token = getLocalToken();
     return {
-      token,
-      user: getLocalUser(),
+      userId: null,
+      token: null,
+      user: null,
     } as {
       token?: Auth.Token | null;
-      user: AuthApi.UserInfo | null;
+      userId: string | null;
+      user?: AuthApi.UserInfo | null;
     };
   },
   getters: {
@@ -37,15 +39,23 @@ export const useAuthStore = defineStore({
     },
   },
   actions: {
+    setUserId(userId: string | null) {
+      this.userId = userId;
+      if (!userId) {
+        return;
+      }
+      this.user = getLocalUser(userId) as AuthApi.UserInfo | null;
+    },
     async login(data: { [key: string]: any }) {
       const token = await fetchToken(data);
       this.setToken(token);
-      return token;
+      const user = await this.getUserInfo({ force: true });
+      return user;
     },
     setToken(token: Auth.Token) {
       this.token = token;
       this.token.creation_time = new Date();
-      uni.setStorageSync(authStorageKey, JSON.stringify(token));
+      setLocalToken(token, this.userId);
     },
     async fetchToken(erpHeader: any) {
       // const erpHeader = {};
@@ -60,6 +70,7 @@ export const useAuthStore = defineStore({
       }
       const user = await getUserInfo(this.authorization);
       this.user = user;
+      this.userId = user.sub || null;
       setLocalUser(user);
       return user;
     },
@@ -81,9 +92,9 @@ export const useAuthStore = defineStore({
     },
     logout() {
       this.token = null;
-      uni.removeStorageSync(authStorageKey);
+      removeLocalUser(this.userId);
       this.user = null;
-      removeLocalUser();
+      removeLocalUser(this.userId);
     },
   },
 });

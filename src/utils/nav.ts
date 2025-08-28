@@ -14,9 +14,7 @@ export const toQueryString = (obj: Object) => {
       if (typeof value == 'object') {
         value = JSON.stringify(value);
       }
-      str.push(
-        `${encodeURIComponent(p)}=${!isEmpty(value) ? encodeURIComponent(value as string) : ''}`,
-      );
+      str.push(`${p}=${!isEmpty(value) ? encodeURIComponent(value as string) : ''}`);
     }
   return str.join('&');
 };

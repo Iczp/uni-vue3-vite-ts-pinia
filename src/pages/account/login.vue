@@ -49,12 +49,9 @@
 <script lang="ts" setup>
 import Divider from '@/pages/im/components/Divider.vue';
 import { useAuthStore } from '@/store/auth';
-import { userHeader } from '@/api/userHeader';
-import { useAuthPage } from '@/hooks/useAuthPage';
-import { getUserInfo } from '@/api/authApi';
-useAuthPage();
+
 const props = defineProps({
-  id: {
+  to: {
     type: String,
   },
   title: {
@@ -64,6 +61,9 @@ const props = defineProps({
 });
 
 const title = ref('登录');
+
+const to = decodeURIComponent(decodeURIComponent(props.to || ''));
+console.warn('to', to);
 
 const authStore = useAuthStore();
 
@@ -92,18 +92,9 @@ const login = () => {
       password: form.password,
       grant_type: 'password',
     })
-    .then(token => {
-      authStore
-        .getUserInfo()
-        .then(user => {
-          console.log('getUserInfo', user);
-          uni.redirectTo({ url: `/pages/im/index?sub=${user.sub}` });
-          uni.showToast({ title: '登录成功', icon: 'success' });
-        })
-        .catch(err => {
-          console.error('getUserInfo error', err);
-          uni.showToast({ icon: 'none', title: `获取用户信息失败:${err}` });
-        });
+    .then(user => {
+      uni.redirectTo({ url: `/pages/im/index?sub=${user.sub}` });
+      uni.showToast({ title: '登录成功', icon: 'success' });
     })
     .catch(err => {
       console.error(err);
@@ -134,6 +125,7 @@ const errCodes = {
 };
 const errDescriptions = {
   'Invalid username or password!': '账号或密码错误！',
+  'The specified client credentials are invalid.': '无效凭据！',
   'User is not active!': '用户未激活！',
   'User is locked!': '用户被锁定！',
   'User is disabled!': '用户已禁用！',
