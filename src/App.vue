@@ -36,9 +36,8 @@ onLaunch(async () => {
 
   if (userId) {
     uni.showToast({ icon: 'none', title: `userId:${userId}` });
+    await wait(5000);
   }
-
-  await wait(5000);
 
   console.log('document.URL', document.URL, uri);
   appReady(() => {

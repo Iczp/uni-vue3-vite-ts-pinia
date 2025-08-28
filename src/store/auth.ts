@@ -45,6 +45,9 @@ export const useAuthStore = defineStore({
         return;
       }
       this.user = getLocalUser(userId) as AuthApi.UserInfo | null;
+      this.token = getLocalToken(userId) as Auth.Token | null;
+      console.log('setUserId token', userId, this.token);
+      console.log('setUserId user', userId, this.user);
     },
     async login(data: { [key: string]: any }) {
       const token = await fetchToken(data);

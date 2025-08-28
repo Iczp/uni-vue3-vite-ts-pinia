@@ -105,6 +105,7 @@ export default defineConfig({
     // },
   },
   build: {
+    sourcemap: true, // 确保生成Source Map文件
     // // 打包配置
     // outDir: "dist", // 输出目录
     // assetsDir: "assets", // 静态资源目录

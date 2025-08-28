@@ -104,8 +104,17 @@ export const getTokenStorageKey = (userId?: string | null) => {
 };
 
 export const getLocalToken = (userId: string | null) => {
-  const storeValue = uni.getStorageSync(getTokenStorageKey(userId));
-  let token = jsonParse(storeValue);
+  const tokenKey = getTokenStorageKey(userId);
+  console.log('getLocalToken key', tokenKey);
+  const token = uni.getStorageSync(tokenKey);
+  // let token = jsonParse(storeValue) as AuthApi.TokenDto | null;
+  console.log('getLocalToken', userId, token);
+  if (isExpired(token)) {
+    console.warn('getLocalToken expired', userId, token);
+    // removeLocalToken(userId);
+
+    return null;
+  }
   return token;
 };
 
@@ -113,7 +122,7 @@ export const setLocalToken = (token: AuthApi.TokenDto, userId?: string | null) =
   uni.setStorageSync(getTokenStorageKey(userId), token);
 };
 
-export const removeLocalToken = (userId?: string) => {
+export const removeLocalToken = (userId?: string | null) => {
   uni.removeStorageSync(getTokenStorageKey(userId));
 };
 
