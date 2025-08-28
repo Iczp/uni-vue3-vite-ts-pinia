@@ -23,7 +23,7 @@
           <!-- 我关注的 flowing -->
           <span v-if="followingCount > 0" class="following" :title="followingCount.toString()">
             <!-- <HeartFilled /> -->
-            {{ followingCount }}
+            {{ followingCount }}关注
           </span>
 
           <!-- 发送人信息 -->
@@ -41,7 +41,7 @@
           <div v-if="isToping" class="text-gray-400 i-ic:baseline-star"></div>
           <div v-if="isImmersed" class="text-gray-400 i-ic:baseline-notifications-off"></div>
           <!-- <div v-if="item?.badge" class="badge">{{ item?.badge || 0 }}</div> -->
-          <Badge :count="badge" :dot="!isImmersed && badge > 0" :max="99" />
+          <Badge :count="badge" :dot="isImmersed && badge > 0" />
         </div>
       </div>
     </div>
@@ -151,9 +151,9 @@ const preview = computed(() => formatMessageContent(props.item.lastMessage));
 .remind {
   display: inline-flex;
   margin-right: 4px;
-  padding: 0 4px;
+  padding: 2px 4px;
   border-radius: 4px;
-  background: #ff4d4f;
+  background: #eea40e;
   box-shadow: 0 0 0 1px #fff;
   color: white;
   /* font-size: 12px; */
@@ -164,7 +164,7 @@ const preview = computed(() => formatMessageContent(props.item.lastMessage));
   margin-right: 4px;
   padding: 2px 4px;
   border-radius: 4px;
-  background: #ff4d4f;
+  background: #f64dff;
   color: white;
 }
 .sender {

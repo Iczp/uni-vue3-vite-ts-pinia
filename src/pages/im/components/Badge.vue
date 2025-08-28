@@ -1,6 +1,6 @@
 <template>
-  <div v-if="visible" class="badge">
-    <span v-if="visible">
+  <div v-if="visible" :class="{ badge: !dot, dot: dot }">
+    <span v-if="visible && !dot">
       <slot>
         {{ formatCount || '' }}
       </slot>
@@ -51,6 +51,15 @@ const visible = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.dot {
+  --dot-size: 20rpx;
+  padding: 0;
+  border-radius: 50%;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  background-color: #ff4500;
+  box-shadow: inset 0 0 0 1px #fbf6f5ce;
+}
 .badge {
   display: flex;
   justify-content: center;

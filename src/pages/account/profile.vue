@@ -28,7 +28,11 @@
     </CellGroup>
 
     <CellGroup label="缓存">
-      <Cell :label="`缓存(${storageInfo.keys.length})`" :value="storageInfo.currentSize" :arrow="true"></Cell>
+      <Cell
+        :label="`缓存(${storageInfo.keys.length})`"
+        :value="prettyBytes(storageInfo.currentSize)"
+        :arrow="true"
+      ></Cell>
     </CellGroup>
 
     <CellGroup label="安全">
@@ -89,6 +93,7 @@ import Badge from '@/pages/im/components/Badge.vue';
 import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
 import { useAuthPage } from '@/hooks/useAuthPage';
+import prettyBytes from 'pretty-bytes';
 useAuthPage();
 
 const props = defineProps({

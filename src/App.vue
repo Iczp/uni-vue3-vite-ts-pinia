@@ -6,6 +6,7 @@ import { appReady } from './commons/bridge/ready';
 import { getAuth } from './commons/bridge';
 import { parseUrl } from './utils/shared';
 import { useAuthStore } from './store/auth';
+
 const events = 'connecting,connected,reconnected,reconnecting,close,received'
   .split(',')
   .map(x => `${x}@signalr`);
