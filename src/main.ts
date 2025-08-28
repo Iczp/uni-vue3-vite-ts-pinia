@@ -12,8 +12,11 @@ import uView from './uni_modules/vk-uview-ui';
 
 // 1. 导入你的指令
 import ripple from './directives/ripple';
+import { routeInterceptor } from './interceptors/routeInterceptor';
 
 // import { i18n } from './i18n';
+
+routeInterceptor.install();
 
 export function createApp() {
   const app = createSSRApp(App).use(store);

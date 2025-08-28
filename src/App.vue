@@ -4,6 +4,7 @@ import { useBridge } from './hooks/bridge';
 import { isHtml5Plus } from './utils/platform';
 import { appReady } from './commons/bridge/ready';
 import { getAuth } from './commons/bridge';
+import { parseUrl } from './utils/shared';
 const events = 'connecting,connected,reconnected,reconnecting,close,received'
   .split(',')
   .map(x => `${x}@signalr`);
@@ -22,8 +23,21 @@ onLaunch(() => {
     useBridge();
   }
 
+  var uri = parseUrl(document.URL);
+
+  const userId = uri.query?.sub;
+
+  if (userId) {
+    uni.showToast({ icon: 'none', title: `userId:${userId}` });
+  }
+
+  console.log('document.URL', document.URL, uri);
   appReady(() => {
     console.log('appReady url:', document.URL);
+
+    // var uri = parseUrl(document.URL);
+    // uni.showToast({ icon: 'none', title: `${JSON.stringify(uri)}`,duration: 5000 });
+    // return;
 
     // uni.showToast({ icon: 'none', title: 'appReady6' });
     // const pages = getCurrentPages();
@@ -39,7 +53,7 @@ onLaunch(() => {
         // uni.showToast({ icon: 'none', title: `${res.result}` });
         const erpUser = res.result?.user;
         if (erpUser) {
-          uni.showToast({ icon: 'none', title: `${erpUser?.name}${erpUser?.userId}` });
+          uni.showToast({ icon: 'none', title: `userId:${userId}-${erpUser?.name}${erpUser?.userId}` });
         }
         console.log('getAuth' + JSON.stringify(res));
       })

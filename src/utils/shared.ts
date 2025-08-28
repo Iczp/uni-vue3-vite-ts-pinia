@@ -12,12 +12,25 @@ export function isFastClick(num = 1000) {
 export function parseUrl(fullPath: string) {
   const [path, queryStr] = fullPath.split('?');
   const name = path.slice(path.lastIndexOf('/') + 1);
-  const query = {};
+  const query: { [key: string]: any } = {};
   queryStr
     ?.split('&')
+    .filter(i => i.trim().length > 0)
     .map(i => i.split('='))
     .forEach(i => (query[i[0]] = i[1]));
+
+  let host: any = null;
+  let port: any = null;
+  try {
+    var url = new URL(fullPath);
+    host = url.hostname;
+    port = url.port;
+    //
+    console.log('URL', url, fullPath);
+  } catch (error) {}
   return {
+    host,
+    port,
     name,
     path,
     query,

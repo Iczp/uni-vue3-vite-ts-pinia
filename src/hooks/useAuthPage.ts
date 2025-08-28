@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/store/auth';
+import { navTo } from '@/utils/nav';
 import { parseUrl } from '@/utils/shared';
 const loginPageUrl = '/pages/account/login';
 export const ignoredPages = [loginPageUrl];
@@ -9,17 +10,22 @@ export function useAuthPage() {
     const pages = getCurrentPages();
     const page = pages[pages.length - 1];
     console.log('useAuth page', page);
-    const { fullPath } = page?.$vm.$page;
-    console.log('useAuth authStore.isLogin', authStore.isLogin, fullPath);
+    const { fullPath, path } = page?.$vm.$page;
+    console.log('useAuth authStore.isLogin', authStore.isLogin, path, fullPath);
 
     console.log('useAuth parseUrl', parseUrl(fullPath));
 
     console.log('useAuth ignoredPages', fullPath, ignoredPages.includes(fullPath));
+    // return;
 
-    if (!authStore.isLogin && !ignoredPages.includes(fullPath)) {
-      uni.redirectTo({
-        url: loginPageUrl,
-      });
+    if (!authStore.isLogin && !ignoredPages.includes(path)) {
+      setTimeout(() => {
+        navTo({
+          url: loginPageUrl,
+          query: { to: fullPath },
+          redirect: true,
+        });
+      }, 0);
     }
   };
 

@@ -51,6 +51,7 @@ import Divider from '@/pages/im/components/Divider.vue';
 import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
 import { useAuthPage } from '@/hooks/useAuthPage';
+import { getUserInfo } from '@/api/authApi';
 useAuthPage();
 const props = defineProps({
   id: {
@@ -78,16 +79,31 @@ const form = reactive({
 const onRefresh = () => {
   console.log('刷新');
 };
+const isPending = ref(false);
 const login = () => {
+  if (isPending.value) {
+    return;
+  }
+  isPending.value = true;
+  uni.showLoading({ title: '正在登录...', mask: true });
   authStore
     .login({
       username: form.account,
       password: form.password,
       grant_type: 'password',
     })
-    .then(res => {
-      uni.redirectTo({ url: '/pages/im/index' });
-      uni.showToast({ title: '登录成功', icon: 'success' });
+    .then(token => {
+      authStore
+        .getUserInfo()
+        .then(user => {
+          console.log('getUserInfo', user);
+          uni.redirectTo({ url: `/pages/im/index?sub=${user.sub}` });
+          uni.showToast({ title: '登录成功', icon: 'success' });
+        })
+        .catch(err => {
+          console.error('getUserInfo error', err);
+          uni.showToast({ icon: 'none', title: `获取用户信息失败:${err}` });
+        });
     })
     .catch(err => {
       console.error(err);
@@ -97,6 +113,10 @@ const login = () => {
         }`,
         icon: 'none',
       });
+    })
+    .finally(() => {
+      isPending.value = false;
+      // uni.hideLoading();
     });
 };
 const errCodes = {

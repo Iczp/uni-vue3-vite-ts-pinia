@@ -6,7 +6,7 @@
       <swiper-item v-for="(tab, index) in tabs" :key="index">
         <view class="swiper-item">
           <!-- 动态加载的组件 -->
-          <component v-if="tab.isLazy" :is="tab.component" />
+          <component v-if="tab.isLazy" :is="tab.component" :sub="sub" />
           <view v-else class="loading-placeholder">正在加载...</view>
         </view>
       </swiper-item>
@@ -65,9 +65,13 @@ const props = defineProps({
     type: [String, Number, null],
     default: null,
   },
+  sub: {
+    type: String,
+    default: '',
+  },
   erpUserId: {
     type: String,
-    default: 'dd3803b8-4b20-4ed6-b58c-49a3e499380c',
+    default: '',
   },
   tabIndex: {
     type: [String, Number, undefined],

@@ -35,6 +35,7 @@ export const toUrl = (uri: string, obj: any) => {
 export const navTo = (params: {
   url: string;
   query?: { [key: string]: any };
+  redirect?: boolean;
   options?: {
     animationType?: AnimationType;
     [key: string]: any;
@@ -51,7 +52,8 @@ export const navTo = (params: {
       },
     );
   }
-  uni.navigateTo({
+  const goto = params.redirect ? uni.redirectTo : uni.navigateTo;
+  goto({
     url: toUrl(url, query),
     animationType: options?.animationType || 'pop-in',
     fail(err) {
