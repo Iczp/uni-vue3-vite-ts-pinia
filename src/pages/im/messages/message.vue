@@ -87,7 +87,7 @@ import { getSessionUnitList } from '@/api/chatApi';
 
 import { useChatStore } from '@/store/chatStore';
 import { updateSortedList } from '@/utils/list';
-import { navToChat } from '@/utils/nav';
+import { navTo, navToChat, toUrl } from '@/utils/nav';
 import { jsonParse } from '@/utils/object';
 
 import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
@@ -324,7 +324,6 @@ const loadingMoreClick = () => {
 };
 const onSessionUnitClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onSessionUnitClick', item, index);
-  dataList.value[index].badge = '123';
   navToChat({
     id: item.id,
     title: item?.destination?.displayName || item?.destination?.name,

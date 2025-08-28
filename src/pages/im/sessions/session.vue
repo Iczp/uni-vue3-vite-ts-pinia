@@ -96,18 +96,17 @@
 </template>
 
 <script lang="ts" setup>
-// import MessageViewer from './components/MessageViewer.vue';
 import MessageItem from '@/pages/im/components/MessageItem.vue';
 import MemberPop from '@/pages/im/components/MemberPop.vue';
-import NavBtn from '@/pages/im/components/nav-btn.vue';
 import Divider from '@/pages/im/components/Divider.vue';
 import { getMessageList } from '@/api/chatApi';
 import ChatInput from '@/pages/im/components/ChatInput.vue';
-import { getSessionUnitItemDetail } from '@/api/chatApi';
 import { ObjectTypes } from '@/utils/enums';
-import { navToSetting } from '@/utils/nav';
+import { navToChatSetting } from '@/utils/nav';
 import { jsonParse } from '@/utils/object';
 import { useSessionUnitDetail } from '@/hooks/useSessionUnitDetail';
+import { useAuthPage } from '@/hooks/useAuthPage';
+useAuthPage();
 const props = defineProps({
   // sessionUnitId
   id: {
@@ -150,7 +149,7 @@ const memberCount = computed(() => Number(sessionUnit.value?.sessionUnitCount ||
 
 const onMoreClick = () => {
   console.log('onMoreClick');
-  navToSetting({
+  navToChatSetting({
     id: props.id,
     objectType: sessionUnit.value?.destination?.objectType,
     // title: '聊天设置',

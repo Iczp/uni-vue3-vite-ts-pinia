@@ -1,6 +1,4 @@
 import type { AnimationType } from '@/@types/uni';
-import { navToWebview } from '@/commons/bridge';
-import { isH5, isHtml5Plus } from './platform';
 
 export const isEmpty = (v: any) => !v && v != 0;
 
@@ -42,15 +40,15 @@ export const navTo = (params: {
 }) => {
   const { url, query, options } = params;
 
-  if (isHtml5Plus) {
-    return navToWebview(
-      toUrl(url, query),
-      {},
-      {
-        animationType: options?.animationType || 'pop-in',
-      },
-    );
-  }
+  // if (isHtml5Plus) {
+  //   return navToWebview(
+  //     toUrl(url, query),
+  //     {},
+  //     {
+  //       animationType: options?.animationType || 'pop-in',
+  //     },
+  //   );
+  // }
   const goto = params.redirect ? uni.redirectTo : uni.navigateTo;
   goto({
     url: toUrl(url, query),
@@ -61,42 +59,24 @@ export const navTo = (params: {
   });
 };
 
-export const redirectTo = (uri: string, obj: any) =>
-  uni.redirectTo({
-    url: toUrl(uri, obj),
-    fail(err) {
-      console.error(err);
-    },
-  });
+// export const redirectTo = (uri: string, obj: any) =>
+//   uni.redirectTo({
+//     url: toUrl(uri, obj),
+//     fail(err) {
+//       console.error(err);
+//     },
+//   });
 
-export const jsonParse = (json: string) => {
-  try {
-    return JSON.parse(json);
-  } catch (err) {
-    return null;
-  }
-};
+// export const jsonParse = (json: string) => {
+//   try {
+//     return JSON.parse(json);
+//   } catch (err) {
+//     return null;
+//   }
+// };
 
-export const navToChat = (args: { id: string; title?: string | null; [key: string]: any }) => {
-  var url = toUrl('/pages/im/sessions/session', args);
-  return navToWebview(
-    url,
-    { title: args?.title || '' },
-    {
-      // animationType: "pop-in",
-    },
-  );
-};
+export const navToChat = (args: { id: string; title?: string | null; [key: string]: any }) =>
+  navTo({ url: `/pages/im/sessions/session`, query: { ...args } });
 
-export const navToSetting = (args: { [key: string]: any }) => {
-  var url = toUrl('/pages/im/sessions/setting', args);
-
-  console.log('isHtml5Plus', isHtml5Plus);
-  return navToWebview(
-    url,
-    { title: args?.title || '聊天设置' },
-    {
-      // animationType: "pop-in",
-    },
-  );
-};
+export const navToChatSetting = (args: { [key: string]: any }) =>
+  navTo({ url: `/pages/im/sessions/setting`, query: { ...args } });

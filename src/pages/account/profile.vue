@@ -32,6 +32,7 @@
         :label="`缓存(${storageInfo.keys.length})`"
         :value="prettyBytes(storageInfo.currentSize)"
         :arrow="true"
+        @click="clearStorage"
       ></Cell>
     </CellGroup>
 
@@ -94,6 +95,7 @@ import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
 import { useAuthPage } from '@/hooks/useAuthPage';
 import prettyBytes from 'pretty-bytes';
+import { useStorageInfo } from '@/hooks/useStorageInfo';
 useAuthPage();
 
 const props = defineProps({
@@ -121,11 +123,11 @@ const phone_number = computed(() => authStore.user?.phone_number || '未设置')
 const phone_number_verified = computed(() => authStore.user?.phone_number_verified);
 const authStore = useAuthStore();
 
-const storageInfo = uni.getStorageInfoSync();
-console.log('storageInfo', storageInfo);
 const pagingRef = ref();
 
 const sysInfo = uni.getSystemInfoSync();
+
+const { storageInfo, clearStorage } = useStorageInfo();
 
 console.log('系统信息', sysInfo);
 
