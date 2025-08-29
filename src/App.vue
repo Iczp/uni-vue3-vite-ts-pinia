@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
-import { bridgeReady, useBridge } from './commons/bridge/ready';
+import { loginByApp, useBridge } from './commons/bridge/ready';
 import { parseUrl } from './utils/shared';
 import { useAuthStore } from './store/auth';
 
@@ -10,6 +10,8 @@ onLaunch(async () => {
   console.log('App Launch');
   var uri = parseUrl(document.URL);
   console.log('document.URL', document.URL, uri);
+
+  // 快捷登录逻辑: 获取用户ID，并设置到store中
   const userId = uri.query?.sub;
   const authStore = useAuthStore();
   authStore.setCurrentUserId(userId || null);
@@ -21,9 +23,9 @@ onLaunch(async () => {
   // 初始化桥接
   useBridge();
 
-  bridgeReady(() => {
-    console.log('appReady url:', document.URL);
-  });
+  // 尝试通过App登录
+  // loginByApp();
+
 });
 onShow(e => {
   console.log('App Show', e);

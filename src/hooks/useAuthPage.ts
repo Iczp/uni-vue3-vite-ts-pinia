@@ -19,14 +19,14 @@ export function useAuthPage() {
     // return;
 
     if (!authStore.isLogin && !ignoredPages.includes(path)) {
-      setTimeout(() => {
-        navTo({
-          url: loginPageUrl,
-          query: { to: fullPath },
-          redirect: true,
-          // skip: true, //跳过拦截器
-        });
-      }, 0);
+      // setTimeout(() => {
+      //   navTo({
+      //     url: loginPageUrl,
+      //     query: { to: fullPath },
+      //     redirect: true,
+      //     // skip: true, //跳过拦截器
+      //   });
+      // }, 0);
     }
   };
 

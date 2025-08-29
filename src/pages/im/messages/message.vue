@@ -93,16 +93,17 @@ import SessionUnit from '@/pages/im/components/SessionUnit.vue';
 import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 
-
 const authStore = useAuthStore();
 const chatStore = useChatStore();
 const isPopVisible = ref(false);
+
 const setMaxTicks = (id: number | null | undefined, force: boolean = false) => {
   if (force || Number(id) > (maxTicks.value || 0)) {
     maxTicks.value = id;
     console.log('setMaxTicks', id);
   }
 };
+
 const setMinTicks = (id: number | null | undefined, force: boolean = false) => {
   if (force || Number(id) < (minTicks.value || Infinity)) {
     minTicks.value = id;
