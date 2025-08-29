@@ -4,8 +4,22 @@
 import { jsonParse } from '@/utils/object';
 import { getAuth, getSystemInfo } from '.';
 import { useAuthStore } from '@/store/auth';
-import { useUser } from '@/store/user';
 import { isHtml5Plus } from '@/utils/platform';
+
+let isInitialized = false;
+export const useBridge = () => {
+  console.log('useBridge');
+  if (!isHtml5Plus) {
+    console.warn('非Plus环境，跳过桥接初始化');
+    return;
+  }
+  console.log('app initialized', isInitialized);
+
+  if (!isInitialized) {
+    appInit();
+    isInitialized = true;
+  }
+};
 
 export const setCss = (property: string, value: string) => {
   document.documentElement.style.setProperty(property, value);
@@ -67,11 +81,9 @@ const runGetAuthInfo = (caller?: string) => {
     .then(res => {
       console.log('getAuth', JSON.stringify(res));
       const { header, user } = res.result;
-      const userStore = useUser();
-      userStore.setUserInfo(user);
       const authStore = useAuthStore();
       if (!authStore.token || authStore.isExpired) {
-        authStore.fetchToken(header);
+        authStore.loginErp(header);
         return;
       }
     })
@@ -81,6 +93,10 @@ const runGetAuthInfo = (caller?: string) => {
 };
 export const appInit = () => {
   console.log('------------app-init isHtml5Plus-------------', isHtml5Plus);
+
+  // 订阅SignalR事件
+  subscriptionSignalrEvents();
+
   const storeValue = uni.getStorageSync(storageKey);
   console.log('app-init storeValue', storeValue);
   sysInfo = jsonParse(storeValue);
@@ -88,7 +104,7 @@ export const appInit = () => {
 
   //login ...
 
-  appReady(caller => {
+  bridgeReady(caller => {
     runGetSystemInfo(caller);
     runGetAuthInfo(caller);
   });
@@ -100,8 +116,8 @@ export const appInit = () => {
   }
 };
 
-export const appReady = (callback: (caller: string) => void | Promise<any>) => {
-  console.log('-------------- appReady --------------');
+export const bridgeReady = (callback: (caller: string) => void | Promise<any>) => {
+  console.log('-------------- bridgeReady --------------');
   document.addEventListener('UniAppJSBridgeReady', () => callback('UniAppJSBridgeReady'));
   // 定义一个轮询函数来检查PlusReady状态
   const checkPlusReady = () => {
@@ -121,4 +137,20 @@ export const appReady = (callback: (caller: string) => void | Promise<any>) => {
   };
   // 在 UniAppJSBridgeReady 事件触发时也清除轮询间隔，以防重复执行
   document.addEventListener('UniAppJSBridgeReady', clearPollInterval, { once: true });
+};
+
+export const subscriptionSignalrEvents = () => {
+  if (!isHtml5Plus) {
+    return;
+  }
+  const events = 'connecting,connected,reconnected,reconnecting,close,received'
+    .split(',')
+    .map(x => `${x}@signalr`);
+
+  events.forEach(event => {
+    console.log(`uni.$on: ${event}`);
+    uni.$on(event, (...args) => {
+      console.log(`#--H5--# Event: ${event}`, ...args);
+    });
+  });
 };

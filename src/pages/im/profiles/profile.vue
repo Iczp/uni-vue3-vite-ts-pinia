@@ -90,7 +90,6 @@ import Cell from '@/pages/im/components/Cell.vue';
 import Badge from '@/pages/im/components/Badge.vue';
 import Avatar from '@/pages/im/components/Avatar.vue';
 import Gender from '@/pages/im/components/Gender.vue';
-import { useUser } from '@/store/user';
 import { useAuthStore } from '@/store/auth';
 import { useChatStore } from '@/store/chatStore';
 import { userHeader } from '@/api/userHeader';
@@ -127,8 +126,6 @@ const title = ref('用户信息');
 
 const chatStore = useChatStore();
 
-const userStore = useUser();
-
 const authStore = useAuthStore();
 
 const env = ref(import.meta.env);
@@ -140,7 +137,7 @@ const onRefresh = () => {
 };
 const login = () => {
   authStore
-    .fetchToken(userHeader)
+    .loginErp(userHeader)
     .then(res => {
       uni.showToast({
         title: '登录成功',

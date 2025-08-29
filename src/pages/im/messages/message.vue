@@ -81,13 +81,11 @@
 <script lang="ts" setup>
 import { onLoad, onUnload } from '@dcloudio/uni-app';
 import { usePaging } from '@/hooks/usePaging';
-import { useUser } from '@/store/user';
 import { useAuthStore } from '@/store/auth';
 import { getSessionUnitList } from '@/api/chatApi';
 
 import { useChatStore } from '@/store/chatStore';
-import { updateSortedList } from '@/utils/list';
-import { navTo, navToChat, toUrl } from '@/utils/nav';
+import { navToChat } from '@/utils/nav';
 import { jsonParse } from '@/utils/object';
 
 import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
@@ -95,7 +93,7 @@ import SessionUnit from '@/pages/im/components/SessionUnit.vue';
 import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 
-const userStore = useUser();
+
 const authStore = useAuthStore();
 const chatStore = useChatStore();
 const isPopVisible = ref(false);

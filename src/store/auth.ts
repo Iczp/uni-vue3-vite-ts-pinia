@@ -55,16 +55,15 @@ export const useAuthStore = defineStore({
       const user = await this.getUserInfo({ force: true });
       return user;
     },
+    async loginErp(erpHeader: any) {
+      const token = await fetchToken(erpHeader);
+      this.setToken(token);
+      return this.getUserInfo({ force: true });
+    },
     setToken(token: Auth.Token) {
       this.token = token;
       this.token.creation_time = new Date();
       setLocalToken(token, this.userId);
-    },
-    async fetchToken(erpHeader: any) {
-      // const erpHeader = {};
-      const token = await fetchToken(erpHeader);
-      this.setToken(token);
-      return token;
     },
     async getUserInfo(args?: { force?: boolean }) {
       // const erpHeader = {};

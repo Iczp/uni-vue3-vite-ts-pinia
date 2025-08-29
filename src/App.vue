@@ -1,80 +1,28 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
-import { useBridge } from './hooks/bridge';
-import { isHtml5Plus } from './utils/platform';
-import { appReady } from './commons/bridge/ready';
-import { getAuth } from './commons/bridge';
+import { bridgeReady, useBridge } from './commons/bridge/ready';
 import { parseUrl } from './utils/shared';
 import { useAuthStore } from './store/auth';
-
-const events = 'connecting,connected,reconnected,reconnecting,close,received'
-  .split(',')
-  .map(x => `${x}@signalr`);
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 onLaunch(async () => {
   console.log('App Launch');
-
-  if (isHtml5Plus) {
-    events.forEach(event => {
-      console.log(`uni.$on: ${event}`);
-      uni.$on(event, (...args) => {
-        console.log(`#--H5--# Event: ${event}`, ...args);
-      });
-    });
-    // 初始化桥接
-    useBridge();
-  }
-
   var uri = parseUrl(document.URL);
-
+  console.log('document.URL', document.URL, uri);
   const userId = uri.query?.sub;
-
   const authStore = useAuthStore();
-
   authStore.setCurrentUserId(userId || null);
-
   if (userId) {
     uni.showToast({ icon: 'none', title: `userId[${authStore.isLogin}]:${userId}` });
     // await wait(5000);
   }
 
-  console.log('document.URL', document.URL, uri);
-  appReady(() => {
+  // 初始化桥接
+  useBridge();
+
+  bridgeReady(() => {
     console.log('appReady url:', document.URL);
-
-    // var uri = parseUrl(document.URL);
-    // uni.showToast({ icon: 'none', title: `${JSON.stringify(uri)}`,duration: 5000 });
-    // return;
-
-    // uni.showToast({ icon: 'none', title: 'appReady6' });
-    // const pages = getCurrentPages();
-    // uni.showToast({ icon: 'none', title: `${pages.length}${document.URL}` });
-    // return;
-    // uni.navigateTo({
-    //   url: '/pages/index/index'
-    // });
-
-    //loginByErp();
-    getAuth()
-      .then(res => {
-        var erpHeader = res.result?.header;
-        const token = res.result?.token;
-        // uni.showToast({ icon: 'none', title: `${res.result}` });
-        const erpUser = res.result?.user;
-        if (erpUser) {
-          uni.showToast({
-            icon: 'none',
-            title: `userId[${authStore.isLogin}]:${userId}-${erpUser?.name}${erpUser?.userId}`,
-          });
-        }
-        console.log('getAuth' + JSON.stringify(res));
-      })
-      .catch(err => {
-        console.error('getAuth error', err);
-        uni.showToast({ icon: 'none', title: `err:${err}` });
-      });
   });
 });
 onShow(e => {

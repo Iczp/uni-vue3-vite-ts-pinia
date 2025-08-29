@@ -30,11 +30,9 @@
 
 <script lang="ts" setup>
 import PullRefresh from '@/pages/im/components/PullRefresh.vue';
-import { useUser } from '@/store/user';
 import { useAuthStore } from '@/store/auth';
 import { userHeader } from '@/api/userHeader';
 
-const userStore = useUser();
 const authStore = useAuthStore();
 
 const env = ref(import.meta.env);
