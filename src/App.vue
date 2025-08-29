@@ -15,10 +15,11 @@ onLaunch(async () => {
   const userId = uri.query?.sub;
   const authStore = useAuthStore();
   authStore.setCurrentUserId(userId || null);
-  if (userId) {
-    uni.showToast({ icon: 'none', title: `userId[${authStore.isLogin}]:${userId}` });
-    // await wait(5000);
-  }
+  
+  // if (userId) {
+  //   uni.showToast({ icon: 'none', title: `userId[${authStore.isLogin}]:${userId}` });
+  //   // await wait(5000);
+  // }
 
   // 初始化桥接
   useBridge();

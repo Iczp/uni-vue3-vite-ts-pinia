@@ -86,7 +86,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBridge } from '@/hooks/bridge';
 import { useTitle } from '@/hooks/useTitle';
 import { navTo } from '@/utils/nav';
 import { forward } from '@/utils/router';
@@ -102,7 +101,6 @@ import {
 import { selector } from '@/utils/selector';
 const { title, changeTitle } = useTitle();
 
-useBridge();
 function goTest() {
   forward('test', {
     a: 1,

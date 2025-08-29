@@ -18,7 +18,12 @@ export const navigateToInterceptor = {
 
     if (args.skip) {
       console.log('路由拦截器 skip Interceptor', args);
-      return false; // 继续执行后续的路由跳转逻辑
+      uni.showToast({
+        title: `args.skip ${args.skip} ${args.url}`,
+        icon: 'none',
+        duration: 5000,
+      });
+      return args; // 继续执行后续的路由跳转逻辑
     }
 
     const uri = parseUrl(args.url);

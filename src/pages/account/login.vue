@@ -2,7 +2,8 @@
   <z-paging
     class="bg-white"
     ref="pagingRef"
-    :refresher-only="true"
+    :refresher-only="false"
+    :refresher-enabled="false"
     @scroll="onScroll"
     @refresh="onRefresh"
     :auto="false"
@@ -17,38 +18,63 @@
       ></AppNavBar>
     </template>
 
-    <div class="bg-white mt-36">
-      <div class="flex px-24 text-24">登录</div>
-      <u-form :model="form" ref="form1" class="p-24">
-        <u-form-item label="" prop="name">
-          <div class="i-ic:round-account-circle text-16 text-gray-400 mr-8"></div>
-          <u-input v-model="form.account" placeholder="账号" />
-        </u-form-item>
-        <u-form-item label="" prop="name">
-          <div class="i-ic:round-lock text-16 text-gray-400 mr-8"></div>
-          <u-input placeholder="密码" type="password" v-model="form.password" />
-        </u-form-item>
-      </u-form>
-      <div class="flex flex-row justify-center py-12">
-        <u-button type="primary" @click="login">登录</u-button>
+    <div v-if="isHtml5Plus" class="flex flex-col items-center text-gray-400 gap-12">
+      <div class="text-24 text-gray-200">ERP 登录</div>
+      <div class="flex flex-col items-center gap-12 h-320 pt-96">
+        <div><u-avatar :size="144" :src="erpUser.avatar"></u-avatar></div>
+        <div class="font-bold text-16">{{ erpUser.name }}({{ erpUser.positionName }})</div>
+      </div>
+
+      <div class="flex flex-row gap-12 px-24 w-full box-border">
+        <u-button
+          class="flex flex-1"
+          type="primary"
+          :disabled="isErpLoginPending"
+          @click="loginByErp"
+        >
+          {{ isErpLoginPending ? '登录中...' : '登录' }}
+        </u-button>
       </div>
     </div>
 
-    <Divider text="其他登录方式"></Divider>
+    <div v-else class="flex flex-col">
+      <div class="bg-white mt-36">
+        <div class="flex px-24 text-24">登录</div>
+        <u-form :model="form" ref="form1" class="p-24">
+          <u-form-item label="" prop="name">
+            <div class="i-ic:round-account-circle text-16 text-gray-400 mr-8"></div>
+            <u-input v-model="form.account" placeholder="账号" />
+          </u-form-item>
+          <u-form-item label="" prop="name">
+            <div class="i-ic:round-lock text-16 text-gray-400 mr-8"></div>
+            <u-input placeholder="密码" type="password" v-model="form.password" />
+          </u-form-item>
+        </u-form>
+        <div class="flex flex-row justify-center py-12">
+          <u-button type="primary" @click="login">登录</u-button>
+        </div>
+      </div>
 
-    <div class="flex flex-row justify-center py-12 text-24 text-gray gap-24">
-      <div class="i-streamline-logos:wechat-logo-solid"></div>
-      <div class="i-streamline-logos:qq-logo-solid"></div>
-      <div class="i-streamline-logos:github-logo-2-solid"></div>
-      <div class="i-streamline-logos:google-logo-solid"></div>
-      <div class="i-streamline-logos:tiktok-logo-solid"></div>
+      <Divider text="其他登录方式"></Divider>
+
+      <div class="flex flex-row justify-center py-12 text-24 text-gray gap-24">
+        <div class="i-streamline-logos:wechat-logo-solid"></div>
+        <div class="i-streamline-logos:qq-logo-solid"></div>
+        <div class="i-streamline-logos:github-logo-2-solid"></div>
+        <div class="i-streamline-logos:google-logo-solid"></div>
+        <div class="i-streamline-logos:tiktok-logo-solid"></div>
+      </div>
     </div>
   </z-paging>
 </template>
 
 <script lang="ts" setup>
+import { getAuth } from '@/commons/bridge';
+import { jsBridgeReady } from '@/commons/bridge/ready';
 import Divider from '@/pages/im/components/Divider.vue';
 import { useAuthStore } from '@/store/auth';
+import { isHtml5Plus } from '@/utils/platform';
+import { parseUrl } from '@/utils/shared';
 
 const props = defineProps({
   to: {
@@ -63,7 +89,9 @@ const props = defineProps({
 const title = ref('登录');
 
 const to = decodeURIComponent(decodeURIComponent(props.to || ''));
+const toUri = parseUrl(to);
 console.warn('to', to);
+// uni.showToast({ title: `uri:${JSON.stringify(toUri)}`, icon: 'none', duration: 5000 });
 
 const authStore = useAuthStore();
 
@@ -147,6 +175,72 @@ onMounted(() => {
   // 页面加载时可以执行一些初始化操作
   console.log('Message page mounted');
 });
+
+const appAuthInfo = ref({ header: null, user: null });
+
+const erpUser = ref<{
+  name: string;
+  avatar?: string;
+  positionName?: string;
+  [key: string]: any;
+}>({
+  name: '',
+  headImage: '/static/logo.png',
+  positionName: '',
+});
+
+const isErpLoginPending = ref(false);
+const loginByErp = () => {
+  isErpLoginPending.value = true;
+  uni.showLoading({ title: '正在登录...', mask: true });
+  const loginParam = appAuthInfo.value?.header;
+  authStore
+    .loginErp(loginParam)
+    .then(user => {
+      uni.hideLoading();
+      uni.redirectTo({ url: `/pages/im/index?sub=${user.sub}`, skip: true });
+      uni.showToast({ title: '登录成功', icon: 'success' });
+    })
+    .catch(err => {
+      uni.hideLoading();
+      console.error(err);
+      uni.showToast({
+        title: `${errCodes[err.data?.error] || '登录失败'}:${
+          errDescriptions[err.data?.error_description] || err.data?.error_description
+        }`,
+        icon: 'none',
+      });
+    })
+    .finally(() => {
+      isErpLoginPending.value = false;
+    });
+};
+
+jsBridgeReady()
+  .then(() => {
+    getAuth()
+      .then(async res => {
+        console.log('getAuth', JSON.stringify(res));
+        const { header, user } = res.result;
+        erpUser.value = {
+          name: user.name || user.email || '',
+          avatar: user.headImage || user.avatar || '/static/logo.png',
+          positionName: user.positionName || '',
+        };
+        appAuthInfo.value = res.result;
+      })
+      .catch(err => {
+        console.error('getAuth error', err);
+        uni.showToast({ icon: 'none', title: '登录失败' });
+      });
+  })
+  .catch(err => {
+    console.error('jsBridgeReady error', err);
+    // uni.showToast({ icon: 'none', title: `登录失败-${err}` });
+  })
+  .finally(() => {
+    // uni.hideLoading();
+  });
 </script>
 
 <style lang="scss" scoped></style>

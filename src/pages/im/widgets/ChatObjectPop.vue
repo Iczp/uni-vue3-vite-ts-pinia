@@ -60,7 +60,6 @@
       <CellGroup label="账号">
         <Cell
           icon="i-ic:round-account-circle"
-
           :label="auth.user?.preferred_username"
           :arrow="true"
           :help="auth.user?.email"
@@ -110,7 +109,14 @@ const duration = ref(250);
 const store = useChatStore();
 const auth = useAuthStore();
 
-auth.getUserInfo({});
+watch(
+  () => isVisible.value,
+  newVal => {
+    if (newVal) {
+      auth.getUserInfo({});
+    }
+  },
+);
 
 const onChangeChat = (item: any, index: number) => {
   console.log('onChangeChat', item, index);

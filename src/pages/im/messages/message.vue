@@ -9,7 +9,7 @@
       back-to-top-bottom="24rpx"
       @query="queryList"
       @onRefresh="onRefresh"
-      :auto="true"
+      :auto="false"
       :default-page-size="query.maxResultCount!"
     >
       <template #top>
@@ -314,7 +314,7 @@ watch(
     dataList.value = [];
     pagingRef.value?.reload();
   },
-  { immediate: true },
+  { immediate: false },
 );
 
 const loadingMoreClick = () => {

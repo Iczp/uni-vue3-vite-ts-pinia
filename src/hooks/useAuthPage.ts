@@ -7,26 +7,44 @@ export function useAuthPage() {
   const authStore = useAuthStore();
 
   const checkLogin = () => {
-    console.log('useAuth checkLogin', authStore.isLogin);
-    const lastPage = getLastPage();
-    console.log('useAuth page', lastPage);
-    const { fullPath, path } = lastPage?.$vm.$page;
-    console.log('useAuth authStore.isLogin', authStore.isLogin, path, fullPath);
+    try {
+      console.log('useAuth checkLogin 3', authStore.isLogin);
+      const lastPage = getLastPage() || null;
 
-    console.log('useAuth parseUrl', parseUrl(fullPath));
+      if (!lastPage || !lastPage.$vm || !lastPage.$vm?.$page) {
+        console.warn('Failed to retrieve page information');
+        return;
+      }
 
-    console.log('useAuth ignoredPages', fullPath, ignoredPages.includes(fullPath));
-    // return;
+      const { fullPath, path } = lastPage?.$vm?.$page;
 
-    if (!authStore.isLogin && !ignoredPages.includes(path)) {
-      // setTimeout(() => {
-      //   navTo({
-      //     url: loginPageUrl,
-      //     query: { to: fullPath },
-      //     redirect: true,
-      //     // skip: true, //跳过拦截器
-      //   });
-      // }, 0);
+      console.log('useAuth authStore.isLogin', authStore.isLogin, path, fullPath);
+
+      console.log('useAuth parseUrl', parseUrl(fullPath));
+
+      console.log('useAuth ignoredPages', fullPath, ignoredPages.includes(fullPath));
+      // return;
+
+      const isToLogin = !authStore.isLogin && !ignoredPages.includes(path);
+
+      // uni.showToast({
+      //   title: `useAuth lastPage isToLogin ${isToLogin}`,
+      //   icon: 'none',
+      //   duration: 5000,
+      // });
+
+      if (isToLogin) {
+        setTimeout(() => {
+          navTo({
+            url: loginPageUrl,
+            query: { to: fullPath },
+            redirect: true,
+            skip: true, //跳过拦截器
+          });
+        }, 0);
+      }
+    } catch (error) {
+      console.error('useAuth checkLogin error', error);
     }
   };
 
