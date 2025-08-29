@@ -314,7 +314,7 @@ watch(
     dataList.value = [];
     pagingRef.value?.reload();
   },
-  { immediate: false },
+  { immediate: true },
 );
 
 const loadingMoreClick = () => {
@@ -382,6 +382,10 @@ onUnmounted(() => {
 
 onLoad(() => {
   console.log('h5:onLoad');
+  uni.showToast({ title: `欢迎使用${authStore.isLogin}`, icon: 'none' });
+  if (authStore.isLogin) {
+    // onRefresh();
+  }
 });
 onUnload(() => {
   console.log('h5:onUnload');

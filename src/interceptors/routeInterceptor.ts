@@ -18,11 +18,11 @@ export const navigateToInterceptor = {
 
     if (args.skip) {
       console.log('路由拦截器 skip Interceptor', args);
-      uni.showToast({
-        title: `args.skip ${args.skip} ${args.url}`,
-        icon: 'none',
-        duration: 5000,
-      });
+      // uni.showToast({
+      //   title: `路由拦截器 args.skip ${args.skip} ${args.url}`,
+      //   icon: 'none',
+      //   duration: 5000,
+      // });
       return args; // 继续执行后续的路由跳转逻辑
     }
 
@@ -44,11 +44,11 @@ export const navigateToInterceptor = {
       return args; // 继续执行后续的路由跳转逻辑
     }
     console.log('Plus环境使用Webview打开', args.url);
-    uni.showToast({
-      title: `路由拦截器 sbu:${sub} ${args.url}`,
-      icon: 'none',
-      duration: 2000,
-    });
+    // uni.showToast({
+    //   title: `路由拦截器 sbu:${sub} ${args.url}`,
+    //   icon: 'none',
+    //   duration: 2000,
+    // });
     await navToWebview(
       toUrl(args.url, args.query || {}),
       {},

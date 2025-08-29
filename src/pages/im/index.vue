@@ -190,7 +190,7 @@ onLoad(req => {
     console.warn('refresh@chat-index', e);
     reload();
   });
-  // reload();
+  reload();
 });
 
 onUnload(() => {
