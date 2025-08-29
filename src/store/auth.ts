@@ -39,7 +39,7 @@ export const useAuthStore = defineStore({
     },
   },
   actions: {
-    setUserId(userId: string | null) {
+    setCurrentUserId(userId: string | null) {
       this.userId = userId;
       if (!userId) {
         return;

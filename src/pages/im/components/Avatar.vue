@@ -43,6 +43,7 @@
 <script lang="ts" setup>
 import { ObjectTypes } from '@/utils/enums';
 import TagCreator from './TagCreator.vue';
+import { CHAT_BASE_URL } from '@/config/env';
 // import { ObjectTypes } from '@/@types/chatApi.d.ts';
 const props = defineProps({
   size: {
@@ -84,7 +85,7 @@ const imgSrc = computed(() => {
   if (regex.test(src)) {
     return src;
   } else if (src?.startsWith('/')) {
-    return `${import.meta.env.VITE_CHAT_BASE_URL}${src}`;
+    return `${CHAT_BASE_URL}${src}`;
   }
   return `${src}`;
 });

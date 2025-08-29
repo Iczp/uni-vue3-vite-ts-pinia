@@ -13,6 +13,7 @@ export type SelectorPayload = {
   [key: string]: any;
 };
 import AnimationType from "@/@types/uni";
+import { WEB_HOST } from "@/config/env";
 // type AnimationType = "slide-in-right" | "slide-out-right" | "slide-in-left" | "slide-out-left" | "slide-in-top" | "slide-out-top" | "slide-in-bottom" | "slide-out-bottom" | "pop-in" | "pop-out" | "fade-in" | "fade-out" | "zoom-out" | "zoom-in" | "zoom-fade-out" | "zoom-fade-in" | "none";
 export const selector = (payload: SelectorPayload) =>
   new Promise((resolve, reject) => {
@@ -39,7 +40,7 @@ export const selector = (payload: SelectorPayload) =>
     $once(event)
       .then((res) => {
         console.log(`$on:5566-${event}`, res);
-        var url = toUrl("http://10.0.5.20:4000/#/pages/selector/selector", {
+        var url = toUrl(`${WEB_HOST}/#/pages/selector/selector`, {
           id: 5,
           event,
           title: "请选择",

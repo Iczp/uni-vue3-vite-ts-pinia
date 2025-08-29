@@ -33,7 +33,7 @@ onLaunch(async () => {
 
   const authStore = useAuthStore();
 
-  authStore.setUserId(userId || null);
+  authStore.setCurrentUserId(userId || null);
 
   if (userId) {
     uni.showToast({ icon: 'none', title: `userId[${authStore.isLogin}]:${userId}` });

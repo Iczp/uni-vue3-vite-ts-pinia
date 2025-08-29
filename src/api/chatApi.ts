@@ -1,6 +1,7 @@
 import { useAuthStore } from '@/store/auth';
 import { version } from '../../package.json';
 import { toUrl } from '@/utils/nav';
+import { CHAT_BASE_URL } from '@/config/env';
 
 export const formatPostData = (data: any) => {
   // 使用 Object.fromEntries 将键值对数组转换为对象
@@ -26,7 +27,7 @@ const chatRequest = async <T = any>(args: {
   return new Promise(async (resolve, reject) => {
     const url = args.url?.toLocaleLowerCase().startsWith('http')
       ? args.url
-      : import.meta.env.VITE_CHAT_BASE_URL + args.url;
+      : CHAT_BASE_URL + args.url;
     console.log('request url', url);
 
     const auth = useAuthStore();

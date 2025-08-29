@@ -8,12 +8,21 @@ import { getLastPage, parseUrl } from '@/utils/shared';
 export const navigateToInterceptor = {
   // 注意，这里的url是 '/' 开头的，如 '/pages/index/index'，跟 'pages.json' 里面的 path 不同
   // 增加对相对路径的处理，BY 网友 @ideal
-  async invoke(args: { url: string; query?: Record<string, string> }) {
+  async invoke(args: { url: string; query?: Record<string, string>; [key: string]: any }) {
     console.log('路由拦截器 context', args);
-    const uri = parseUrl(args.url);
+
     if (args.url === undefined) {
-      return;
+      console.warn('路由拦截器 url undefined', args);
+      return false;
     }
+
+    if (args.skip) {
+      console.log('路由拦截器 skip Interceptor', args);
+      return false; // 继续执行后续的路由跳转逻辑
+    }
+
+    const uri = parseUrl(args.url);
+
     console.log('路由拦截器 uri', uri);
     const lastPage = getLastPage();
     const sub = lastPage?.['sub'] || parseUrl(document.URL).query?.sub;

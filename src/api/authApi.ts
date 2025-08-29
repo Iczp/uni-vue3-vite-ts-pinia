@@ -1,7 +1,13 @@
+import {
+  AUTH_CLIENT_ID,
+  AUTH_CLIENT_SCOPE,
+  AUTH_CLIENT_SECRET,
+  AUTH_GRANT_TYPE,
+  AUTH_TOKEN_URL,
+} from '@/config/env';
 import { jsonParse } from '@/utils/object';
 export const authStorageKey = 'auth-token-v1.0';
 export const authUserStorageKey = 'auth-user-v1.0';
-const authHost = import.meta.env.VITE_AUTH_TOKEN_URL;
 const request = async <T = any>(args: {
   url?: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -14,7 +20,7 @@ const request = async <T = any>(args: {
   return new Promise((resolve, reject) => {
     const regex = /^(https?:\/\/)/gi;
     const isExternalUrl = regex.test(args.url || '');
-    const url = isExternalUrl ? args.url : authHost + args.url;
+    const url = isExternalUrl ? args.url : AUTH_TOKEN_URL + args.url;
     console.log('request url', isExternalUrl, url);
     const input = {
       method: args.method || 'POST',
@@ -58,10 +64,10 @@ export const fetchToken = (data: { [key: string]: any }) => {
     url: `/connect/token`,
     method: 'POST',
     data: {
-      client_id: import.meta.env.VITE_AUTH_CLIENT_ID,
-      client_secret: import.meta.env.VITE_AUTH_CLIENT_SECRET,
-      grant_type: import.meta.env.VITE_AUTH_GRANT_TYPE,
-      scope: import.meta.env.VITE_AUTH_CLIENT_SCOPE,
+      client_id: AUTH_CLIENT_ID,
+      client_secret: AUTH_CLIENT_SECRET,
+      grant_type: AUTH_GRANT_TYPE,
+      scope: AUTH_CLIENT_SCOPE,
       ...data,
     },
   });
@@ -75,8 +81,8 @@ export const refreshToken = (refreshToken: string) => {
 
     data: {
       grant_type: 'refresh_token', // 刷新令牌授权类型
-      client_id: import.meta.env.VITE_AUTH_CLIENT_ID,
-      client_secret: import.meta.env.VITE_AUTH_CLIENT_SECRET,
+      client_id: AUTH_CLIENT_ID,
+      client_secret: AUTH_CLIENT_SECRET,
       refresh_token: refreshToken, // 传递刷新令牌
     },
   });

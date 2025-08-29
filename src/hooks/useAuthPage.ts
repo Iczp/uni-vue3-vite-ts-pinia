@@ -24,6 +24,7 @@ export function useAuthPage() {
           url: loginPageUrl,
           query: { to: fullPath },
           redirect: true,
+          // skip: true, //跳过拦截器
         });
       }, 0);
     }

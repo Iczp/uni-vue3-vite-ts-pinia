@@ -10,6 +10,7 @@ declare module '*.vue' {
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      VITE_WEB_HOST: string;
       VITE_CHAT_BASE_URL: string;
       VITE_API_BASE_URL: string;
       VITE_APP_TITLE: string;

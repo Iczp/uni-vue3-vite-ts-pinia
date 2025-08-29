@@ -1,3 +1,16 @@
+
+export const APP_TITLE = import.meta.env.VITE_APP_TITLE || '应用';
+export const WEB_HOST = import.meta.env.VITE_WEB_HOST;
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const CHAT_BASE_URL = import.meta.env.VITE_CHAT_BASE_URL;
+// # auth
+export const AUTH_TOKEN_URL = import.meta.env.VITE_AUTH_TOKEN_URL;
+export const AUTH_CLIENT_ID = import.meta.env.VITE_AUTH_CLIENT_ID;
+export const AUTH_CLIENT_SECRET = import.meta.env.VITE_AUTH_CLIENT_SECRET;
+export const AUTH_GRANT_TYPE = import.meta.env.VITE_AUTH_GRANT_TYPE || 'client_credentials';  
+export const AUTH_CLIENT_SCOPE = import.meta.env.VITE_AUTH_CLIENT_SCOPE;
+
+
 const apiEnv: ApiEnv = 'dev';
 
 const envMap = {

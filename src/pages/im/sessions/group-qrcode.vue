@@ -25,8 +25,7 @@ import html2canvas from 'html2canvas';
 import QrCode from '@/pages/im/components/QrCode.vue';
 import Avatar from '@/pages/im/components/Avatar.vue';
 
-import env from '@/config/env';
-import { chat_base_url } from '@/config';
+import { CHAT_BASE_URL } from '@/config/env';
 const pagingRef = ref();
 const props = defineProps({
   id: {
@@ -39,7 +38,7 @@ const divRef = ref<HTMLDivElement | undefined>();
 
 const name = ref('555');
 
-const qrText = ref(`${chat_base_url}/qr/g?id=${props.id}`);
+const qrText = ref(`${CHAT_BASE_URL}/qr/g?id=${props.id}`);
 
 const handleSave = () => {
   console.log(divRef.value);

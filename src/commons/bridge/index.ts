@@ -1,4 +1,5 @@
 import type { InvokeInput, InvokeResult } from '@/@types/bridge';
+import { WEB_HOST } from '@/config/env';
 import { jsonParse } from '@/utils/object';
 import { isHtml5Plus } from '@/utils/platform';
 export const invoke = (input: InvokeInput) =>
@@ -126,7 +127,7 @@ export const navToWebview = (...args: any[]) => {
 
   const regex = /^(https?:\/\/)/;
   if (!regex.test(args[0])) {
-    args[0] = `http://10.0.5.20:4000/#${args[0]}`;
+    args[0] = `${WEB_HOST}/#${args[0]}`;
   }
   return invoke({
     action: 'navToWebview',
