@@ -51,10 +51,11 @@
       </template>
 
       <template #loadingMoreNoMore>
-        <view class="flex flex-center h-48 text-12 text-gray-500 absolute bottom-0 w-full">
+        <!-- absolute bottom-0 w-full -->
+        <view class="flex flex-center h-64 text-12 text-gray-500">
           共有
           <span class="font-bold mx-2">{{ dataList.length }}</span>
-          好友
+          会话
         </view>
       </template>
 
