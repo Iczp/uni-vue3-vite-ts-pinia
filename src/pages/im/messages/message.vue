@@ -385,6 +385,7 @@ onLoad(() => {
   uni.showToast({ title: `欢迎使用${authStore.isLogin}`, icon: 'none' });
   if (authStore.isLogin) {
     // onRefresh();
+    fetchLatest('queryList');
   }
 });
 onUnload(() => {

@@ -27,7 +27,9 @@
           </span>
 
           <!-- 发送人信息 -->
-          <span v-if="isShowSender" class="sender">{{ displaySenderName }}</span>
+          <span v-if="isShowSender" class="sender text-ellipsis max-w-40">
+            {{ displaySenderName }}
+          </span>
 
           <!--消息类型-->
           <span v-if="preview.contentType" class="message-type" :message-type="item?.messageType">

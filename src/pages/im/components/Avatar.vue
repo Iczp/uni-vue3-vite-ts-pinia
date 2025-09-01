@@ -11,19 +11,22 @@
 
       <!-- {{ item }} -->
 
+      <!-- imgSrc:{{ imgSrc }} -->
+
       <div v-if="isSkeleton" class="w-full h-full skeleton flex flex-center rounded-full">
         <i class="text-24 text-gray-200 i-ic:baseline-person"></i>
       </div>
 
       <image
-        v-else-if="imgSrc"
+        v-else-if="imgSrc && !isError"
         :width="size"
         :height="size"
         :art="src"
         :src="imgSrc"
         class="avatar-image fade-in"
-        :class="{ loaded: isImgLoaded }"
+        :class="{ loaded: isImgLoaded, error: isError }"
         @load="onImgLoad"
+        @error="onImgError"
       ></image>
       <block v-else>
         <i v-if="objectType == ObjectTypes.Room" class="i-ic:baseline-group"></i>
@@ -100,6 +103,11 @@ const onImgLoad = e => {
   isImgLoaded.value = true;
   // 图片加载完成后，将不透明度设置为1
   // e.target.classList.add('loaded');
+};
+const isError = ref(false);
+const onImgError = e => {
+  console.error('图片加载失败', e);
+  isError.value = true;
 };
 </script>
 <style lang="scss" scoped>

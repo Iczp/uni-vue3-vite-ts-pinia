@@ -1,101 +1,105 @@
 <template>
-  <z-paging
-    ref="pagingRef"
-    v-model="dataList"
-    @query="queryList"
-    :auto="true"
-    :use-virtual-list="true"
-    :default-page-size="query.maxResultCount!"
-  >
-    <template #top>
-      <AppNavBar
-        :title="title"
-        :isBack="true"
-        :isMore="true"
-        :border="false"
-        @more="onMore"
-      ></AppNavBar>
-      <div class="sticky top-0 z-9 p-12 pt-0 border-after">
-        <u-search
-          placeholder="搜索成员"
-          v-model="keyword"
-          @search="onSearch"
-          @custom="onSearch"
-        ></u-search>
-      </div>
-    </template>
+  <div>
+    <z-paging
+      ref="pagingRef"
+      v-model="dataList"
+      @query="queryList"
+      :auto="true"
+      :use-virtual-list="true"
+      :default-page-size="query.maxResultCount!"
+    >
+      <template #top>
+        <AppNavBar
+          :title="title"
+          :isBack="true"
+          :isMore="true"
+          :border="false"
+          @more="onMore"
+        ></AppNavBar>
+        <div class="sticky top-0 z-9 p-12 pt-0 border-after">
+          <u-search
+            placeholder="搜索成员"
+            v-model="keyword"
+            @search="onSearch"
+            @custom="onSearch"
+          ></u-search>
+        </div>
+      </template>
 
-    <template #loading>
-      <SessionUnitSkeleton :count="skeletonCount" />
-      <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
-    </template>
+      <template #loading>
+        <SessionUnitSkeleton :count="skeletonCount" />
+        <div class="flex flex-center text-gray-400 w-full top-360 fixed text-12">加载中...</div>
+      </template>
 
-    <template #loadingMoreLoading>
-      <SessionUnitSkeleton :count="3" text="加载中..." />
-    </template>
-    <template #loadingMoreDefault>
-      <SessionUnitSkeleton :count="1" @click="loadingMoreClick" text="加载更多..." />
-    </template>
+      <template #loadingMoreLoading>
+        <SessionUnitSkeleton :count="3" text="加载中..." />
+      </template>
+      <template #loadingMoreDefault>
+        <SessionUnitSkeleton :count="1" @click="loadingMoreClick" text="加载更多..." />
+      </template>
 
-    <template #loadingMoreNoMore>
-      <Divider class="my-20" :text="`共有 ${totalCount} 人`" />
-      <!-- <view class="flex flex-center h-48 text-12 text-gray-500">没有了</view> -->
-    </template>
+      <template #loadingMoreNoMore>
+        <Divider class="my-20" :text="`共有 ${totalCount} 人`" />
+        <!-- <view class="flex flex-center h-48 text-12 text-gray-500">没有了</view> -->
+      </template>
 
-    <!--  -->
+      <!--  -->
 
-    <template #cell="{ item, index }">
-      <div class="flex flex-row items-center active">
-        <!-- <div v-if="isSelector" class="ml-12">
+      <template #cell="{ item, index }">
+        <div class="flex flex-row items-center active">
+          <!-- <div v-if="isSelector" class="ml-12">
           <CheckBox v-model="item.checked" />
         </div> -->
-        <ChatObject
-          class="px-12 py-6 flex-1"
-          :size="48"
-          :item="item.owner"
-          :index="index"
-          :isCreator="item.setting.isCreator"
-          :active="!isSelector"
-          @click="showMemberPop(item)"
-          :arrow="true"
+          <ChatObject
+            class="px-12 py-6 flex-1"
+            :size="48"
+            :item="item.owner"
+            :index="index"
+            :isCreator="item.setting.isCreator"
+            :active="!isSelector"
+            @click="showMemberPop(item)"
+            :arrow="true"
+          >
+            <template #title-left>
+              <div class="flex flex-row flex-center gap-8">
+                <div class="text-ellipsis text-15 max-w-160">{{ item.owner.name }}</div>
+                <!-- <TagCreator v-if="item.setting.isCreator">群主</TagCreator> -->
+              </div>
+            </template>
+
+            <template #desc>
+              <div class="flex">
+                <span class="text-ellipsis text-gray text-12">
+                  加入时间:
+                  <Date :value="item.creationTime" empty="-"></Date>
+                </span>
+              </div>
+            </template>
+            <template #footer>
+              <CheckBox @click.stop v-model="item.checked" />
+            </template>
+          </ChatObject>
+        </div>
+      </template>
+
+      <template v-if="isSelector" #bottom>
+        <div
+          class="flex flex-row justify-between justify-center p-12 gap-12 bg-white border-before"
         >
-          <template #title-left>
-            <div class="flex flex-row flex-center gap-8">
-              <div class="text-ellipsis text-15 max-w-160">{{ item.owner.name }}</div>
-              <!-- <TagCreator v-if="item.setting.isCreator">群主</TagCreator> -->
-            </div>
-          </template>
-
-          <template #desc>
-            <div class="flex">
-              <span class="text-ellipsis text-gray text-12">
-                加入时间:
-                <Date :value="item.creationTime" empty="-"></Date>
-              </span>
-            </div>
-          </template>
-          <template #footer>
-            <CheckBox @click.stop v-model="item.checked" />
-          </template>
-        </ChatObject>
-      </div>
-    </template>
-
-    <template v-if="isSelector" #bottom>
-      <div class="flex flex-row justify-between justify-center p-12 gap-12 bg-white border-before">
-        <div class="flex items-center text-gray">
-          当前选择中
-          <span class="font-bold text-dark-50 px-4">{{ selectedCount }}</span>
-          人
+          <div class="flex items-center text-gray">
+            当前选择中
+            <span class="font-bold text-dark-50 px-4">{{ selectedCount }}</span>
+            人
+          </div>
+          <div class="flex flex-row gap-12">
+            <u-button class="flex flex-1">移出成员</u-button>
+            <u-button class="flex flex-1">设置角色</u-button>
+          </div>
         </div>
-        <div class="flex flex-row gap-12">
-          <u-button class="flex flex-1">移出成员</u-button>
-          <u-button class="flex flex-1">设置角色</u-button>
-        </div>
-      </div>
-    </template>
-  </z-paging>
-  <MemberPop ref="profileRef" :id="id"></MemberPop>
+      </template>
+    </z-paging>
+    <MemberPop ref="profileRef" :id="id"></MemberPop>
+  </div>
 </template>
 <script lang="ts" setup>
 import { getMembers } from '@/api/chatApi';
