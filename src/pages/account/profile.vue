@@ -142,7 +142,7 @@ const login = () => {
   if (isLoginPending.value) return;
   isLoginPending.value = true;
   authStore
-    .fetchToken(userHeader)
+    .loginErp(userHeader)
     .then(res => {
       uni.showToast({
         title: '登录成功',
@@ -152,7 +152,7 @@ const login = () => {
     .catch(err => {
       console.error(err);
       uni.showToast({
-        title: `${err.data?.error || '登录失败'}${err.data?.error_description}`,
+        title: `${err.data?.error || '登录失败'}:${err.data?.error_description}`,
         icon: 'none',
       });
     })

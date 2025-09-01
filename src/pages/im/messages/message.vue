@@ -9,7 +9,7 @@
       back-to-top-bottom="24rpx"
       @query="queryList"
       @onRefresh="onRefresh"
-      :auto="false"
+      :auto="true"
       :default-page-size="query.maxResultCount!"
     >
       <template #top>

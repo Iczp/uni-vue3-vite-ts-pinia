@@ -79,8 +79,8 @@ const containerCss = computed(() => {
   };
 });
 const imgSrc = computed(() => {
-  const src = props.src || props.item?.thumbnail || props.item?.portrait;
-  if (!src) return null;
+  const src = (props.src || props.item?.thumbnail || props.item?.portrait || '').trim();
+  if (!src || src.length == 0) return null;
   const regex = /^(https?:\/\/)/;
   if (regex.test(src)) {
     return src;
