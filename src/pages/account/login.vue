@@ -73,6 +73,7 @@ import { getAuth } from '@/commons/bridge';
 import { jsBridgeReady } from '@/commons/bridge/ready';
 import Divider from '@/pages/im/components/Divider.vue';
 import { useAuthStore } from '@/store/auth';
+import { navTo } from '@/utils/nav';
 import { isHtml5Plus } from '@/utils/platform';
 import { parseUrl } from '@/utils/shared';
 
@@ -89,8 +90,9 @@ const props = defineProps({
 const title = ref('登录');
 
 const to = decodeURIComponent(decodeURIComponent(props.to || ''));
-const toUri = parseUrl(to);
 console.warn('to', to);
+const toUri = parseUrl(to);
+console.warn('toUri', toUri);
 // uni.showToast({ title: `uri:${JSON.stringify(toUri)}`, icon: 'none', duration: 5000 });
 
 const authStore = useAuthStore();
@@ -121,8 +123,8 @@ const login = () => {
       grant_type: 'password',
     })
     .then(user => {
-      uni.redirectTo({ url: `/pages/im/index?sub=${user.sub}` });
-      uni.showToast({ title: '登录成功', icon: 'success' });
+      uni.hideLoading();
+      handleLoginSuccess(user);
     })
     .catch(err => {
       console.error(err);
@@ -189,6 +191,21 @@ const erpUser = ref<{
   positionName: '',
 });
 
+const handleLoginSuccess = (user: any) => {
+  console.log('login success', user);
+  navTo({
+    url: toUri?.path || '/pages/im/index',
+    query: {
+      ...toUri.query,
+      sub: user.sub,
+    },
+    //不使用webview打开
+    webview: false,
+    redirect: true,
+  });
+  uni.showToast({ title: '登录成功', icon: 'success' });
+};
+
 const isErpLoginPending = ref(false);
 const loginByErp = () => {
   isErpLoginPending.value = true;
@@ -198,11 +215,7 @@ const loginByErp = () => {
     .loginErp(loginParam)
     .then(user => {
       uni.hideLoading();
-      uni.redirectTo({
-        url: `/pages/im/index?sub=${user.sub}`,
-        webview: false, //不使用webview打开
-      });
-      uni.showToast({ title: '登录成功', icon: 'success' });
+      handleLoginSuccess(user);
     })
     .catch(err => {
       uni.hideLoading();

@@ -112,8 +112,9 @@ const auth = useAuthStore();
 watch(
   () => isVisible.value,
   newVal => {
+    console.log('isVisible', newVal);
     if (newVal) {
-      auth.getUserInfo({});
+      auth.getUserInfo({ force: false });
     }
   },
 );
