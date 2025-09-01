@@ -198,7 +198,10 @@ const loginByErp = () => {
     .loginErp(loginParam)
     .then(user => {
       uni.hideLoading();
-      uni.redirectTo({ url: `/pages/im/index?sub=${user.sub}`, skip: true });
+      uni.redirectTo({
+        url: `/pages/im/index?sub=${user.sub}`,
+        webview: false, //不使用webview打开
+      });
       uni.showToast({ title: '登录成功', icon: 'success' });
     })
     .catch(err => {

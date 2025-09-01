@@ -33,8 +33,8 @@ export const navTo = (params: {
   url: string;
   query?: { [key: string]: any };
   redirect?: boolean;
-  //不使用拦截器
-  skip?: boolean;
+  //使用webview打开
+  webview?: boolean;
   options?: {
     animationType?: AnimationType;
     [key: string]: any;
@@ -56,7 +56,7 @@ export const navTo = (params: {
   const goto = params.redirect ? uni.redirectTo : uni.navigateTo;
   goto({
     url,
-    skip: params?.skip,
+    webview: params?.webview,
     animationType: params?.options?.animationType || 'pop-in',
     fail(err) {
       console.error('goto', err);

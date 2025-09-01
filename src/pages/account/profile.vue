@@ -186,7 +186,7 @@ const onLogout = () => {
     success: function (res) {
       if (res.confirm) {
         authStore.logout();
-        uni.reLaunch({ url: '/pages/index/index' });
+        uni.reLaunch({ url: '/pages/im/index', webview: false });
       } else if (res.cancel) {
         console.log('用户点击取消');
       }

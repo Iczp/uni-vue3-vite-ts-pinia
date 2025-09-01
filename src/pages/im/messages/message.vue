@@ -313,6 +313,7 @@ watch(
     query.value.skipCount = 0;
     dataList.value = [];
     pagingRef.value?.reload();
+    fetchLatest();
   },
   { immediate: true },
 );

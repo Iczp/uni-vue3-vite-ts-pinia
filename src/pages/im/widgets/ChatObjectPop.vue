@@ -20,7 +20,7 @@
           <ChatObject
             class="px-12 py-8 flex-1 after:left-56"
             :class="{ current: item.isCurrent }"
-            :size="36"
+            :size="44"
             :item="item.owner"
             :arrow="false"
             :border="index != store.chatObjects.length - 1"
@@ -30,13 +30,13 @@
                 <span class="text-14">{{ item.owner.displayName }}</span>
               </div>
             </template>
-            <!-- <template #desc>
-              <div class="max-w-100 inline-block text-ellipsis">
+            <template #desc>
+              <div class="max-w-92 inline-block text-ellipsis">
                 <span class="text-10 text-gray font-normal">
-                  {{ objectTypeDescriptions[item.objectType] }}
+                  {{ item.owner.objectTypeDescription }}
                 </span>
               </div>
-            </template> -->
+            </template>
             <template #actions>
               <div class="flex flex-row gap-4 items-center">
                 <Badge :count="item.badge" :class="{ gray: item.isCurrent }" />

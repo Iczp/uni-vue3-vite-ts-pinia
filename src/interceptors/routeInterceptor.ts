@@ -16,7 +16,7 @@ export const navigateToInterceptor = {
       return false;
     }
 
-    if (args.skip) {
+    if (args.webview===false) {
       console.log('路由拦截器 skip Interceptor', args);
       // uni.showToast({
       //   title: `路由拦截器 args.skip ${args.skip} ${args.url}`,
