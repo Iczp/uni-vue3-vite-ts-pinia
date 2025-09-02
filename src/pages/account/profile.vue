@@ -44,7 +44,7 @@
         </template>
       </Cell>
     </CellGroup>
-{{ deviceId }}
+
     <CellGroup label="设备">
       <Cell :label="`ID(${sysInfo?.deviceType})`" :value="deviceId" :arrow="true"></Cell>
       <Cell label="Model" :value="sysInfo?.model" :arrow="true"></Cell>
@@ -128,7 +128,11 @@ const pagingRef = ref();
 
 const sysInfo = uni.getSystemInfoSync();
 
-const deviceId = computed(() => getDeviceId());
+getDeviceId().then(v => {
+  deviceId.value = v;
+});
+
+const deviceId = ref('');
 
 const { storageInfo, clearStorage } = useStorageInfo();
 

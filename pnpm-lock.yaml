@@ -56,6 +56,9 @@ importers:
       '@dcloudio/uni-quickapp-webview':
         specifier: 3.0.0-4070620250821001
         version: 3.0.0-4070620250821001(@vueuse/core@13.5.0(vue@3.5.17(typescript@4.9.5)))(postcss@8.5.6)(rollup@4.45.0)(ts-node@10.9.2(@types/node@20.5.1)(typescript@4.9.5))(vue@3.5.17(typescript@4.9.5))
+      '@fingerprintjs/fingerprintjs':
+        specifier: ^4.6.2
+        version: 4.6.2
       '@vant/popperjs':
         specifier: ^1.3.0
         version: 1.3.0
@@ -89,6 +92,9 @@ importers:
       pretty-bytes:
         specifier: ^7.0.1
         version: 7.0.1
+      tslib:
+        specifier: ^2.8.1
+        version: 2.8.1
       vant:
         specifier: ^4.9.21
         version: 4.9.21(vue@3.5.17(typescript@4.9.5))
@@ -1235,6 +1241,9 @@ packages:
   '@eslint/js@8.36.0':
     resolution: {integrity: sha512-lxJ9R5ygVm8ZWgYdUweoq5ownDlJ4upvoWmO4eLxBYHdMo+vZ/Rx0EN6MbKWDJOSUGrqJy2Gt+Dyv/VKml0fjg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@fingerprintjs/fingerprintjs@4.6.2':
+    resolution: {integrity: sha512-g8mXuqcFKbgH2CZKwPfVtsUJDHyvcgIABQI7Y0tzWEFXpGxJaXuAuzlifT2oTakjDBLTK4Gaa9/5PERDhqUjtw==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -7834,6 +7843,10 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.36.0': {}
+
+  '@fingerprintjs/fingerprintjs@4.6.2':
+    dependencies:
+      tslib: 2.8.1
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:

@@ -115,18 +115,22 @@ npx @dcloudio/uvm@latest
 pnpm add @vant/auto-import-resolver unplugin-vue-components unplugin-auto-import -D
 ```
 
-
-
 ### vk Uview
 
 主页： https://vkuviewdoc.fsq.pub/components/install.html
 
 插件市场 https://ext.dcloud.net.cn/plugin?name=vk-uview-ui
 
-
-
 ## Icon
 
 https://icon-sets.iconify.design/
 
 https://icones.js.org/collection
+
+### 浏览器指纹 deviceId
+
+```bash
+# 依赖 tslib
+pnpm install tslib
+pnpm install @fingerprintjs/fingerprintjs
+```

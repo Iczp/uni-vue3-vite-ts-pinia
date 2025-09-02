@@ -1,9 +1,10 @@
 import { getDeviceId } from '@/utils/deviceId';
 
 export const _requestInterceptor = {
-  invoke(args: { url: string; header: Record<string, string> }) {
+  async invoke(args: { url: string; header: Record<string, string> }) {
     console.log('requestInterceptor', args);
-    args.header['App-Device-Id'] = getDeviceId();
+    args.header['App-Device-Id'] = await getDeviceId();
+    return args;
   },
 };
 
