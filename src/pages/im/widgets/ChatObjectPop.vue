@@ -52,9 +52,14 @@
       </div>
 
       <CellGroup label="快捷">
-        <Cell label="扫一扫" :arrow="true"></Cell>
-        <Cell label="新建群聊" :arrow="true" @click="navToCreateGroup"></Cell>
-        <Cell label="反馈" help="如有Bug,请反馈给我们" :arrow="true"></Cell>
+        <Cell icon="i-mdi:line-scan" label="扫一扫" :arrow="true"></Cell>
+        <Cell icon="i-ic:round-plus" label="添加朋友" :arrow="true"></Cell>
+        <Cell
+          icon="i-ic:baseline-group-add"
+          label="新建群聊"
+          :arrow="true"
+          @click="navToCreateGroup"
+        ></Cell>
       </CellGroup>
 
       <CellGroup label="账号">
@@ -65,6 +70,7 @@
           :help="auth.user?.email"
           @click="navToAccount"
         ></Cell>
+        <Cell icon="i-ic:round-help" label="反馈" :arrow="true"></Cell>
       </CellGroup>
 
       <!-- <div v-for="value in 100" class="flex p-12">

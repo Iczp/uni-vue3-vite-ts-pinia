@@ -11,7 +11,7 @@
           <i v-if="icon" class="text-16" :class="icon"></i>
         </slot>
         <div class="flex flex-col gap-4">
-          <span class="text-ellipsis">{{ label }}</span>
+          <span class="text-ellipsis text-14">{{ label }}</span>
           <span v-if="help" class="text-ellipsis text-12 text-gray">{{ help }}</span>
         </div>
       </div>
