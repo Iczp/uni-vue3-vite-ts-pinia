@@ -213,6 +213,14 @@ const isFetchLatest = ref(false);
 const fetchLatest = async (caller?: string) => {
   try {
     console.log('fetchLatest caller:', caller);
+
+    if (!query.value.ownerId) {
+      console.warn('fetchLatest 没有 ownerId');
+      uni.showToast({ title: '没有 ownerId', icon: 'none' });
+      throw new Error('[fetchLatest]没有 ownerId');
+      return;
+    }
+
     if (isFetchLatest.value) {
       console.warn('fetchLatest 已经在加载中...');
       return;
@@ -264,6 +272,12 @@ const storageMessage = (ownerId: number, items: any[] = []) => {
 // const totalCount = ref(0);
 const fetchHistory = async () => {
   try {
+    if (!query.value.ownerId) {
+      console.warn('fetchHistory 没有 ownerId');
+      uni.showToast({ title: '没有 ownerId', icon: 'none' });
+      throw new Error('[fetchHistory]没有 ownerId');
+      return;
+    }
     if (isPending.value) {
       console.warn('fetchHistory 已经在加载中...');
       return;
@@ -360,6 +374,7 @@ const scrollToBadge = () => {
   const item = dataList.value[index];
   const viewId = item ? `su-${item?.id}` : '';
   console.log('item viewId', viewId, item);
+  // uni.showToast({ title: `滚动到:${index}`, icon: 'none' });
   pagingRef.value?.scrollIntoViewById(viewId, 0, true);
 };
 
@@ -408,9 +423,9 @@ onUnmounted(() => {
 onLoad(() => {
   console.log('h5:onLoad');
   uni.showToast({ title: `欢迎使用${authStore.isLogin}`, icon: 'none' });
-  if (authStore.isLogin) {
+  if (authStore.isLogin && chatStore.current?.id) {
     // onRefresh();
-    fetchLatest('queryList');
+    fetchLatest('onLoad');
   }
 });
 onUnload(() => {
