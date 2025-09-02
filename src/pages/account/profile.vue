@@ -44,9 +44,9 @@
         </template>
       </Cell>
     </CellGroup>
-
+{{ deviceId }}
     <CellGroup label="设备">
-      <Cell :label="`ID(${sysInfo?.deviceType})`" :value="sysInfo?.deviceId" :arrow="true"></Cell>
+      <Cell :label="`ID(${sysInfo?.deviceType})`" :value="deviceId" :arrow="true"></Cell>
       <Cell label="Model" :value="sysInfo?.model" :arrow="true"></Cell>
       <Cell label="OS" :value="`${sysInfo?.osName}(${sysInfo?.osVersion})`" :arrow="true"></Cell>
     </CellGroup>
@@ -96,6 +96,7 @@ import { userHeader } from '@/api/userHeader';
 import { useAuthPage } from '@/hooks/useAuthPage';
 import prettyBytes from 'pretty-bytes';
 import { useStorageInfo } from '@/hooks/useStorageInfo';
+import { getDeviceId } from '@/utils/deviceId';
 useAuthPage();
 
 const props = defineProps({
@@ -126,6 +127,8 @@ const authStore = useAuthStore();
 const pagingRef = ref();
 
 const sysInfo = uni.getSystemInfoSync();
+
+const deviceId = computed(() => getDeviceId());
 
 const { storageInfo, clearStorage } = useStorageInfo();
 

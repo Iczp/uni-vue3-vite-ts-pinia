@@ -5,7 +5,7 @@ export const getDeviceId = () => {
     return deviceId;
   }
   const sysInfo = uni.getSystemInfoSync();
-  deviceId = `${sysInfo.platform}-${sysInfo.deviceId}`;
+  deviceId = `H5-${sysInfo.deviceId}`;
   uni.setStorageSync(deviceIdStorageKey, deviceId);
-  return `H5-${sysInfo.deviceId}`;
+  return deviceId;
 };
