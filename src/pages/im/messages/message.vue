@@ -13,7 +13,7 @@
       :default-page-size="query.maxResultCount!"
     >
       <template #top>
-        <AppNavBar title="" :isBack="true" :border="true">
+        <AppNavBar title="" :isBack="true" :border="true" v-double-tap="scrollToBadge">
           <template #left>
             <CurrentChatObject v-if="authStore.isLogin" />
           </template>
@@ -60,9 +60,13 @@
       </template>
 
       <!--  -->
-
       <template #cell="{ item, index }">
-        <SessionUnit :item="item" :index="index" @click="onSessionUnitClick(item, index)" />
+        <SessionUnit
+          :item="item"
+          :id="`su-${item.id}`"
+          :index="index"
+          @click="onSessionUnitClick(item, index)"
+        />
       </template>
     </z-paging>
 
@@ -340,6 +344,25 @@ const onSearch = () => {
   console.log('搜索关键字:', query.value.keyword);
 };
 const store = useChatStore();
+
+const currentScrollIndex = ref(-1);
+const scrollToBadge = () => {
+  console.log('scrollToBadge');
+  const index = dataList.value.findIndex(
+    (x, i) => i > currentScrollIndex.value && Number(x.publicBadge) + Number(x.privateBadge) > 0,
+  );
+  currentScrollIndex.value = index;
+  if (index < 0) {
+    // uni.showToast({ title: '滚动到项部', icon: 'none' });
+    pagingRef.value?.scrollToTop(true);
+    return;
+  }
+  const item = dataList.value[index];
+  const viewId = item ? `su-${item?.id}` : '';
+  console.log('item viewId', viewId, item);
+  pagingRef.value?.scrollIntoViewById(viewId, 0, true);
+};
+
 const onRefresh = async () => {
   await fetchLatest();
   console.log('刷新');
@@ -392,6 +415,11 @@ onLoad(() => {
 });
 onUnload(() => {
   console.log('h5:onUnload');
+});
+
+defineExpose({
+  scrollToBadge,
+  currentScrollIndex,
 });
 </script>
 

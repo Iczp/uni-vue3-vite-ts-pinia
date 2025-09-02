@@ -14,7 +14,7 @@
       <div class="message-layout flex flex-1 flex-row gap-4">
         <Avatar
           :item="sender?.owner"
-          :size="40"
+          :size="44"
           class="text-20"
           :isCreator="sender?.setting?.isCreator"
           @click="emit('profile', sender)"

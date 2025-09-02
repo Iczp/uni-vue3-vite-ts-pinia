@@ -6,7 +6,7 @@
       <swiper-item v-for="(tab, index) in tabs" :key="index">
         <view class="swiper-item">
           <!-- 动态加载的组件 -->
-          <component v-if="tab.isLazy" :is="tab.component" :sub="sub" />
+          <component v-if="tab.isLazy" :is="tab.component" :sub="sub" ref="tabViewRefs" />
           <view v-else class="loading-placeholder">正在加载...</view>
         </view>
       </swiper-item>
@@ -17,9 +17,12 @@
       <div
         v-for="(tab, index) in tabs"
         :key="index"
+        ref="tabRefs"
         class="tab-item"
         :class="{ active: activeIndex === index }"
         @click="switchTab(index)"
+        @dblclick="onDblclick(tab, index)"
+        v-double-tap="() => dbTap(tab, index)"
       >
         <div class="flex flex-col relative flex-center">
           <i class="tab-icon text-28" :class="tab.icon"></i>
@@ -58,6 +61,7 @@ import { useChatStore } from '@/store/chatStore';
 import NavBtn from '@/pages/im/components/nav-btn.vue';
 import Badge from '@/pages/im/components/Badge.vue';
 import { useAuthPage } from '@/hooks/useAuthPage';
+import doubleTap from '@/directives/doubleTap';
 const store = useChatStore();
 useAuthPage();
 const props = defineProps({
@@ -84,7 +88,8 @@ const props = defineProps({
 });
 
 console.log('store.current', store.current);
-
+const tabRefs = ref([]);
+const tabViewRefs = ref([]);
 const chatObjectId = Number(props.chatObjectId);
 const erpUserId = props.erpUserId;
 const token = props.token;
@@ -109,36 +114,66 @@ const onNavBtnClick = e => {
   }
 };
 
+const onDblclick = (tab, index) => {
+  console.log('onDblclick', tab, index);
+  // if (tab.isDot) {
+  //   openObjectPicker();
+  // }
+};
+
+const dbTap = (tab, index) => {
+  console.log('dbTap', tab, index);
+
+  switch (tab.code) {
+    case 'message':
+      tabViewRefs.value[index]?.scrollToBadge();
+      // console.log('tabRefs.value[index]', tabViewRefs.value[index]);
+      break;
+    case 'contact':
+    default:
+      break;
+  }
+  // if (tab.isDot) {
+  //   openObjectPicker();
+  // }
+};
+
 uni.$on('showPopup@chat-index', showPopup);
 
 const isPopVisible = ref(false);
 // Tab栏配置
 const tabs = ref([
   {
+    code: 'message',
     text: '消息',
     icon: 'i-ic:round-message',
-    selectedIcon: '/static/tabs/home-active.png',
-    path: '/pages/im/message.vue',
     isLazy: true,
     badge: () => store.totalBadges,
     isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/messages/message.vue'))),
   },
   {
+    code: 'contact',
     text: '通讯录',
     icon: 'i-ic:baseline-switch-account',
-    selectedIcon: '/static/tabs/home-active.png',
-    path: '/pages/im/contacts/contacts.vue',
     isLazy: false,
     badge: () => 0,
     isDot: false,
     component: markRaw(defineAsyncComponent(() => import('@/pages/im/contacts/contacts.vue'))),
   },
   {
+    code: 'square',
+    text: '广场',
+    icon: 'i-ic:baseline-switch-account',
+    isLazy: false,
+    badge: () => 0,
+    isDot: false,
+    component: markRaw(defineAsyncComponent(() => import('@/pages/im/squares/square.vue'))),
+  },
+  {
+    code: 'mine',
     text: '我的',
     icon: 'i-ic:round-person',
-    selectedIcon: '/static/tabs/home-active.png',
-    path: '@/pages/im/mine/mine.vue',
     isLazy: false,
     badge: () => 0,
     isDot: true,

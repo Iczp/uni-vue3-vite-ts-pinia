@@ -18,7 +18,12 @@
         </div>
       </slot>
       <slot>
-        <div class="flex flex-1 text-ellipsis flex-center" :style="{ color: titleColor }">
+        <div
+          class="flex flex-1 text-ellipsis flex-center"
+          :style="{ color: titleColor }"
+          v-double-tap="() => $emit('dbTap', $event)"
+          @dblclick="$emit('dbTap', $event)"
+        >
           {{ title }}
         </div>
       </slot>

@@ -113,7 +113,7 @@ const onImgError = e => {
 <style lang="scss" scoped>
 :where(.avatar-container) {
   --side-border-color: #c5ed26;
-  --avatar-size: 88rpx;
+  // --avatar-size: 88rpx;
   display: flex;
   position: relative;
   justify-content: center;

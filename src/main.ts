@@ -12,6 +12,7 @@ import uView from './uni_modules/vk-uview-ui';
 
 // 1. 导入你的指令
 import ripple from './directives/ripple';
+import doubleTap from './directives/doubleTap';
 
 import { routeInterceptor } from './interceptors/routeInterceptor';
 import { requestInterceptor } from './interceptors/requestInterceptor';
@@ -31,6 +32,7 @@ export function createApp() {
 
   // 注册指令，并命名为 'ripple'
   app.directive('ripple', ripple);
+  app.directive('double-tap', doubleTap);
 
   app.config.globalProperties.$createElement = h;
   return {
