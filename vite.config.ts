@@ -44,7 +44,7 @@ export default defineConfig({
         'uni-app',
         'pinia',
         {
-          '@/helper/pinia-auto-refs': ['useStore'],
+          // '@/helper/pinia-auto-refs': ['useStore'],
         },
       ],
       exclude: ['createApp'],
@@ -105,17 +105,19 @@ export default defineConfig({
     // },
   },
   build: {
-    sourcemap: true, // 确保生成Source Map文件
-    // // 打包配置
-    // outDir: "dist", // 输出目录
-    // assetsDir: "assets", // 静态资源目录
-    // sourcemap: false, // 是否生成 source map 文件
-    // rollupOptions: {
-    //   output: {
-    //     entryFileNames: "js/[name].js",
-    //     chunkFileNames: "js/[name].js",
-    //     assetFileNames: "assets/[name].[ext]",
-    //   },
-    // },
+    // sourcemap: true, // 确保生成Source Map文件
+    // 打包配置
+    outDir: 'dist', // 输出目录
+    assetsDir: 'assets', // 静态资源目录
+    sourcemap: false, // 是否生成 source map 文件
+    rollupOptions: {
+      output: {
+        format: 'es', // 明确设置为 ES 模块格式
+        manualChunks: undefined, // 禁用代码分割
+        entryFileNames: 'js/[name].js',
+        chunkFileNames: 'js/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
   },
 });

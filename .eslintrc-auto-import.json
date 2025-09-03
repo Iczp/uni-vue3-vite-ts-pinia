@@ -101,7 +101,6 @@
     "useId": true,
     "useModel": true,
     "useSlots": true,
-    "useStore": true,
     "useTemplateRef": true,
     "watch": true,
     "watchEffect": true,

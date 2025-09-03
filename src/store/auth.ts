@@ -100,3 +100,6 @@ export const useAuthStore = defineStore({
     },
   },
 });
+
+
+export default useAuthStore;
