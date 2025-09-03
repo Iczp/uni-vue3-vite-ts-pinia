@@ -1,4 +1,6 @@
-export const signlarEvents = {
+import { isHtml5Plus } from "./platform";
+
+export const signalrEvents = {
   connecting: 'connecting@signalr',
   connected: 'connected@signalr',
   reconnecting: 'reconnecting@signalr',
@@ -21,6 +23,26 @@ var a = {
 
 export const signalr = {
   received(callback) {
-    uni.$on(signlarEvents.received, callback);
+    uni.$on(signalrEvents.received, callback);
   },
 };
+
+
+
+export const subscriptionSignalrEvents = () => {
+  if (!isHtml5Plus) {
+    return;
+  }
+
+  Object.entries(signalrEvents).forEach(([key, event]) => {
+    console.log(`uni.$on: ${event}`);
+    uni.$on(event, (...args) => {
+      console.log(`#--H5--# Event: ${key}`, ...args);
+      setTimeout(() => {
+        uni.showToast({ title: `收到事件@${key}:${args}`, icon: 'none', duration: 5000 });
+      }, 1000);
+    });
+  });
+};
+
+

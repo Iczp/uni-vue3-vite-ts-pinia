@@ -34,7 +34,7 @@ const request = async <T = any>(args: {
       },
       url,
     };
-    console.log('request input', JSON.stringify(input));
+    // console.log('request input', JSON.stringify(input));
     const task = uni.request({
       ...input,
       success: res => {

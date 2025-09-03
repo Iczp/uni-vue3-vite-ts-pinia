@@ -97,6 +97,7 @@ import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
 import SessionUnit from '@/pages/im/components/SessionUnit.vue';
 import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
+import { useSignalR } from '@/hooks/useSignalR';
 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
@@ -241,7 +242,7 @@ const fetchLatest = async (caller?: string) => {
     console.warn('fetchLatest', JSON.stringify(q));
     const res = await getSessionUnitList(q);
     isFetchLatest.value = false;
-    console.log('fetchLatest', JSON.stringify(res));
+    // console.log('fetchLatest', JSON.stringify(res));
     if (res.items.length > 0) {
       // res.items[0].badge = '8';
       updateDatalist(res.items);
@@ -401,23 +402,19 @@ const onRefresh = async () => {
   }, 100);
   // pagingRef.value?.reload(true);
 };
-onMounted(() => {
-  // 页面加载时可以执行一些初始化操作
-  uni.$on('received@signalr', e => {
-    console.log('received@signalr', e);
-    uni.showToast({ title: '新消息', icon: 'none' });
-    fetchLatest();
-  });
 
-  uni.$on('connected@signalr', e => {
-    console.log('signalR connected', e);
-    fetchLatest();
-    uni.showToast({ title: 'SignalR连接成功', icon: 'none' });
-  });
+const { onReceived, onConnected } = useSignalR();
+
+onReceived(e => {
+  console.log('received@signalr', e);
+  uni.showToast({ title: `新消息${e?.command}`, icon: 'none' });
+  fetchLatest();
 });
-onUnmounted(() => {
-  // 组件销毁时可以执行一些清理操作
-  // uni.$off('new-message@signalR');
+
+onConnected(e => {
+  console.log('signalR connected', e);
+  fetchLatest();
+  uni.showToast({ title: 'SignalR连接成功', icon: 'none' });
 });
 
 onLoad(() => {
@@ -428,6 +425,7 @@ onLoad(() => {
     fetchLatest('onLoad');
   }
 });
+
 onUnload(() => {
   console.log('h5:onUnload');
 });

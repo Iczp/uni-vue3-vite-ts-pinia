@@ -5,7 +5,10 @@
     :class="{ reverse: isSelf, selected: isSelected, selector: isSelector }"
   >
     <slot name="header"></slot>
-    <div class="flex flex-center text-gray-300 text-12 h-24">2022-22-22</div>
+    <div class="flex flex-center text-gray-300 text-12 h-24">
+      <TimeAgo :time="item?.creationTime" />
+    </div>
+
 
     <div class="flex flex-row px-12 gap-12 line-container">
       <div v-if="isSelector" class="flex w-32 box-border justify-center">
@@ -20,7 +23,7 @@
           @click="emit('profile', sender)"
         ></Avatar>
         <div class="message-body flex flex-col flex-1 gap-4">
-          <div v-if="isShowSenderName" class="sender-name-container max-w-120 text-12 px-12">
+          <div v-if="isShowSenderName" class="sender-name-container max-w-240 text-12 px-12">
             <div class="sender-name text-ellipsis">{{ senderName }} {{ item.id }}</div>
           </div>
           <div class="message-content text-14">
@@ -37,7 +40,7 @@
 <script lang="ts" setup>
 import Avatar from './Avatar.vue';
 import MsgText from './MsgText.vue';
-
+import TimeAgo from './TimeAgo.vue';
 // import { useElementVisibility } from '@vueuse/core';
 
 const itemRef = ref<HTMLDivElement | null>(null);

@@ -14,8 +14,6 @@ declare module '@vue/runtime-core' {
     AppPage: typeof import('./components/AppPage.vue')['default']
     AppStatusBar: typeof import('./components/AppStatusBar.vue')['default']
     CheckBox: typeof import('./components/CheckBox.vue')['default']
-    copy: typeof import('./components/LinkTo copy.vue')['default']
-    Icon: typeof import('@iconify/vue')['Icon']
     LinkTo: typeof import('./components/LinkTo.vue')['default']
     PullList: typeof import('./components/pullList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

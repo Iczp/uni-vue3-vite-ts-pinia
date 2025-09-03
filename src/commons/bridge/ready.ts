@@ -113,12 +113,12 @@ export const loginByApp = (caller?: string) =>
         });
     }
   });
-  
+
 export const appInit = () => {
   console.log('------------app-init isHtml5Plus-------------', isHtml5Plus);
 
   // 订阅SignalR事件
-  subscriptionSignalrEvents();
+  // subscriptionSignalrEvents();
 
   const storeValue = uni.getStorageSync(storageKey);
   console.log('app-init storeValue', storeValue);
@@ -215,18 +215,3 @@ export const bridgeReady = (callback: (caller: string) => void | Promise<any>) =
   document.addEventListener('UniAppJSBridgeReady', clearPollInterval, { once: true });
 };
 
-export const subscriptionSignalrEvents = () => {
-  if (!isHtml5Plus) {
-    return;
-  }
-  const events = 'connecting,connected,reconnected,reconnecting,close,received'
-    .split(',')
-    .map(x => `${x}@signalr`);
-
-  events.forEach(event => {
-    console.log(`uni.$on: ${event}`);
-    uni.$on(event, (...args) => {
-      console.log(`#--H5--# Event: ${event}`, ...args);
-    });
-  });
-};

@@ -182,6 +182,7 @@ declare namespace Chat {
     isRemindAll?: boolean;
     isRemindMe?: boolean;
     isRollbacked?: boolean;
+    isShowTime?: boolean;
 
     [key: string]: any;
   }

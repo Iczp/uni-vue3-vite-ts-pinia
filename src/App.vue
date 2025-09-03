@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onHide, onLaunch, onShow, onError } from '@dcloudio/uni-app';
-import { loginByApp, useBridge } from './commons/bridge/ready';
+import { useBridge } from './commons/bridge/ready';
 import { parseUrl } from './utils/shared';
 import { useAuthStore } from './store/auth';
 
@@ -15,7 +15,7 @@ onLaunch(async () => {
   const userId = uri.query?.sub;
   const authStore = useAuthStore();
   authStore.setCurrentUserId(userId || null);
-  
+
   // if (userId) {
   //   uni.showToast({ icon: 'none', title: `userId[${authStore.isLogin}]:${userId}` });
   //   // await wait(5000);

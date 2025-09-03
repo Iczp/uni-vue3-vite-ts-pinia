@@ -2,23 +2,23 @@
 export {};
 
 declare global {
-  interface SignalrScope {
+  interface CommandScope {
     sessionUnitId: string;
     chatObjectId: number;
   }
 
-  interface SignalrPayload {
+  interface MessageCommand {
     messageId?: number;
     cacheKey?: string;
     command?: string;
     hostName?: string;
-    message?: any;
+    message?: Chat.MessageDto;
     [key: string]: any;
   }
 
-  interface SignalrReceived {
-    scopes: SignalrScope[];
-    payload: SignalrPayload;
+  interface CommandPayload<T> {
+    scopes: CommandScope[];
+    payload: T;
     command: string | 'Created' | 'UpdateBadge' | 'Updated' | 'Rollback' | 'IncrementCompleted';
     appUserId: string;
   }
