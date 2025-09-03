@@ -145,10 +145,15 @@ const onEdit = () => {
 const navToAccount = () => {
   navTo({ url: `/pages/account/profile`, query: {} });
 };
+onLoad(() => {
+  // 页面加载时可以执行一些初始化操作
+  console.log('Message page loaded');
+    loadData();
+});
 onMounted(() => {
   // 页面加载时可以执行一些初始化操作
   console.log('Message page mounted');
-  loadData();
+
 });
 </script>
 

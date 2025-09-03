@@ -123,6 +123,10 @@ const onDblclick = (tab, index) => {
 
 const dbTap = (tab, index) => {
   console.log('dbTap', tab, index);
+  if (activeIndex.value != index) {
+    switchTab(index);
+    return;
+  }
 
   switch (tab.code) {
     case 'message':
