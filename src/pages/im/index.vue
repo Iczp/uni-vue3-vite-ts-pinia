@@ -2,7 +2,15 @@
   <view class="page-container">
     <nav-btn @click="onNavBtnClick"></nav-btn>
     <!-- {{ erpUserId }} -->
-    <swiper class="swiper-container" :current="activeIndex" @change="onSwiperChange">
+    <swiper
+      class="swiper-container"
+      :current="activeIndex"
+      :disable-touch="isDisabledTouch"
+      :circular="false"
+      :duration="duration"
+      @change="onSwiperChange"
+      @animationfinish="onAnimationFinish"
+    >
       <swiper-item v-for="(tab, index) in tabs" :key="index">
         <view class="swiper-item">
           <!-- 动态加载的组件 -->
@@ -88,6 +96,8 @@ const props = defineProps({
 });
 
 console.log('store.current', store.current);
+const isDisabledTouch = ref(true);
+const duration = ref(0); //500
 const tabRefs = ref([]);
 const tabViewRefs = ref([]);
 const chatObjectId = Number(props.chatObjectId);
@@ -202,6 +212,10 @@ const onSwiperChange = async e => {
   if (!tab.isLazy) {
     tab.isLazy = true;
   }
+};
+const onAnimationFinish = e => {
+  console.log('onAnimationFinish', e);
+  tabViewRefs.value[e.detail.current]?.onAnimationFinish?.(e);
 };
 const reload = () => {
   store

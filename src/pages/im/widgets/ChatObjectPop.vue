@@ -62,23 +62,22 @@
         ></Cell>
       </CellGroup>
 
-      <CellGroup label="账号">
-        <Cell
-          icon="i-ic:round-account-circle"
-          :label="auth.user?.preferred_username"
-          :arrow="true"
-          :help="auth.user?.email"
-          @click="navToAccount"
-        ></Cell>
-        <Cell icon="i-ic:round-help" label="反馈" :arrow="true"></Cell>
-      </CellGroup>
-
       <!-- <div v-for="value in 100" class="flex p-12">
         {{ value }}
       </div> -->
       <template #bottom>
-        <footer class="flex flex-center w-full border-before h-56">
-          <div class="text-gray text-12">v1.0</div>
+        <CellGroup label="账号">
+          <Cell
+            icon="i-ic:round-account-circle"
+            :label="auth.user?.preferred_username"
+            :arrow="true"
+            :help="auth.user?.email"
+            @click="navToAccount"
+          ></Cell>
+          <!-- <Cell icon="i-ic:round-help" label="反馈" :arrow="true"></Cell> -->
+        </CellGroup>
+        <footer class="flex flex-center w-full border-before h-32">
+          <div class="text-gray text-10">{{ productName }} v{{ version }}</div>
         </footer>
       </template>
     </z-paging>
@@ -87,14 +86,13 @@
 
 <script lang="ts" setup>
 import { useChatStore } from '@/store/chatStore';
-
 import ChatObject from '@/pages/im/components/ChatObject.vue';
 import Badge from '@/pages/im/components/Badge.vue';
 import Cell from '@/pages/im/components/Cell.vue';
 import CellGroup from '@/pages/im/components/CellGroup.vue';
-import { objectTypeDescriptions } from '@/utils/enums';
 import { navTo } from '@/utils/nav';
 import { useAuthStore } from '@/store/auth';
+import { version, productName } from '../../../../package.json';
 const props = defineProps({
   label: {
     type: [String, null],

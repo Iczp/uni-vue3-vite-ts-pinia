@@ -18,6 +18,7 @@
             <CurrentChatObject v-if="authStore.isLogin" />
           </template>
         </AppNavBar>
+        <Tabs :tabs="tabs" :current="tabIndex" class="border-after" />
         <ConnectStatus />
       </template>
       <!-- <template #bottom>
@@ -86,6 +87,7 @@
 <script lang="ts" setup>
 import { onLoad, onUnload } from '@dcloudio/uni-app';
 import { usePaging } from '@/hooks/usePaging';
+import { useSignalR } from '@/hooks/useSignalR';
 import { useAuthStore } from '@/store/auth';
 import { getSessionUnitList } from '@/api/chatApi';
 
@@ -97,11 +99,55 @@ import CurrentChatObject from '@/pages/im/components/CurrentChatObject.vue';
 import SessionUnit from '@/pages/im/components/SessionUnit.vue';
 import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
-import { useSignalR } from '@/hooks/useSignalR';
+import Tabs from '@/pages/im/components/Tabs.vue';
 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
 const isPopVisible = ref(false);
+
+const tabIndex = ref(0);
+const tabs = ref([
+  {
+    name: '全部',
+    code: 'all',
+    badge: 0,
+  },
+  {
+    name: '未读',
+    code: 'unread',
+    badge: 5,
+  },
+  {
+    name: '关注',
+    code: 'attention',
+    badge: 5,
+  },
+  {
+    name: '@我',
+    code: 'at',
+    badge: 5,
+  },
+  {
+    name: '群聊',
+    code: 'group',
+    badge: 3,
+  },
+  // {
+  //   name: '公众号',
+  //   badge: 0,
+  //   dot: false,
+  // },
+  // {
+  //   name: '订阅号',
+  //   badge: 0,
+  //   dot: false,
+  // },
+  {
+    name: '广场',
+    badge: 6,
+    dot: false,
+  },
+]);
 
 const setMaxTicks = (id: number | null | undefined, force: boolean = false) => {
   if (force || Number(id) > (maxTicks.value || 0)) {
