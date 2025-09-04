@@ -17,6 +17,7 @@ declare global {
   }
 
   interface CommandPayload<T> {
+    event?: string;
     scopes: CommandScope[];
     payload: T;
     command: string | 'Created' | 'UpdateBadge' | 'Updated' | 'Rollback' | 'IncrementCompleted';

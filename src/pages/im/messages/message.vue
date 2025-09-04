@@ -298,7 +298,7 @@ const fetchLatest = async (caller?: string) => {
         q.ownerId,
         dataList.value.slice(0, Math.min(q.maxResultCount!, dataList.value.length)),
       );
-      uni.showToast({ title: `成功加载 ${res.items.length} 条消息`, icon: 'none' });
+      // uni.showToast({ title: `成功加载 ${res.items.length} 条消息`, icon: 'none' });
       // return;
     } else {
       console.warn('没有新消息');
@@ -452,9 +452,27 @@ const onRefresh = async () => {
 const { onReceived, onConnected } = useSignalR();
 
 onReceived(e => {
-  console.log('received@signalr', e);
-  uni.showToast({ title: `新消息${e?.command}`, icon: 'none' });
-  fetchLatest();
+  console.log(e?.event, e);
+  // uni.showToast({ title: `新消息${e?.command}`, icon: 'none' });
+  const scope = e?.scopes?.find(x => x.chatObjectId == chatStore.current?.id);
+  if (!scope) {
+    return;
+  }
+  if (e?.command == 'UpdateBadge') {
+    fetchLatest();
+    return;
+  }
+  if (e?.command == 'Created') {
+    const item = dataList.value.find(x => x.id == scope.sessionUnitId);
+    if (item) {
+      item.publicBadge = Number(item.publicBadge || 0) + 1;
+      // item.publicBadge = 1;
+      if (e?.payload.message) {
+        item.lastMessage = { ...item.lastMessage, ...e?.payload.message };
+      }
+    }
+    return;
+  }
 });
 
 onConnected(e => {

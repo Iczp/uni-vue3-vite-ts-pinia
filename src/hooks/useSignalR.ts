@@ -5,6 +5,9 @@ export const useSignalR = () => {
   const formatArgs = <T>(event: string, callback: (arg0: T | null) => void) => {
     uni.$on(event, (e: string) => {
       const args = jsonParse<T>(e);
+      if (args) {
+        args['event'] = event;
+      }
       callback(args);
     });
   };
