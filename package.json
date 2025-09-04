@@ -1,7 +1,9 @@
 {
   "name": "uni-preset-vue",
-  "productName": "Goto IM",
   "version": "0.0.1",
+  "productName": "Goto IM",
+  "description": "gotoim.com",
+  "author": "Iczp.Net<1000@intry.cn>",
   "scripts": {
     "dev": "npm run dev:h5",
     "build": "npm run build:h5",
