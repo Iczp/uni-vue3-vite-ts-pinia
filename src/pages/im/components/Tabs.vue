@@ -34,7 +34,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
-
+const emit = defineEmits(['change']);
 // Props
 const props = defineProps({
   tabs: Array,

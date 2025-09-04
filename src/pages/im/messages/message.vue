@@ -100,6 +100,7 @@ import SessionUnit from '@/pages/im/components/SessionUnit.vue';
 import ConnectStatus from '@/pages/im/components/ConnectStatus.vue';
 import SessionUnitSkeleton from '@/pages/im/components/SessionUnitSkeleton.vue';
 import Tabs from '@/pages/im/components/Tabs.vue';
+import { notify } from '@/utils/notify';
 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
@@ -390,6 +391,11 @@ const loadingMoreClick = () => {
 };
 const onSessionUnitClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onSessionUnitClick', item, index);
+  // notify({
+  //   title: '新消息',
+  //   body: item.lastMessage?.content || '',
+  // });
+  // return;
   navToChat({
     id: item.id,
     title: item?.destination?.displayName || item?.destination?.name,
@@ -470,6 +476,10 @@ onReceived(e => {
       if (e?.payload.message) {
         item.lastMessage = { ...item.lastMessage, ...e?.payload.message };
       }
+      notify({
+        title: '新消息',
+        body: item.lastMessage?.content || '',
+      });
     }
     return;
   }
@@ -483,7 +493,7 @@ onConnected(e => {
 
 onLoad(() => {
   console.log('h5:onLoad');
-  uni.showToast({ title: `欢迎使用${authStore.isLogin}`, icon: 'none' });
+  // uni.showToast({ title: `欢迎使用${authStore.isLogin}`, icon: 'none' });
   if (authStore.isLogin && chatStore.current?.id) {
     // onRefresh();
     fetchLatest('onLoad');
