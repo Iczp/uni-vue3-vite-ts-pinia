@@ -37,7 +37,7 @@
           </span>
 
           <!-- 消息内容 -->
-          <span>{{ preview.contentText }}</span>
+          <span>{{ preview.contentText || '-' }}</span>
         </div>
         <div class="flex flex-row items-center gap-4 shrink-0">
           <div v-if="isToping" class="text-gray-400 i-ic:baseline-star"></div>
@@ -74,21 +74,23 @@ const remindAllCount = computed(() => props.item?.remindAllCount || 0);
 const remindCount = computed(() => remindMeCount.value + remindAllCount.value);
 const followingCount = computed(() => props.item?.followingCount || 0);
 
-const messageType = computed(
-  () => props.item?.lastMessage?.messageType as MessageTypes | undefined,
-);
+const lastMessage = computed(() => props.item?.lastMessage);
+const messageType = computed(() => lastMessage.value?.messageType as MessageTypes | undefined);
 
-const isSelfSender = computed(
-  () => props.item?.id == props.item?.lastMessage?.senderSessionUnit?.id,
-);
+const isSelfSender = computed(() => props.item?.id == lastMessage.value?.senderSessionUnit?.id);
 
-const isShowSender = computed(() => senderName.value && messageType.value != MessageTypes.Cmd);
+const isShowSender = computed(
+  () =>
+    senderName.value &&
+    messageType.value != MessageTypes.Cmd &&
+    props.item.destination?.id != lastMessage.value?.senderSessionUnit?.ownerId,
+);
 
 const displaySenderName = computed(() => (isSelfSender.value ? '我' : senderName.value));
 
 const badge = computed(() => props.item?.publicBadge || 0);
 
-const senderName = computed(() => getSenderNameForMessage(props.item?.lastMessage));
+const senderName = computed(() => getSenderNameForMessage(lastMessage.value));
 
 const objectType = computed(() => props.item?.destination?.objectType as ObjectTypes);
 

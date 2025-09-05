@@ -18,7 +18,7 @@
             <CurrentChatObject v-if="authStore.isLogin" />
           </template>
         </AppNavBar>
-        <Tabs :tabs="tabs" :current="tabIndex" class="border-after" />
+        <!-- <Tabs :tabs="tabs" :current="tabIndex" class="border-after" /> -->
         <ConnectStatus />
       </template>
       <!-- <template #bottom>
@@ -391,10 +391,7 @@ const loadingMoreClick = () => {
 };
 const onSessionUnitClick = (item: Chat.SessionUnitDto, index: number) => {
   console.log('onSessionUnitClick', item, index);
-  // notify({
-  //   title: '新消息',
-  //   body: item.lastMessage?.content || '',
-  // });
+  // notify({ title: '新消息', body: item.lastMessage?.content || '' });
   // return;
   navToChat({
     id: item.id,
@@ -476,10 +473,7 @@ onReceived(e => {
       if (e?.payload.message) {
         item.lastMessage = { ...item.lastMessage, ...e?.payload.message };
       }
-      notify({
-        title: '新消息',
-        body: item.lastMessage?.content || '',
-      });
+      notify({ title: '新消息', body: item.lastMessage?.content || '' });
     }
     return;
   }

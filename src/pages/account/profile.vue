@@ -182,6 +182,13 @@ const refreshToken = () => {
         icon: 'success',
       });
     })
+    .catch(err => {
+      console.error(err);
+      uni.showToast({
+        title: `${err.data?.error || '刷新失败'}:${err.data?.error_description}`,
+        icon: 'none',
+      });
+    })
     .finally(() => {
       isRefreshTokening.value = false;
     });

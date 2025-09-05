@@ -8,7 +8,7 @@ export const notify = (args: Notification): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (!('Notification' in window)) {
       console.log('Notification API not supported.');
-      uni.showToast({ title: '不支持推送', icon: 'none' });
+      // uni.showToast({ title: '不支持推送', icon: 'none' });
       reject(new Error('Notification API not supported'));
       return;
     }
